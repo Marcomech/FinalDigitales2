@@ -9,5 +9,5 @@
 - git add [nombre del archivo]
 para todos los archivos 
 - git add .
-git commit -m "comentario"
-git push origin main
+- git commit -m "comentario"
+- git push origin main
