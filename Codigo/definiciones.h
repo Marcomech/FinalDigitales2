@@ -163,8 +163,6 @@ struct RCC {
 };
 volatile struct RCC *const RCC = (struct RCC *)(0x40021000);
 
-enum {APB2A = 2, APB2B = 3, APB2C = 4 };
-
 struct GPIOx {
     int CRL;
     int CRH;

@@ -1,4 +1,4 @@
-TARGET ?= regularizador
+TARGET ?= main
 SRCS = $(TARGET).c
 
 OBJS =  $(addsuffix .o, $(basename $(SRCS)))
