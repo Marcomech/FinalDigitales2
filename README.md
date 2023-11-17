@@ -11,7 +11,3 @@ para todos los archivos
 - git add .
 - git commit -m "comentario"
 - git push origin main
-
-
-#### Pruebas de feli a ver si entendi como funciona esto [funciono :)]
-
