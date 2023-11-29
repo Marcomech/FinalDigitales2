@@ -1,0 +1,43 @@
+20:23:32 **** Incremental Build of configuration Debug for project usb_test ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:123:37: warning: passing argument 2 of 'USBD_HID_SendReport' from incompatible pointer type [-Wincompatible-pointer-types]
+  123 |  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(keyboardhid));
+      |                                     ^~~~~~~~~~~~
+      |                                     |
+      |                                     keyboardHID * {aka struct <anonymous> *}
+In file included from ../Core/Src/main.c:26:
+../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc/usbd_hid.h:122:38: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'keyboardHID *' {aka 'struct <anonymous> *'}
+  122 |                             uint8_t *report,
+      |                             ~~~~~~~~~^~~~~~
+../Core/Src/main.c:130:37: warning: passing argument 2 of 'USBD_HID_SendReport' from incompatible pointer type [-Wincompatible-pointer-types]
+  130 |  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(keyboardhid));
+      |                                     ^~~~~~~~~~~~
+      |                                     |
+      |                                     keyboardHID * {aka struct <anonymous> *}
+In file included from ../Core/Src/main.c:26:
+../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc/usbd_hid.h:122:38: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'keyboardHID *' {aka 'struct <anonymous> *'}
+  122 |                             uint8_t *report,
+      |                             ~~~~~~~~~^~~~~~
+arm-none-eabi-gcc -o "usb_test.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\PC\Documentos\Unsam\2023 2do Cuartimestre\Digital 2\Final\usb_test\usb_test\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="usb_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: usb_test.elf
+ 
+arm-none-eabi-objdump -h -S  usb_test.elf  > "usb_test.list"
+arm-none-eabi-objcopy  -O binary  usb_test.elf  "usb_test.bin"
+arm-none-eabi-size   usb_test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  27152	    352	   3576	  31080	   7968	usb_test.elf
+Finished building: default.size.stdout
+Finished building: usb_test.bin
+ 
+ 
+Finished building: usb_test.list
+ 
+20:23:42 **** Incremental Build of configuration Debug for project usb_test ****
+make -j12 all 
+arm-none-eabi-size   usb_test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  27152	    352	   3576	  31080	   7968	usb_test.elf
+Finished building: default.size.stdout
+ 

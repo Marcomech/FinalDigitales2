@@ -1,0 +1,39 @@
+!SESSION 2023-11-29 20:15:40.809 -----------------------------------------------
+eclipse.buildId=Version 1.6.0
+java.version=11.0.9.1
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\PC\Documentos\Unsam\2023 2do Cuartimestre\Digital 2\Final\usb_test
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-11-29 20:15:45.398
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-11-29 20:15:45.441
+!MESSAGE Log4j initialized with config file C:\Users\PC\Documentos\Unsam\2023 2do Cuartimestre\Digital 2\Final\usb_test\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-11-29 20:15:54.839
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2023-11-29 20:15:55.433
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-11-29 20:17:29.556
+!MESSAGE Indexed 'usb_test' (29 sources, 111 headers) in 2.21 sec: 8,410 declarations; 31,008 references; 2 unresolved inclusions; 36 syntax errors; 188 unresolved names (0.47%)
+!SESSION 2023-11-29 20:23:14.956 -----------------------------------------------
+eclipse.buildId=Version 1.6.0
+java.version=11.0.9.1
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\PC\Documentos\Unsam\2023 2do Cuartimestre\Digital 2\Final\usb_test
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-11-29 20:23:18.473
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-11-29 20:23:18.514
+!MESSAGE Log4j initialized with config file C:\Users\PC\Documentos\Unsam\2023 2do Cuartimestre\Digital 2\Final\usb_test\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-11-29 20:23:23.876
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2023-11-29 20:23:24.317
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
