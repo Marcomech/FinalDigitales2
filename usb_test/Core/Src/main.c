@@ -116,9 +116,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 	keyboardhid.KeyCode1 = 0x80;
-	keyboardhid.KeyCode1 = 0x12;
-	keyboardhid.KeyCode1 = 0x09;
-	keyboardhid.KeyCode1 = 0x0c;
+	keyboardhid.KeyCode2 = 0x12;
+	keyboardhid.KeyCode3 = 0x09;
+	keyboardhid.KeyCode4 = 0x0c;
 	USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(keyboardhid));
 	HAL_Delay(50);
 	keyboardhid.KeyCode1 = 0x00;
