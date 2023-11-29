@@ -1,0 +1,68 @@
+En variables:
+
+extern --> le avisa al compilador que la variable que estoy definiendo será usada tambien en otro archivo dentro del probrama.
+
+    ej. extern int variable_global; //en archivo.c
+        extern int variable_global; //en archivo2.c (son la misma variable)
+
+        otra opcion es usar un header y declarar la variable ahi.
+
+
+static --> indica que la variable solo es visible en el archivo dentro del cual se la declara.
+
+#ifdef --> significa if defined (si esta definido), se escribe con esa sintaxis, uzando un #.
+
+__attribute__ --> es una extensión de algunos compiladores que permite proporcionar información adicional sobre funciones, 
+                  variables o tipos de datos. En el caso específico que has mostrado.
+
+    ej. extern int __io_putchar(int ch) __attribute__((weak));
+
+        Esto le dice al compilador que la definicion es opcional. Es decir, si en algun otro lugar del codigo el usuario fuera a definir
+        la funcion __io_putchar(int ch) de manera fuerte (sin el weak) esta segunda definicion tendra prioridad y aquella con el weak
+        sera ignorada.
+
+    __attribut__ se puede usar para otras cosas como:
+        
+        - (optimize('Ox')) que le dice al compilador que optimize una funcion de alguna manera en particular
+        - ((packed)) que sirve para avisarle al compilador que no agregue relleno entre miembros de una estructura (para disp. integrados)
+        - ((noreturn)) le avisa al compilador que la funcion no returneara nada, ayudandolo a hacer algunas optimizaciones
+        - ((unused)) le dice al compilador que no genere advertencias sobre la variable o funcion no utilizada
+        - ((format(printf, 1, 2))) avisa que la funcion tiene un formato similar a printf(), lo que permite a algunas herramientas 
+            verificar los argumentos del formato.
+        - ((deprecated)) es para indicar que la funcion es obsoleta y puede ser eliminada en futuras versiones.
+
+
+...................................
+#ifdef __cplusplus
+extern "C"{
+
+#endif
+
+// Declaraciones de funciones que deben seguir la convención de llamada de C
+
+void funcionC(int arg);
+
+#ifdef __cplusplus
+}
+#endif
+.................................... Todo lo que esta entre puntos se usa cuando se trabaja en C++ para avisar al compilador que una parte
+                                     del codigo utilizara la convencion de C.
+
+
+Sufijos:
+    U --> significa que es unsigned
+    DU --> significa que es double unsigned
+
+
+Macros --> los macros en C y C++ son fragmentos de codigo que se expanden en tiempo de compilacion.
+
+ej:
+#define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))--> En resumen, esta macro se utiliza 
+para implementar una aserción condicional. Si la expresión proporcionada (expr) es falsa, se llama a la función assert_failed y 
+se proporciona información sobre el archivo y la línea donde falló la aserción. Si la expresión es verdadera, no se realiza ninguna acción.
+La expresión (void)0U sirve como un "no-op" (operación nula) cuando la aserción es verdadera.
+
+
+
+
+        
