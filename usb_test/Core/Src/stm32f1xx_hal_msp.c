@@ -20,7 +20,10 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+
+#include "stm32f1xx_hal.h"
+
+void Error_Handler(void);
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */

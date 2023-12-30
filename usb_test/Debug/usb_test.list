@@ -27,23 +27,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00020158  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000fb0d  00000000  00000000  00020181  2**0
+ 12 .debug_info   0000ff95  00000000  00000000  00020181  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000027c8  00000000  00000000  0002fc8e  2**0
+ 13 .debug_abbrev 000028ce  00000000  00000000  00030116  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000009b0  00000000  00000000  00032458  2**3
+ 14 .debug_aranges 000009b0  00000000  00000000  000329e8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 00000888  00000000  00000000  00032e08  2**3
+ 15 .debug_ranges 00000888  00000000  00000000  00033398  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  000190a8  00000000  00000000  00033690  2**0
+ 16 .debug_macro  000154cf  00000000  00000000  00033c20  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000c8ec  00000000  00000000  0004c738  2**0
+ 17 .debug_line   0000c039  00000000  00000000  000490ef  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000848d8  00000000  00000000  00059024  2**0
+ 18 .debug_str    0006ce92  00000000  00000000  00055128  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000dd8fc  2**0
+ 19 .comment      00000053  00000000  00000000  000c1fba  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002528  00000000  00000000  000dd950  2**2
+ 20 .debug_frame  00002528  00000000  00000000  000c2010  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -77,42 +77,27 @@ Disassembly of section .text:
  8000148:	08006980 	.word	0x08006980
 
 0800014c <main>:
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
+} keyboardHID;
+
+keyboardHID keyboardhid = {0,0,0,0,0,0,0,0};
+
+
+int main(void){
  800014c:	b580      	push	{r7, lr}
  800014e:	af00      	add	r7, sp, #0
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
  8000150:	f000 f946 	bl	80003e0 <HAL_Init>
-  /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
   SystemClock_Config();
  8000154:	f000 f832 	bl	80001bc <SystemClock_Config>
-  /* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
  8000158:	f000 f88a 	bl	8000270 <MX_GPIO_Init>
   MX_USB_DEVICE_Init();
  800015c:	f006 f82a 	bl	80061b4 <MX_USB_DEVICE_Init>
-  while (1)
-  {
-    /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+
+  while (1)  {
 	keyboardhid.KeyCode1 = 0x0B;
  8000160:	4b14      	ldr	r3, [pc, #80]	; (80001b4 <main+0x68>)
  8000162:	220b      	movs	r2, #11
@@ -167,12 +152,10 @@ int main(void)
  80001b8:	20000198 	.word	0x20000198
 
 080001bc <SystemClock_Config>:
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
+  }
+}
+
+void SystemClock_Config(void){
  80001bc:	b580      	push	{r7, lr}
  80001be:	b094      	sub	sp, #80	; 0x50
  80001c0:	af00      	add	r7, sp, #0
@@ -198,9 +181,7 @@ void SystemClock_Config(void)
  80001e8:	609a      	str	r2, [r3, #8]
  80001ea:	60da      	str	r2, [r3, #12]
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+  
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
  80001ec:	2301      	movs	r3, #1
  80001ee:	62bb      	str	r3, [r7, #40]	; 0x28
@@ -222,23 +203,22 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
  8000208:	f44f 13e0 	mov.w	r3, #1835008	; 0x1c0000
  800020c:	64fb      	str	r3, [r7, #76]	; 0x4c
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)  {
  800020e:	f107 0328 	add.w	r3, r7, #40	; 0x28
  8000212:	4618      	mov	r0, r3
  8000214:	f001 ffd0 	bl	80021b8 <HAL_RCC_OscConfig>
  8000218:	4603      	mov	r3, r0
  800021a:	2b00      	cmp	r3, #0
  800021c:	d001      	beq.n	8000222 <SystemClock_Config+0x66>
-  {
     Error_Handler();
  800021e:	f000 f849 	bl	80002b4 <Error_Handler>
   }
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
+  
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
  8000222:	230f      	movs	r3, #15
  8000224:	617b      	str	r3, [r7, #20]
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
  8000226:	2302      	movs	r3, #2
  8000228:	61bb      	str	r3, [r7, #24]
@@ -252,7 +232,7 @@ void SystemClock_Config(void)
  8000234:	2300      	movs	r3, #0
  8000236:	627b      	str	r3, [r7, #36]	; 0x24
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)  {
  8000238:	f107 0314 	add.w	r3, r7, #20
  800023c:	2102      	movs	r1, #2
  800023e:	4618      	mov	r0, r3
@@ -260,24 +240,24 @@ void SystemClock_Config(void)
  8000244:	4603      	mov	r3, r0
  8000246:	2b00      	cmp	r3, #0
  8000248:	d001      	beq.n	800024e <SystemClock_Config+0x92>
-  {
     Error_Handler();
  800024a:	f000 f833 	bl	80002b4 <Error_Handler>
   }
+
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
  800024e:	2310      	movs	r3, #16
  8000250:	607b      	str	r3, [r7, #4]
   PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
  8000252:	2300      	movs	r3, #0
  8000254:	613b      	str	r3, [r7, #16]
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)  {
  8000256:	1d3b      	adds	r3, r7, #4
  8000258:	4618      	mov	r0, r3
  800025a:	f002 fb89 	bl	8002970 <HAL_RCCEx_PeriphCLKConfig>
  800025e:	4603      	mov	r3, r0
  8000260:	2b00      	cmp	r3, #0
  8000262:	d001      	beq.n	8000268 <SystemClock_Config+0xac>
-  {
     Error_Handler();
  8000264:	f000 f826 	bl	80002b4 <Error_Handler>
   }
@@ -288,17 +268,11 @@ void SystemClock_Config(void)
  800026e:	bd80      	pop	{r7, pc}
 
 08000270 <MX_GPIO_Init>:
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
+
+static void MX_GPIO_Init(void){
  8000270:	b480      	push	{r7}
  8000272:	b083      	sub	sp, #12
  8000274:	af00      	add	r7, sp, #0
-
-  /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOD_CLK_ENABLE();
  8000276:	4b0e      	ldr	r3, [pc, #56]	; (80002b0 <MX_GPIO_Init+0x40>)
  8000278:	699b      	ldr	r3, [r3, #24]
@@ -331,12 +305,8 @@ static void MX_GPIO_Init(void)
  80002b0:	40021000 	.word	0x40021000
 
 080002b4 <Error_Handler>:
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
-void Error_Handler(void)
-{
+
+void Error_Handler(void){
  80002b4:	b480      	push	{r7}
  80002b6:	af00      	add	r7, sp, #0
   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
@@ -348,10 +318,8 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  80002b8:	b672      	cpsid	i
 }
  80002ba:	bf00      	nop
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
-  while (1)
+  while (1)  {  }
  80002bc:	e7fe      	b.n	80002bc <Error_Handler+0x8>
 	...
 
@@ -14772,9 +14740,8 @@ static uint8_t USBD_GetLen(uint8_t *buf)
  80060e4:	4770      	bx	lr
 
 080060e6 <USBD_CtlSendData>:
-* @param  len: length of data to be sent
-* @retval status
-*/
+
+#include "usbd_hid.h"
 USBD_StatusTypeDef USBD_CtlSendData(USBD_HandleTypeDef *pdev,
                                     uint8_t *pbuf, uint16_t len)
 {
@@ -14816,9 +14783,7 @@ USBD_StatusTypeDef USBD_CtlSendData(USBD_HandleTypeDef *pdev,
  800611c:	bd80      	pop	{r7, pc}
 
 0800611e <USBD_CtlContinueSendData>:
-* @param  len: length of data to be sent
-* @retval status
-*/
+
 USBD_StatusTypeDef USBD_CtlContinueSendData(USBD_HandleTypeDef *pdev,
                                             uint8_t *pbuf, uint16_t len)
 {
@@ -14846,9 +14811,9 @@ USBD_StatusTypeDef USBD_CtlContinueSendData(USBD_HandleTypeDef *pdev,
  8006140:	bd80      	pop	{r7, pc}
 
 08006142 <USBD_CtlContinueRx>:
-* @param  len: length of data to be received
-* @retval status
-*/
+}
+
+
 USBD_StatusTypeDef USBD_CtlContinueRx(USBD_HandleTypeDef *pdev,
                                       uint8_t *pbuf, uint16_t len)
 {
@@ -14875,10 +14840,8 @@ USBD_StatusTypeDef USBD_CtlContinueRx(USBD_HandleTypeDef *pdev,
  8006164:	bd80      	pop	{r7, pc}
 
 08006166 <USBD_CtlSendStatus>:
-*         send zero lzngth packet on the ctl pipe
-* @param  pdev: device instance
-* @retval status
-*/
+
+
 USBD_StatusTypeDef USBD_CtlSendStatus(USBD_HandleTypeDef *pdev)
 {
  8006166:	b580      	push	{r7, lr}
@@ -14908,10 +14871,8 @@ USBD_StatusTypeDef USBD_CtlSendStatus(USBD_HandleTypeDef *pdev)
  800618a:	bd80      	pop	{r7, pc}
 
 0800618c <USBD_CtlReceiveStatus>:
-*         receive zero lzngth packet on the ctl pipe
-* @param  pdev: device instance
-* @retval status
-*/
+
+
 USBD_StatusTypeDef USBD_CtlReceiveStatus(USBD_HandleTypeDef *pdev)
 {
  800618c:	b580      	push	{r7, lr}
