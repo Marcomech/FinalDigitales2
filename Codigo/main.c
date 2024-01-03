@@ -1,109 +1,136 @@
-#include "definiciones.h"
-#define N 1024
+#include "./Inc/definiciones.h"
+#include "../../Middlewares/usbd_hid.h"
 
-void sigma_delta(int *wavein, int *waveout);
+void MX_USB_DEVICE_Init(void);
+void SystemClock_Config(void);
+static void GPIO_Init(void);
 
-void SetClock(){
-	RCC->CR	 |= (1 << 16);				// Habilita la fuente de reloj externo de alta velocidad (HSE)
-	while (!(RCC->CR & (1 << 17)));		// Espera al lock (bit 17 en el registro de ctrl.)
+extern USBD_HandleTypeDef hUsbDeviceFS;
 
-	RCC->CR	 &= ~(1 << 24);				// Desactiva el PLL 
+typedef struct {
+	uint8_t ModifierKey;
+	uint8_t Reserved;
+	uint8_t KeyCode1;
+	uint8_t KeyCode2;
+	uint8_t KeyCode3;
+	uint8_t KeyCode4;
+	uint8_t KeyCode5;
+	uint8_t KeyCode6;
+} keyboardHID;
 
-	RCC->CFGR |= (0b0100 << 18);		// Set PLLMULL to 6. multipica el clock 8MHz * 6 = 48Mhz.
-	RCC->CFGR |= (1 << 16);				// Select HSE as the PLL source clock.
-	RCC->CR	  |= (1 << 24);				// Enable PLL
+keyboardHID keyboardhid = {0,0,0,0,0,0,0,0};
 
-	while (!(RCC->CR & (1 << 25)));		// Wait for PLL to lock.
+int main(void){	 
+	HAL_Init();
 
-	FLASH->ACR |= (0b010 << 0);			// Set FLASH WAIT STATE to 2. 
+  SystemClock_Config();
+  GPIO_Init();
+  MX_USB_DEVICE_Init();
 
-	RCC->APB1ENR |= (1 << 23);			// Enable USB clock.
+  uint8_t report[sizeof(keyboardHID)];
 
-	RCC->CFGR |= (1 << 22);				// Set USB prescaler to 0.
-	RCC->CFGR |= (0b0000 << 4);			// Set AHB HPRE division to 1.
-	//RCC->CFGR |= (0b0000 << 8);			// Set APB1 PPRE1 division to 1. 
-	RCC->CFGR |= (0b10	<< 0);			// Select PLL clock as the system clock
+  for (volatile int i=0; i<6; i++){
+	  keyboardhid.KeyCode1 = 0x0B;
+	  keyboardhid.KeyCode2 = 0x12;
+	  keyboardhid.KeyCode3 = 0x0F;
+	  keyboardhid.KeyCode4 = 0x04;
 
-	while (!(RCC->CFGR & (0b10 << 2)));	// Wait for PLL clock to be selected
+	  memcpy(report, &keyboardhid, sizeof(keyboardHID));
+	  USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
 
+	  HAL_Delay(50);
+
+	  keyboardhid.KeyCode1 = 0x00;
+	  keyboardhid.KeyCode2 = 0x00;
+	  keyboardhid.KeyCode3 = 0x00;
+	  keyboardhid.KeyCode4 = 0x00;
+
+	  memcpy(report, &keyboardhid, sizeof(keyboardHID));
+	  USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
+
+	  HAL_Delay(400);
+  }
+  
+	for (;;){}
+	return 0; 
 };
 
-void ConfigDMA(unsigned int *data){
-	RCC->APB2ENR	= (1<<2);			// Enable clock for GPIOA
+void SystemClock_Config(void){
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+
+  
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)  {
+    Error_Handler();
+  }
+  
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)  {
+    Error_Handler();
+  }
+
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
+  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
+
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)  {
+    Error_Handler();
+  }
+	
+	/*  Original
+ 	void SetClock(){
+ 	RCC->CR	 |= (1 << 16);				// Habilita la fuente de reloj externo de alta velocidad (HSE)
+ 	while (!(RCC->CR & (1 << 17)));		// Espera al lock (bit 17 en el registro de ctrl.)
+
+ 	RCC->CR	 &= ~(1 << 24);				// Desactiva el PLL 
+ 	RCC->CFGR |= (0b0100 << 18);		// Set PLLMULL to 6. multipica el clock 8MHz * 6 = 48Mhz.
+ 	RCC->CFGR |= (1 << 16);				// Select HSE as the PLL source clock.
+ 	RCC->CR	  |= (1 << 24);				// Enable PLL
+
+ 	while (!(RCC->CR & (1 << 25)));		// Wait for PLL to lock.
+
+ 	FLASH->ACR |= (0b010 << 0);			// Set FLASH WAIT STATE to 2. 
+
+ 	RCC->APB1ENR |= (1 << 23);			// Enable USB clock.
+
+ 	RCC->CFGR |= (1 << 22);				// Set USB prescaler to 0.
+ 	RCC->CFGR |= (0b0000 << 4);			// Set AHB HPRE division to 1.
+ 	//RCC->CFGR |= (0b0000 << 8);			// Set APB1 PPRE1 division to 1. 
+ 	RCC->CFGR |= (0b10	<< 0);			// Select PLL clock as the system clock
+
+ 	while (!(RCC->CFGR & (0b10 << 2)));	// Wait for PLL clock to be selected
+
+ };
+ */
+}
+
+static void GPIO_Init(void){
+	RCC->APB2ENR	= (1<<2);				// Enable clock for GPIOA
 	RCC->APB2ENR |= (1<<3);				// Enable clock for GPIOB
 	RCC->APB2ENR |= (1<<4);				// Enable clock for GPIOC
-	RCC->APB1ENR |= (1 << 0);			// Enable TIM2 clock.
-	RCC->AHBENR	|= (1 << 0);			// Enable DMA1 clock.
 
 	GPIOC->CRH	= (3 << (13-8)*4); 	 //C13 output
 	GPIOB->CRH	= (8 << (12-8)*4);	 //B12 input
 	GPIOB->CRH |= (8 << (13-8)*4);	 //B13 input
 	GPIOB->CRH |= (8 << (14-8)*4);	 //B14 input
 	GPIOB->CRH |= (8 << (15-8)*4);	 //B15 input
+}
 
-	DMA1->CHN[CHN2].CNDTR = N;	 							// Transfer size
-	DMA1->CHN[CHN2].CMAR	= (unsigned int) data;			// Memory source address
-	DMA1->CHN[CHN2].CPAR	= (unsigned int) & GPIOC->OUT;	// Peripheral destination address
-
-	DMA1->CHN[CHN2].CCR	= 0;				// Reset CCR
-	DMA1->CHN[CHN2].CCR &= ~(1 << 14);		// Disable memory to memory transfer on DMA1 channel 2 para q no se incrementen los dos punteros (el del dispositivo es fijo)(EL AND IGUAL ES PARA PONER UN 0 EN UNA POSICION DETERMINADA, EN ESTE CASO UN 1 NEGADO EN POS 14 Y UN 1 EN EL RESTO)
-	DMA1->CHN[CHN2].CCR |=	(0b11 << 12);	// Set DMA priority to very high. Con esto se decide cual tiene prioridad de paso
-	DMA1->CHN[CHN2].CCR |=	(0b10 << 10);	// Set memory transfer size to 32-bits. Configura el tamaño de transferencia de memoria para una operación de DMA a 32 bits, ajustando ciertos bits en el registro CCR de la estructura de datos seleccionada.
-	DMA1->CHN[CHN2].CCR |=	(0b10 << 8);	// Set peripheral transfer size to 32-bits. Este código ajusta ciertos bits en el registro CCR de la estructura de datos seleccionada, posiblemente para configurar una característica específica relacionada con la transferencia de datos a través de DMA. La operación de bits aquí está diseñada para establecer valores específicos en esos bits sin cambiar los demás.
-	DMA1->CHN[CHN2].CCR |=	(1 << 7);		// Enable memory increment mode
-	DMA1->CHN[CHN2].CCR &= ~(1 << 6);		// Disable peripheral increment mode
-	DMA1->CHN[CHN2].CCR |=	(1 << 5);		// Enable circular mode. Vuelve a empezar
-	DMA1->CHN[CHN2].CCR |=	(1 << 4);		// Read from memory
-	DMA1->CHN[CHN2].CCR |=	(1 << 2);		// Enable half transfer completed interrupt. Habilito la interrupcion a la mitad del buffer para que el procesador sepa que la primera mitad ya se encuentra vacia y se copie mas info
-	DMA1->CHN[CHN2].CCR |=	(1 << 1);		// Enable transfer completed interrupt. Habilito la interrupcion al final del buffer para lo mismo que antes.
-	ENA_IRQ(IRQ_DMA1CHN2);					// Enable DMA1 Channel2 inturrupt on NVIC
-
-	DMA1->CHN[CHN2].CCR |= (1 << 0);		// Enable DMA. 
-	
-	ENA_IRQ(IRQ_TIM2);						// Enable TIM2 interrupt on NVIC
-	TIM2->CR1	 = 0x0000;					// Reset CR1 just in case
-		//	TIM2->CR1	|= (1 << 4);		// Down counter mode
-	TIM2->PSC	 = 48e6;//(N*8*1e3)-1;		// VELOCIDAD DE ENVIO DE DATOS fCK_PSC / (PSC[15:0] + 1)
-	TIM2->ARR	 = 8-1;						// AUTO RELOAD. si lo pongo en 1 transfiero todo el tiempo
-	TIM2->DIER |= (1 << 14);				// Trigger DMA request enable. El timer le dice al DMA que transmita cuando el timer termine de contar.
-	TIM2->DIER |= (1 <<	8);					// Update DMA request enable
-		//	TIM2->DIER |= (1 <<	6);			// Enable interrupt
-		//	TIM2->DIER |= (1 <<	0);			// Update interrupt enable
-
-	TIM2->CR1	|= (1 << 0);				// Finally enable TIM1 module
-};
-
-int main(void){	 
-	unsigned int data[N];
-
-	SetClock(); 
-		ConfigDMA(data);
-	
-	for (volatile int i = 0; i < N; i++){
-		data[i] = (i%2 == 0) ? (0x00000000) : (0x0000FFFF);
-		}
-
-	for (;;){}
-
-	return 0; 
-};
-
-void handler_dma1chn2(void){
-	DMA1->IFCR |= (0xf << 1);
-	CLR_IRQ(IRQ_DMA1CHN2);
-};
-
-void handler_tim2(void){
-	TIM2->SR &= ~(1 << 0);
-	CLR_IRQ(IRQ_TIM2);
-};
-
-void sigma_delta(int *wavein, int *waveout){
-		int integrator = wavein[0];
-
-		for (int i = 0; i < N; i++) {
-				if (i > 0) {integrator += (wavein[i] - waveout[i - 1] * 127);}
-				if (integrator > 0) {waveout[i] = 1;} 
-				else {waveout[i] = -1;}
-		}
-};
+void Error_Handler(void){
+  __disable_irq();
+  while (1)  {  }
+}

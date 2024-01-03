@@ -1,76 +1,79 @@
 Core/Src/main.o: ../Core/Src/main.c \
- ../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc/usbd_hid.h \
- ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
- ../Core/Inc/stm32f1xx_hal_conf.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h \
- ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h \
- ../Drivers/CMSIS/Include/core_cm3.h \
- ../Drivers/CMSIS/Include/cmsis_version.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h \
- ../Drivers/CMSIS/Include/cmsis_gcc.h \
- ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h
+ ../Core/Src/../../Middlewares/usbd_hid.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_rcc.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_def.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f103xb.h \
+ ../Core/Src/../../Middlewares/../Drivers/core_cm3.h \
+ ../Core/Src/../../Middlewares/../Drivers/cmsis_version.h \
+ ../Core/Src/../../Middlewares/../Drivers/cmsis_compiler.h \
+ ../Core/Src/../../Middlewares/../Drivers/cmsis_gcc.h \
+ ../Core/Src/../../Middlewares/../Drivers/system_stm32f1xx.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_rcc_ex.h \
+ ../Core/Src/../../Middlewares/../Drivers/../Core/Src/include.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_gpio.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_gpio_ex.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_exti.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_dma.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_dma_ex.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_cortex.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_flash.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_flash_ex.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_pwr.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_pcd.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_ll_usb.h \
+ ../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_pcd_ex.h \
+ ../Core/Src/include.h
 
-../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc/usbd_hid.h:
+../Core/Src/../../Middlewares/usbd_hid.h:
 
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_rcc.h:
 
-../Core/Inc/stm32f1xx_hal_conf.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_def.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f103xb.h:
 
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h:
+../Core/Src/../../Middlewares/../Drivers/core_cm3.h:
 
-../Drivers/CMSIS/Include/core_cm3.h:
+../Core/Src/../../Middlewares/../Drivers/cmsis_version.h:
 
-../Drivers/CMSIS/Include/cmsis_version.h:
+../Core/Src/../../Middlewares/../Drivers/cmsis_compiler.h:
 
-../Drivers/CMSIS/Include/cmsis_compiler.h:
+../Core/Src/../../Middlewares/../Drivers/cmsis_gcc.h:
 
-../Drivers/CMSIS/Include/cmsis_gcc.h:
+../Core/Src/../../Middlewares/../Drivers/system_stm32f1xx.h:
 
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_rcc_ex.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h:
+../Core/Src/../../Middlewares/../Drivers/../Core/Src/include.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_gpio.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_gpio_ex.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_exti.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_exti.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_dma.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_dma_ex.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_cortex.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_flash.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_flash_ex.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_pwr.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_pcd.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_ll_usb.h:
 
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h:
+../Core/Src/../../Middlewares/../Drivers/stm32f1xx_hal_pcd_ex.h:
+
+../Core/Src/include.h:
