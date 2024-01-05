@@ -1,20 +1,4 @@
-/**
-  ******************************************************************************
-  * @file    stm32f1xx_ll_usb.h
-  * @author  MCD Application Team
-  * @brief   Header file of USB Low Layer HAL module.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2016 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef STM32F1xx_LL_USB_H
@@ -28,19 +12,13 @@ extern "C" {
 #include "stm32f1xx_hal_def.h"
 
 #if defined (USB) || defined (USB_OTG_FS)
-/** @addtogroup STM32F1xx_HAL_Driver
-  * @{
-  */
 
-/** @addtogroup USB_LL
-  * @{
-  */
+
+
 
 /* Exported types ------------------------------------------------------------*/
 
-/**
-  * @brief  USB Mode definition
-  */
+
 
 typedef enum
 {
@@ -49,9 +27,7 @@ typedef enum
   USB_DRD_MODE    = 2
 } USB_ModeTypeDef;
 
-/**
-  * @brief  URB States definition
-  */
+
 typedef enum
 {
   URB_IDLE = 0,
@@ -62,9 +38,7 @@ typedef enum
   URB_STALL
 } USB_URBStateTypeDef;
 
-/**
-  * @brief  Host channel States  definition
-  */
+
 typedef enum
 {
   HC_IDLE = 0,
@@ -80,9 +54,7 @@ typedef enum
 } USB_HCStateTypeDef;
 
 
-/**
-  * @brief  USB Instance Initialization Structure definition
-  */
+
 typedef struct
 {
   uint32_t dev_endpoints;           /*!< Device Endpoints number.
@@ -256,182 +228,112 @@ typedef USB_HCTypeDef       USB_OTG_HCTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 
-/** @defgroup PCD_Exported_Constants PCD Exported Constants
-  * @{
-  */
+
 
 #if defined (USB_OTG_FS)
-/** @defgroup USB_OTG_CORE VERSION ID
-  * @{
-  */
+
 #define USB_OTG_CORE_ID_300A          0x4F54300AU
 #define USB_OTG_CORE_ID_310A          0x4F54310AU
-/**
-  * @}
-  */
 
-/** @defgroup USB_Core_Mode_ USB Core Mode
-  * @{
-  */
+
+
 #define USB_OTG_MODE_DEVICE                    0U
 #define USB_OTG_MODE_HOST                      1U
 #define USB_OTG_MODE_DRD                       2U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_Core_Speed USB Low Layer Core Speed
-  * @{
-  */
+
+
 #define USB_OTG_SPEED_FULL                     3U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_Core_PHY USB Low Layer Core PHY
-  * @{
-  */
+
+
 #define USB_OTG_EMBEDDED_PHY                   2U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_Turnaround_Timeout Turnaround Timeout Value
-  * @{
-  */
+
+
 #ifndef USBD_FS_TRDT_VALUE
 #define USBD_FS_TRDT_VALUE                     5U
 #define USBD_DEFAULT_TRDT_VALUE                9U
 #endif /* USBD_HS_TRDT_VALUE */
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_Core_MPS USB Low Layer Core MPS
-  * @{
-  */
+
+
 #define USB_OTG_FS_MAX_PACKET_SIZE            64U
 #define USB_OTG_MAX_EP0_SIZE                  64U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_Core_PHY_Frequency USB Low Layer Core PHY Frequency
-  * @{
-  */
+
+
 #define DSTS_ENUMSPD_HS_PHY_30MHZ_OR_60MHZ     (0U << 1)
 #define DSTS_ENUMSPD_FS_PHY_30MHZ_OR_60MHZ     (1U << 1)
 #define DSTS_ENUMSPD_FS_PHY_48MHZ              (3U << 1)
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_CORE_Frame_Interval USB Low Layer Core Frame Interval
-  * @{
-  */
+
+
 #define DCFG_FRAME_INTERVAL_80                 0U
 #define DCFG_FRAME_INTERVAL_85                 1U
 #define DCFG_FRAME_INTERVAL_90                 2U
 #define DCFG_FRAME_INTERVAL_95                 3U
-/**
-  * @}
-  */
+
 #endif /* defined (USB_OTG_FS) */
-/** @defgroup USB_LL_EP0_MPS USB Low Layer EP0 MPS
-  * @{
-  */
+
 #define EP_MPS_64                              0U
 #define EP_MPS_32                              1U
 #define EP_MPS_16                              2U
 #define EP_MPS_8                               3U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_EP_Type USB Low Layer EP Type
-  * @{
-  */
+
+
 #define EP_TYPE_CTRL                           0U
 #define EP_TYPE_ISOC                           1U
 #define EP_TYPE_BULK                           2U
 #define EP_TYPE_INTR                           3U
 #define EP_TYPE_MSK                            3U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_EP_Speed USB Low Layer EP Speed
-  * @{
-  */
+
+
 #define EP_SPEED_LOW                           0U
 #define EP_SPEED_FULL                          1U
 #define EP_SPEED_HIGH                          2U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_CH_PID_Type USB Low Layer Channel PID Type
-  * @{
-  */
+
+
 #define HC_PID_DATA0                           0U
 #define HC_PID_DATA2                           1U
 #define HC_PID_DATA1                           2U
 #define HC_PID_SETUP                           3U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL Device Speed
-  * @{
-  */
+
+
 #define USBD_FS_SPEED                          2U
 #define USBH_FSLS_SPEED                        1U
-/**
-  * @}
-  */
+
 
 #if defined (USB_OTG_FS)
-/** @defgroup USB_LL_STS_Defines USB Low Layer STS Defines
-  * @{
-  */
+
 #define STS_GOUT_NAK                           1U
 #define STS_DATA_UPDT                          2U
 #define STS_XFER_COMP                          3U
 #define STS_SETUP_COMP                         4U
 #define STS_SETUP_UPDT                         6U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_HCFG_SPEED_Defines USB Low Layer HCFG Speed Defines
-  * @{
-  */
+
+
 #define HCFG_30_60_MHZ                         0U
 #define HCFG_48_MHZ                            1U
 #define HCFG_6_MHZ                             2U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_HFIR_Defines USB Low Layer frame interval Defines
-  * @{
-  */
+
+
 #define HFIR_6_MHZ                          6000U
 #define HFIR_60_MHZ                        60000U
 #define HFIR_48_MHZ                        48000U
-/**
-  * @}
-  */
 
-/** @defgroup USB_LL_HPRT0_PRTSPD_SPEED_Defines USB Low Layer HPRT0 PRTSPD Speed Defines
-  * @{
-  */
+
+
 #define HPRT0_PRTSPD_HIGH_SPEED                0U
 #define HPRT0_PRTSPD_FULL_SPEED                1U
 #define HPRT0_PRTSPD_LOW_SPEED                 2U
-/**
-  * @}
-  */
+
 
 #define HCCHAR_CTRL                            0U
 #define HCCHAR_ISOC                            1U
@@ -483,14 +385,10 @@ typedef USB_HCTypeDef       USB_OTG_HCTypeDef;
 #endif /* USE_USB_DOUBLE_BUFFER */
 #endif /* defined (USB) */
 
-/**
-  * @}
-  */
+
 
 /* Exported macro ------------------------------------------------------------*/
-/** @defgroup USB_LL_Exported_Macros USB Low Layer Exported Macros
-  * @{
-  */
+
 #if defined (USB_OTG_FS)
 #define USB_MASK_INTERRUPT(__INSTANCE__, __INTERRUPT__)     ((__INSTANCE__)->GINTMSK &= ~(__INTERRUPT__))
 #define USB_UNMASK_INTERRUPT(__INSTANCE__, __INTERRUPT__)   ((__INSTANCE__)->GINTMSK |= (__INTERRUPT__))
@@ -498,14 +396,10 @@ typedef USB_HCTypeDef       USB_OTG_HCTypeDef;
 #define CLEAR_IN_EP_INTR(__EPNUM__, __INTERRUPT__)          (USBx_INEP(__EPNUM__)->DIEPINT = (__INTERRUPT__))
 #define CLEAR_OUT_EP_INTR(__EPNUM__, __INTERRUPT__)         (USBx_OUTEP(__EPNUM__)->DOEPINT = (__INTERRUPT__))
 #endif /* defined (USB_OTG_FS) */
-/**
-  * @}
-  */
+
 
 /* Exported functions --------------------------------------------------------*/
-/** @addtogroup USB_LL_Exported_Functions USB Low Layer Exported Functions
-  * @{
-  */
+
 #if defined (USB_OTG_FS)
 HAL_StatusTypeDef USB_CoreInit(USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef cfg);
 HAL_StatusTypeDef USB_DevInit(USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef cfg);
@@ -609,26 +503,16 @@ void              USB_WritePMA(USB_TypeDef const *USBx, uint8_t *pbUsrBuf,
 void              USB_ReadPMA(USB_TypeDef const *USBx, uint8_t *pbUsrBuf,
                               uint16_t wPMABufAddr, uint16_t wNBytes);
 #endif /* defined (USB) */
-/**
-  * @}
-  */
 
-/**
-  * @}
-  */
 
-/**
-  * @}
-  */
 
-/**
-  * @}
-  */
+
+
+
+
 #endif /* defined (USB) || defined (USB_OTG_FS) */
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+ /* __cplusplus */
 
 
 #endif /* STM32F1xx_LL_USB_H */

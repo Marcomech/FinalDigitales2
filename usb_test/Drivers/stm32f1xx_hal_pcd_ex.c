@@ -1,36 +1,11 @@
-/**
-  ******************************************************************************
-  * @file    stm32f1xx_hal_pcd_ex.c
-  * @author  MCD Application Team
-  * @brief   PCD Extended HAL module driver.
-  *          This file provides firmware functions to manage the following
-  *          functionalities of the USB Peripheral Controller:
-  *           + Extended features functions
-  *
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2016 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
-/** @addtogroup STM32F1xx_HAL_Driver
-  * @{
-  */
 
-/** @defgroup PCDEx PCDEx
-  * @brief PCD Extended HAL module driver
-  * @{
-  */
+
+
 
 #ifdef HAL_PCD_MODULE_ENABLED
 
@@ -42,31 +17,11 @@
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 
-/** @defgroup PCDEx_Exported_Functions PCDEx Exported Functions
-  * @{
-  */
 
-/** @defgroup PCDEx_Exported_Functions_Group1 Peripheral Control functions
-  * @brief    PCDEx control functions
-  *
-@verbatim
- ===============================================================================
-                 ##### Extended features functions #####
- ===============================================================================
-    [..]  This section provides functions allowing to:
-      (+) Update FIFO configuration
 
-@endverbatim
-  * @{
-  */
+
 #if defined (USB_OTG_FS)
-/**
-  * @brief  Set Tx FIFO
-  * @param  hpcd PCD handle
-  * @param  fifo The number of Tx fifo
-  * @param  size Fifo size
-  * @retval HAL status
-  */
+
 HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uint16_t size)
 {
   uint8_t i;
@@ -103,12 +58,7 @@ HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uin
   return HAL_OK;
 }
 
-/**
-  * @brief  Set Rx FIFO
-  * @param  hpcd PCD handle
-  * @param  size Size of Rx fifo
-  * @retval HAL status
-  */
+
 HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size)
 {
   hpcd->Instance->GRXFSIZ = size;
@@ -117,22 +67,7 @@ HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size)
 }
 #endif /* defined (USB_OTG_FS) */
 #if defined (USB)
-/**
-  * @brief  Configure PMA for EP
-  * @param  hpcd  Device instance
-  * @param  ep_addr endpoint address
-  * @param  ep_kind endpoint Kind
-  *                  USB_SNG_BUF: Single Buffer used
-  *                  USB_DBL_BUF: Double Buffer used
-  * @param  pmaadress: EP address in The PMA: In case of single buffer endpoint
-  *                   this parameter is 16-bit value providing the address
-  *                   in PMA allocated to endpoint.
-  *                   In case of double buffer endpoint this parameter
-  *                   is a 32-bit value providing the endpoint buffer 0 address
-  *                   in the LSB part of 32-bit value and endpoint buffer 1 address
-  *                   in the MSB part of 32-bit value.
-  * @retval HAL status
-  */
+
 
 HAL_StatusTypeDef  HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd, uint16_t ep_addr,
                                        uint16_t ep_kind, uint32_t pmaadress)
@@ -171,14 +106,7 @@ HAL_StatusTypeDef  HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd, uint16_t ep_addr
   return HAL_OK;
 }
 
-/**
-  * @brief  Software Device Connection,
-  *         this function is not required by USB OTG FS peripheral, it is used
-  *         only by USB Device FS peripheral.
-  * @param  hpcd PCD handle
-  * @param  state connection state (0 : disconnected / 1: connected)
-  * @retval None
-  */
+
 __weak void HAL_PCDEx_SetConnectionState(PCD_HandleTypeDef *hpcd, uint8_t state)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -190,12 +118,7 @@ __weak void HAL_PCDEx_SetConnectionState(PCD_HandleTypeDef *hpcd, uint8_t state)
 }
 #endif /* defined (USB) */
 
-/**
-  * @brief  Send LPM message to user layer callback.
-  * @param  hpcd PCD handle
-  * @param  msg LPM message
-  * @retval HAL status
-  */
+
 __weak void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef msg)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -207,12 +130,7 @@ __weak void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef m
    */
 }
 
-/**
-  * @brief  Send BatteryCharging message to user layer callback.
-  * @param  hpcd PCD handle
-  * @param  msg LPM message
-  * @retval HAL status
-  */
+
 __weak void HAL_PCDEx_BCD_Callback(PCD_HandleTypeDef *hpcd, PCD_BCD_MsgTypeDef msg)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -224,20 +142,12 @@ __weak void HAL_PCDEx_BCD_Callback(PCD_HandleTypeDef *hpcd, PCD_BCD_MsgTypeDef m
    */
 }
 
-/**
-  * @}
-  */
 
-/**
-  * @}
-  */
+
+
 #endif /* defined (USB) || defined (USB_OTG_FS) */
 #endif /* HAL_PCD_MODULE_ENABLED */
 
-/**
-  * @}
-  */
 
-/**
-  * @}
-  */
+
+

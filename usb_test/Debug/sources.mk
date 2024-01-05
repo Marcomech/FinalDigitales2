@@ -24,5 +24,4 @@ Core/Src \
 Core/Startup \
 Drivers \
 Middlewares \
-USB_DEVICE \
 

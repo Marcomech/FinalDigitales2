@@ -9,7 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include USB_DEVICE/subdir.mk
 -include Middlewares/subdir.mk
 -include Drivers/subdir.mk
 -include Core/Startup/subdir.mk

@@ -1,59 +1,60 @@
-#include "../../Middlewares/usbd_hid.h"
+#include <stdlib.h>
 
-void MX_USB_DEVICE_Init(void);
+#include "Inc_USB_Device.h"
+#include "Inc_Clock_Config.h"
+
+#include "../../Drivers/stm32f1xx.h"
+
+uint32_t SystemCoreClock = 16000000;
+const uint8_t AHBPrescTable[16U] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+const uint8_t APBPrescTable[8U]  = {0, 0, 0, 0, 1, 2, 3, 4};
+
+void SystemInit (void){}
 void SystemClock_Config(void);
+void USB_DEVICE_Init(void);
+void Error_Handler();
 
-extern USBD_HandleTypeDef hUsbDeviceFS;
+extern PCD_HandleTypeDef hpcd_USB_FS;
 
-typedef struct {
-	uint8_t ModifierKey;
-	uint8_t Reserved;
-	uint8_t KeyCode1;
-	uint8_t KeyCode2;
-	uint8_t KeyCode3;
-	uint8_t KeyCode4;
-	uint8_t KeyCode5;
-	uint8_t KeyCode6;
-} keyboardHID;
+void SysTick_Handler(void){
+   HAL_IncTick();
+}
+
+void USB_LP_CAN1_RX0_IRQHandler(void){
+  HAL_PCD_IRQHandler(&hpcd_USB_FS);
+}
 
 keyboardHID keyboardhid = {0,0,0,0,0,0,0,0};
 
 int main(void){
   HAL_Init();
-
   SystemClock_Config();
-
-  MX_USB_DEVICE_Init();
+  USB_DEVICE_Init();
 
   uint8_t report[sizeof(keyboardHID)];
 
-  for (volatile int i=0; i<7; i++){
-	  keyboardhid.KeyCode1 = 0x0B;
-	  keyboardhid.KeyCode2 = 0x12;
-	  keyboardhid.KeyCode3 = 0x0F;
-	  keyboardhid.KeyCode4 = 0x04;
-
-	  memcpy(report, &keyboardhid, sizeof(keyboardHID));
-	  USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
-
-	  HAL_Delay(50);
+  for (volatile int i=0; i<=5; i++){
+	  HAL_Delay(200);
+	  keyboardhid.KeyCode1 = 0x2C;
+	  keyboardhid.KeyCode2 = 0x0B;
+	  keyboardhid.KeyCode3 = 0x12;
+	  keyboardhid.KeyCode4 = 0x0F;
+	  keyboardhid.KeyCode5 = 0x04;
+	  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
+	  HAL_Delay(30);
 
 	  keyboardhid.KeyCode1 = 0x00;
 	  keyboardhid.KeyCode2 = 0x00;
 	  keyboardhid.KeyCode3 = 0x00;
 	  keyboardhid.KeyCode4 = 0x00;
-
-	  memcpy(report, &keyboardhid, sizeof(keyboardHID));
-	  USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
-
+	  keyboardhid.KeyCode5 = 0x00;
+	  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
 	  HAL_Delay(200);
   }
   while (1)  {  }
 }
 
 void SystemClock_Config(void){
-  #include "include.h"
-
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
@@ -88,7 +89,20 @@ void SystemClock_Config(void){
   }
 }
 
-void Error_Handler(void){
-  __disable_irq();
+void USB_DEVICE_Init(void){
+  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)  {
+    Error_Handler();
+  }
+  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_HID) != USBD_OK)  {
+    Error_Handler();
+  }
+  if (USBD_Start(&hUsbDeviceFS) != USBD_OK)  {
+    Error_Handler();
+  }
+}
+
+
+void Error_Handler(){
+  //__disable_irq();
   while (1)  {  }
 }

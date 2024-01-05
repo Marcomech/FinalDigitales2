@@ -4,11 +4,8 @@
 #define HAL_MODULE_ENABLED
 #define HAL_PCD_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
-#define HAL_DMA_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
-#define HAL_EXTI_MODULE_ENABLED
 #define HAL_GPIO_MODULE_ENABLED
-#define HAL_PWR_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
 
 
@@ -25,9 +22,7 @@
   #define HSI_VALUE    8000000U /*!< Value of the Internal oscillator in Hz*/
 #endif /* HSI_VALUE */
 
-/**
-  * @brief Internal Low Speed oscillator (LSI) value.
-  */
+
 #if !defined  (LSI_VALUE)
  #define LSI_VALUE               40000U    /*!< LSI Typical Value in Hz */
 #endif /* LSI_VALUE */                     /*!< Value of the Internal Low Speed oscillator in Hz
@@ -46,9 +41,7 @@
    ===  you can define the HSE value in your toolchain compiler preprocessor. */
 
 /* ########################### System Configuration ######################### */
-/**
-  * @brief This is the HAL system configuration section
-  */
+
 #define  VDD_VALUE                    3300U /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY            0U    /*!< tick interrupt priority (lowest by default)  */
 #define  USE_RTOS                     0U
@@ -142,14 +135,6 @@
 #include "stm32f1xx_hal_gpio.h"
 #endif /* HAL_GPIO_MODULE_ENABLED */
 
-#ifdef HAL_EXTI_MODULE_ENABLED
-#include "stm32f1xx_hal_exti.h"
-#endif /* HAL_EXTI_MODULE_ENABLED */
-
-#ifdef HAL_DMA_MODULE_ENABLED
-#include "stm32f1xx_hal_dma.h"
-#endif /* HAL_DMA_MODULE_ENABLED */
-
 #ifdef HAL_CORTEX_MODULE_ENABLED
 #include "stm32f1xx_hal_cortex.h"
 #endif /* HAL_CORTEX_MODULE_ENABLED */
@@ -157,10 +142,6 @@
 #ifdef HAL_FLASH_MODULE_ENABLED
 #include "stm32f1xx_hal_flash.h"
 #endif /* HAL_FLASH_MODULE_ENABLED */
-
-#ifdef HAL_PWR_MODULE_ENABLED
-#include "stm32f1xx_hal_pwr.h"
-#endif /* HAL_PWR_MODULE_ENABLED */
 
 #ifdef HAL_PCD_MODULE_ENABLED
 #include "stm32f1xx_hal_pcd.h"
@@ -253,88 +234,66 @@ extern HAL_TickFreqTypeDef uwTickFreq;
 #define __HAL_DBGMCU_FREEZE_WWDG()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_WWDG_STOP)
 #define __HAL_DBGMCU_UNFREEZE_WWDG()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_WWDG_STOP)
 
-/**
-  * @brief  IWDG Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_IWDG()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_IWDG_STOP)
 #define __HAL_DBGMCU_UNFREEZE_IWDG()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_IWDG_STOP)
 
-/**
-  * @brief  I2C1 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_I2C1_TIMEOUT()    SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C1_SMBUS_TIMEOUT)
 #define __HAL_DBGMCU_UNFREEZE_I2C1_TIMEOUT()  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C1_SMBUS_TIMEOUT)
 
 #if defined (DBGMCU_CR_DBG_I2C2_SMBUS_TIMEOUT)
-/**
-  * @brief  I2C2 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_I2C2_TIMEOUT()    SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C2_SMBUS_TIMEOUT)
 #define __HAL_DBGMCU_UNFREEZE_I2C2_TIMEOUT()  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C2_SMBUS_TIMEOUT)
 #endif
 
 #if defined (DBGMCU_CR_DBG_CAN1_STOP)
-/**
-  * @brief  CAN1 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_CAN1()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN1_STOP)
 #define __HAL_DBGMCU_UNFREEZE_CAN1()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN1_STOP)
 #endif
 
 #if defined (DBGMCU_CR_DBG_CAN2_STOP)
-/**
-  * @brief  CAN2 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_CAN2()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN2_STOP)
 #define __HAL_DBGMCU_UNFREEZE_CAN2()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN2_STOP)
 #endif
 
 /* Peripherals on APB2 */
 #if defined (DBGMCU_CR_DBG_TIM1_STOP)
-/**
-  * @brief  TIM1 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_TIM1()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM1_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM1()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM1_STOP)
 #endif
 
 #if defined (DBGMCU_CR_DBG_TIM8_STOP)
-/**
-  * @brief  TIM8 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_TIM8()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM8_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM8()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM8_STOP)
 #endif
 
 #if defined (DBGMCU_CR_DBG_TIM9_STOP)
-/**
-  * @brief  TIM9 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_TIM9()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM9_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM9()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM9_STOP)
 #endif
 
 #if defined (DBGMCU_CR_DBG_TIM10_STOP)
-/**
-  * @brief  TIM10 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_TIM10()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM10_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM10()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM10_STOP)
 #endif
 
 #if defined (DBGMCU_CR_DBG_TIM11_STOP)
-/**
-  * @brief  TIM11 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_TIM11()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM11_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM11()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM11_STOP)
 #endif
 
 
 #if defined (DBGMCU_CR_DBG_TIM15_STOP)
-/**
-  * @brief  TIM15 Peripherals Debug mode
-  */
+
 #define __HAL_DBGMCU_FREEZE_TIM15()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM15_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM15()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM15_STOP)
 #endif
