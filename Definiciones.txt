@@ -32,27 +32,9 @@ __attribute__ --> es una extensión de algunos compiladores que permite proporci
         - ((deprecated)) es para indicar que la funcion es obsoleta y puede ser eliminada en futuras versiones.
 
 
-...................................
-#ifdef __cplusplus
-extern "C"{
-
-#endif
-
-// Declaraciones de funciones que deben seguir la convención de llamada de C
-
-void funcionC(int arg);
-
-#ifdef __cplusplus
-}
-#endif
-.................................... Todo lo que esta entre puntos se usa cuando se trabaja en C++ para avisar al compilador que una parte
-                                     del codigo utilizara la convencion de C.
-
-
 Sufijos:
     U --> significa que es unsigned
     DU --> significa que es double unsigned
-
 
 Macros --> los macros en C y C++ son fragmentos de codigo que se expanden en tiempo de compilacion.
 

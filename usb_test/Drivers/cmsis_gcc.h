@@ -20,6 +20,11 @@
 #ifndef __CMSIS_GCC_H
 #define __CMSIS_GCC_H
 
+#define __CM_CMSIS_VERSION_MAIN  ( 5U)
+#define __CM_CMSIS_VERSION_SUB   ( 1U)
+#define __CM_CMSIS_VERSION       ((__CM_CMSIS_VERSION_MAIN << 16U) | __CM_CMSIS_VERSION_SUB)
+
+
 /* ignore some GCC warnings */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-conversion"

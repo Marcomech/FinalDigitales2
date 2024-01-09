@@ -1,22 +1,3 @@
-
-/*
- * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Licensed under the Apache License, Version 2.0 (the License); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an AS IS BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #if   defined ( __ICCARM__ )
   #pragma system_include         /* treat file as system include file for MISRA check */
 #elif defined (__clang__)
@@ -30,15 +11,6 @@
 
 
 
-
-
-
-
-
-
-#include "cmsis_version.h"
-
-/*  CMSIS CM3 definitions */
 #define __CM3_CMSIS_VERSION_MAIN  (__CM_CMSIS_VERSION_MAIN)              /*!< \deprecated [31:16] CMSIS HAL main version */
 #define __CM3_CMSIS_VERSION_SUB   (__CM_CMSIS_VERSION_SUB)               /*!< \deprecated [15:0]  CMSIS HAL sub version */
 #define __CM3_CMSIS_VERSION       ((__CM3_CMSIS_VERSION_MAIN << 16U) | \
@@ -124,12 +96,7 @@
 #endif
 
 /* IO definitions (access restrictions to peripheral registers) */
-
-#ifdef __cplusplus
-  #define   __I     volatile             /*!< Defines 'read only' permissions */
-#else
-  #define   __I     volatile const       /*!< Defines 'read only' permissions */
-#endif
+#define     __I     volatile const       /*!< Defines 'read only' permissions */
 #define     __O     volatile             /*!< Defines 'write only' permissions */
 #define     __IO    volatile             /*!< Defines 'read / write' permissions */
 

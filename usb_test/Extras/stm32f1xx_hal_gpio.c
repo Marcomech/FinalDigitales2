@@ -1,16 +1,6 @@
-
-
-/* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
-
-
-
-
 #ifdef HAL_GPIO_MODULE_ENABLED
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
 
 #define GPIO_MODE             0x00000003u
 #define EXTI_MODE             0x10000000u
@@ -22,7 +12,6 @@
 
 #define GPIO_NUMBER           16u
 
-/* Definitions for bit manipulation of CRL and CRH register */
 #define  GPIO_CR_MODE_INPUT         0x00000000u /*!< 00: Input mode (reset state)  */
 #define  GPIO_CR_CNF_ANALOG         0x00000000u /*!< 00: Analog mode  */
 #define  GPIO_CR_CNF_INPUT_FLOATING 0x00000004u /*!< 01: Floating input (reset state)  */
@@ -31,17 +20,6 @@
 #define  GPIO_CR_CNF_GP_OUTPUT_OD   0x00000004u /*!< 01: General purpose output Open-drain  */
 #define  GPIO_CR_CNF_AF_OUTPUT_PP   0x00000008u /*!< 10: Alternate function output Push-pull  */
 #define  GPIO_CR_CNF_AF_OUTPUT_OD   0x0000000Cu /*!< 11: Alternate function output Open-drain  */
-
-
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/
-
-
-
-
 
 
 void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
@@ -210,7 +188,6 @@ void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
   }
 }
 
-
 void HAL_GPIO_DeInit(GPIO_TypeDef  *GPIOx, uint32_t GPIO_Pin)
 {
   uint32_t position = 0x00u;
@@ -245,7 +222,7 @@ void HAL_GPIO_DeInit(GPIO_TypeDef  *GPIOx, uint32_t GPIO_Pin)
         /* Clear Rising Falling edge configuration */
         CLEAR_BIT(EXTI->FTSR, (uint32_t)iocurrent);
         CLEAR_BIT(EXTI->RTSR, (uint32_t)iocurrent);
-        
+
         tmp = 0x0FuL << (4u * (position & 0x03u));
         CLEAR_BIT(AFIO->EXTICR[position >> 2u], tmp);
       }
@@ -266,11 +243,6 @@ void HAL_GPIO_DeInit(GPIO_TypeDef  *GPIOx, uint32_t GPIO_Pin)
   }
 }
 
-
-
-
-
-
 GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
   GPIO_PinState bitstatus;
@@ -289,7 +261,6 @@ GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
   return bitstatus;
 }
 
-
 void HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState)
 {
   /* Check the parameters */
@@ -306,7 +277,6 @@ void HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState Pin
   }
 }
 
-
 void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
   uint32_t odr;
@@ -320,7 +290,6 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
   /* Set selected pins that were at low level, and reset ones that were high */
   GPIOx->BSRR = ((odr & GPIO_Pin) << GPIO_NUMBER) | (~odr & GPIO_Pin);
 }
-
 
 HAL_StatusTypeDef HAL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
@@ -352,7 +321,6 @@ HAL_StatusTypeDef HAL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
   }
 }
 
-
 void HAL_GPIO_EXTI_IRQHandler(uint16_t GPIO_Pin)
 {
   /* EXTI line interrupt detected */
@@ -363,7 +331,6 @@ void HAL_GPIO_EXTI_IRQHandler(uint16_t GPIO_Pin)
   }
 }
 
-
 __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -373,12 +340,4 @@ __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
    */
 }
 
-
-
-
-
 #endif /* HAL_GPIO_MODULE_ENABLED */
-
-
-
-

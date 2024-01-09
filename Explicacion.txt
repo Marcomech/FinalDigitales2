@@ -1,0 +1,16 @@
+Extras      -Datos para el uso del GPIO (Podemos no usarlo asi y usar los que vimos en clase, pero tal vez algo sirve)
+
+MiddleWares |(configuracion del usb)
+            |-ioreq (comandos del usb)
+            |-desc (descriptores)
+            |-...
+
+Drivers     |(Configuracion del resto de las cosas)
+            |-core (algunas definiciones de las funciones)
+            |-rcc (reloj)
+            |-...
+
+Core-Src    |(La idea es centrar todo aca)
+            |-Inc (mis include donde fui juntando cosas)
+            |-main (main del codigo)
+            |-...

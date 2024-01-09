@@ -5,7 +5,7 @@
 #define HAL_PCD_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
-#define HAL_GPIO_MODULE_ENABLED
+//#define HAL_GPIO_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
 
 #if !defined  (HSE_VALUE)
@@ -119,41 +119,35 @@
 
 #define USE_SPI_CRC                     0U
 
-
 #ifdef HAL_RCC_MODULE_ENABLED
 #include "stm32f1xx_hal_rcc.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
 
-#ifdef HAL_GPIO_MODULE_ENABLED
-#include "stm32f1xx_hal_gpio.h"
-#endif /* HAL_GPIO_MODULE_ENABLED */
+//#ifdef HAL_GPIO_MODULE_ENABLED
+//#include "stm32f1xx_hal_gpio.h"
+//#endif /* HAL_GPIO_MODULE_ENABLED */
 
 #ifdef HAL_CORTEX_MODULE_ENABLED
-#include "stm32f1xx_hal_cortex.h"
+
+#define NVIC_PRIORITYGROUP_0         0x00000007U
+#define NVIC_PRIORITYGROUP_1         0x00000006U
+#define NVIC_PRIORITYGROUP_2         0x00000005U
+#define NVIC_PRIORITYGROUP_3         0x00000004U
+#define NVIC_PRIORITYGROUP_4         0x00000003U
+
 #endif /* HAL_CORTEX_MODULE_ENABLED */
 
 #ifdef HAL_FLASH_MODULE_ENABLED
-#include "stm32f1xx_hal_flash.h"
+#define __HAL_FLASH_SET_LATENCY(__LATENCY__)    (FLASH->ACR = (FLASH->ACR&(~FLASH_ACR_LATENCY)) | (__LATENCY__))
+#define __HAL_FLASH_GET_LATENCY()     (READ_BIT((FLASH->ACR), FLASH_ACR_LATENCY))
+#define __HAL_FLASH_PREFETCH_BUFFER_ENABLE()    (FLASH->ACR |= FLASH_ACR_PRFTBE)
 #endif /* HAL_FLASH_MODULE_ENABLED */
 
 #ifdef HAL_PCD_MODULE_ENABLED
 #include "stm32f1xx_hal_pcd.h"
 #endif /* HAL_PCD_MODULE_ENABLED */
 
-
-/* Exported macro ------------------------------------------------------------*/
-#ifdef  USE_FULL_ASSERT
-
-
-#define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
-/* Exported functions ------------------------------------------------------- */
-void assert_failed(uint8_t* file, uint32_t line);
-#else
 #define assert_param(expr) ((void)0U)
-#endif /* USE_FULL_ASSERT */
-
-
-
 
 typedef enum{
   HAL_TICK_FREQ_10HZ         = 100U,
@@ -174,142 +168,7 @@ extern HAL_TickFreqTypeDef uwTickFreq;
 #define __HAL_DBGMCU_FREEZE_TIM3()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM3_STOP)
 #define __HAL_DBGMCU_UNFREEZE_TIM3()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM3_STOP)
 
-#if defined (DBGMCU_CR_DBG_TIM4_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM4()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM4_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM4()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM4_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM5_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM5()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM5_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM5()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM5_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM6_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM6()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM6_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM6()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM6_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM7_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM7()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM7_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM7()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM7_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM12_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM12()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM12_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM12()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM12_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM13_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM13()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM13_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM13()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM13_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM14_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM14()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM14_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM14()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM14_STOP)
-#endif
-
-
-#define __HAL_DBGMCU_FREEZE_WWDG()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_WWDG_STOP)
-#define __HAL_DBGMCU_UNFREEZE_WWDG()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_WWDG_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_IWDG()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_IWDG_STOP)
-#define __HAL_DBGMCU_UNFREEZE_IWDG()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_IWDG_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_I2C1_TIMEOUT()    SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C1_SMBUS_TIMEOUT)
-#define __HAL_DBGMCU_UNFREEZE_I2C1_TIMEOUT()  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C1_SMBUS_TIMEOUT)
-
-#if defined (DBGMCU_CR_DBG_I2C2_SMBUS_TIMEOUT)
-
-#define __HAL_DBGMCU_FREEZE_I2C2_TIMEOUT()    SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C2_SMBUS_TIMEOUT)
-#define __HAL_DBGMCU_UNFREEZE_I2C2_TIMEOUT()  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_I2C2_SMBUS_TIMEOUT)
-#endif
-
-#if defined (DBGMCU_CR_DBG_CAN1_STOP)
-
-#define __HAL_DBGMCU_FREEZE_CAN1()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN1_STOP)
-#define __HAL_DBGMCU_UNFREEZE_CAN1()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN1_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_CAN2_STOP)
-
-#define __HAL_DBGMCU_FREEZE_CAN2()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN2_STOP)
-#define __HAL_DBGMCU_UNFREEZE_CAN2()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_CAN2_STOP)
-#endif
-
-/* Peripherals on APB2 */
-#if defined (DBGMCU_CR_DBG_TIM1_STOP)
-
-#define __HAL_DBGMCU_FREEZE_TIM1()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM1_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM1()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM1_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM8_STOP)
-
-#define __HAL_DBGMCU_FREEZE_TIM8()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM8_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM8()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM8_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM9_STOP)
-
-#define __HAL_DBGMCU_FREEZE_TIM9()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM9_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM9()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM9_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM10_STOP)
-
-#define __HAL_DBGMCU_FREEZE_TIM10()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM10_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM10()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM10_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM11_STOP)
-
-#define __HAL_DBGMCU_FREEZE_TIM11()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM11_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM11()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM11_STOP)
-#endif
-
-
-#if defined (DBGMCU_CR_DBG_TIM15_STOP)
-
-#define __HAL_DBGMCU_FREEZE_TIM15()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM15_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM15()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM15_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM16_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM16()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM16_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM16()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM16_STOP)
-#endif
-
-#if defined (DBGMCU_CR_DBG_TIM17_STOP)
-
-
-#define __HAL_DBGMCU_FREEZE_TIM17()            SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM17_STOP)
-#define __HAL_DBGMCU_UNFREEZE_TIM17()          CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_TIM17_STOP)
-#endif
-
-
-#define IS_TICKFREQ(FREQ) (((FREQ) == HAL_TICK_FREQ_10HZ)  || \
-                           ((FREQ) == HAL_TICK_FREQ_100HZ) || \
-                           ((FREQ) == HAL_TICK_FREQ_1KHZ))
-
+#define IS_TICKFREQ(FREQ) (((FREQ) == HAL_TICK_FREQ_10HZ)  || ((FREQ) == HAL_TICK_FREQ_100HZ) || ((FREQ) == HAL_TICK_FREQ_1KHZ))
 
 HAL_StatusTypeDef HAL_Init(void);
 HAL_StatusTypeDef HAL_DeInit(void);
@@ -341,9 +200,6 @@ void HAL_DBGMCU_DisableDBGStandbyMode(void);
 
 #endif /* __STM32F1xx_HAL_H */
 
-
-
-
 #ifndef __STM32F1XX_H
 #define __STM32F1XX_H
 
@@ -351,13 +207,6 @@ void HAL_DBGMCU_DisableDBGStandbyMode(void);
 #define STM32F1
 #endif /* STM32F1 */
 
-
-#if !defined (STM32F100xB) && !defined (STM32F100xE) && !defined (STM32F101x6) && \
-    !defined (STM32F101xB) && !defined (STM32F101xE) && !defined (STM32F101xG) && !defined (STM32F102x6) && !defined (STM32F102xB) && !defined (STM32F103x6) && \
-    !defined (STM32F103xB) && !defined (STM32F103xE) && !defined (STM32F103xG) && !defined (STM32F105xC) && !defined (STM32F107xC)
-#endif
-
-  
 #if !defined  (USE_HAL_DRIVER)
 
 #endif /* USE_HAL_DRIVER */
@@ -365,7 +214,7 @@ void HAL_DBGMCU_DisableDBGStandbyMode(void);
 #define __STM32F1_CMSIS_VERSION_MAIN   (0x04) /*!< [31:24] main version */
 #define __STM32F1_CMSIS_VERSION_SUB1   (0x03) /*!< [23:16] sub1 version */
 #define __STM32F1_CMSIS_VERSION_SUB2   (0x04) /*!< [15:8]  sub2 version */
-#define __STM32F1_CMSIS_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
+#define __STM32F1_CMSIS_VERSION_RC     (0x00) /*!< [7:0]  release candidate */
 #define __STM32F1_CMSIS_VERSION        ((__STM32F1_CMSIS_VERSION_MAIN << 24)\
                                        |(__STM32F1_CMSIS_VERSION_SUB1 << 16)\
                                        |(__STM32F1_CMSIS_VERSION_SUB2 << 8 )\
@@ -378,12 +227,12 @@ void HAL_DBGMCU_DisableDBGStandbyMode(void);
 #endif
 
 typedef enum {
-  RESET = 0, 
+  RESET = 0,
   SET = !RESET
 } FlagStatus, ITStatus;
 
 typedef enum {
-  DISABLE = 0, 
+  DISABLE = 0,
   ENABLE = !DISABLE
 } FunctionalState;
 
@@ -396,75 +245,15 @@ typedef enum{
 
 
 #define SET_BIT(REG, BIT)     ((REG) |= (BIT))
-
 #define CLEAR_BIT(REG, BIT)   ((REG) &= ~(BIT))
-
 #define READ_BIT(REG, BIT)    ((REG) & (BIT))
-
 #define CLEAR_REG(REG)        ((REG) = (0x0))
-
 #define WRITE_REG(REG, VAL)   ((REG) = (VAL))
-
 #define READ_REG(REG)         ((REG))
 
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 
-#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL))) 
-
-/* Use of CMSIS compiler intrinsics for register exclusive access */
-/* Atomic 32-bit register access macro to set one or several bits */
-#define ATOMIC_SET_BIT(REG, BIT)                             \
-  do {                                                       \
-    uint32_t val;                                            \
-    do {                                                     \
-      val = __LDREXW((__IO uint32_t *)&(REG)) | (BIT);       \
-    } while ((__STREXW(val,(__IO uint32_t *)&(REG))) != 0U); \
-  } while(0)
-
-/* Atomic 32-bit register access macro to clear one or several bits */
-#define ATOMIC_CLEAR_BIT(REG, BIT)                           \
-  do {                                                       \
-    uint32_t val;                                            \
-    do {                                                     \
-      val = __LDREXW((__IO uint32_t *)&(REG)) & ~(BIT);      \
-    } while ((__STREXW(val,(__IO uint32_t *)&(REG))) != 0U); \
-  } while(0)
-
-/* Atomic 32-bit register access macro to clear and set one or several bits */
-#define ATOMIC_MODIFY_REG(REG, CLEARMSK, SETMASK)                          \
-  do {                                                                     \
-    uint32_t val;                                                          \
-    do {                                                                   \
-      val = (__LDREXW((__IO uint32_t *)&(REG)) & ~(CLEARMSK)) | (SETMASK); \
-    } while ((__STREXW(val,(__IO uint32_t *)&(REG))) != 0U);               \
-  } while(0)
-
-/* Atomic 16-bit register access macro to set one or several bits */
-#define ATOMIC_SETH_BIT(REG, BIT)                            \
-  do {                                                       \
-    uint16_t val;                                            \
-    do {                                                     \
-      val = __LDREXH((__IO uint16_t *)&(REG)) | (BIT);       \
-    } while ((__STREXH(val,(__IO uint16_t *)&(REG))) != 0U); \
-  } while(0)
-
-/* Atomic 16-bit register access macro to clear one or several bits */
-#define ATOMIC_CLEARH_BIT(REG, BIT)                          \
-  do {                                                       \
-    uint16_t val;                                            \
-    do {                                                     \
-      val = __LDREXH((__IO uint16_t *)&(REG)) & ~(BIT);      \
-    } while ((__STREXH(val,(__IO uint16_t *)&(REG))) != 0U); \
-  } while(0)
-
-/* Atomic 16-bit register access macro to clear and set one or several bits */
-#define ATOMIC_MODIFYH_REG(REG, CLEARMSK, SETMASK)                         \
-  do {                                                                     \
-    uint16_t val;                                                          \
-    do {                                                                   \
-      val = (__LDREXH((__IO uint16_t *)&(REG)) & ~(CLEARMSK)) | (SETMASK); \
-    } while ((__STREXH(val,(__IO uint16_t *)&(REG))) != 0U);               \
-  } while(0)
+#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL)))
 
 
 #endif /* __STM32F1xx_H */
