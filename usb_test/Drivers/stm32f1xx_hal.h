@@ -5,7 +5,6 @@
 #define HAL_PCD_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
-//#define HAL_GPIO_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
 
 #define HSE_VALUE    			8000000U 	/*!< Value of the External oscillator in Hz */
@@ -19,10 +18,6 @@
 #ifdef HAL_RCC_MODULE_ENABLED
 #include "stm32f1xx_hal_rcc.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
-
-//#ifdef HAL_GPIO_MODULE_ENABLED
-//#include "stm32f1xx_hal_gpio.h"
-//#endif /* HAL_GPIO_MODULE_ENABLED */
 
 #ifdef HAL_CORTEX_MODULE_ENABLED
 #define NVIC_PRIORITYGROUP_0         0x00000007U
@@ -51,11 +46,14 @@ typedef enum{
   HAL_TICK_FREQ_DEFAULT      = HAL_TICK_FREQ_1KHZ
 } HAL_TickFreqTypeDef;
 
+HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
+
 extern __IO uint32_t uwTick;
 extern uint32_t uwTickPrio;
 extern HAL_TickFreqTypeDef uwTickFreq;
 
-HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
-
+extern uint32_t SystemCoreClock;           /*!< System Clock Frequency (Core Clock) */
+extern const uint8_t  AHBPrescTable[16U];  /*!< AHB prescalers table values */
+extern const uint8_t  APBPrescTable[8U];   /*!< APB prescalers table values */
 
 #endif /* __STM32F1xx_HAL_H */

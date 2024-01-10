@@ -5,7 +5,6 @@
 #define HAL_PCD_MODULE_ENABLED
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
-//#define HAL_GPIO_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
 
 #if !defined  (HSE_VALUE)
@@ -122,10 +121,6 @@
 #ifdef HAL_RCC_MODULE_ENABLED
 #include "stm32f1xx_hal_rcc.h"
 #endif /* HAL_RCC_MODULE_ENABLED */
-
-//#ifdef HAL_GPIO_MODULE_ENABLED
-//#include "stm32f1xx_hal_gpio.h"
-//#endif /* HAL_GPIO_MODULE_ENABLED */
 
 #ifdef HAL_CORTEX_MODULE_ENABLED
 

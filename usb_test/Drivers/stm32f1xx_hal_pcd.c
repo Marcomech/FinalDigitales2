@@ -69,14 +69,9 @@ HAL_StatusTypeDef HAL_PCD_Init(PCD_HandleTypeDef *hpcd){
   return HAL_OK;
 }
 
-HAL_StatusTypeDef HAL_PCD_Start(PCD_HandleTypeDef *hpcd)
-{
+HAL_StatusTypeDef HAL_PCD_Start(PCD_HandleTypeDef *hpcd){
   __HAL_LOCK(hpcd);
   __HAL_PCD_ENABLE(hpcd);
-
-#if defined (USB)
-  HAL_PCDEx_SetConnectionState(hpcd, 1U);
-#endif /* defined (USB) */
 
   (void)USB_DevConnect(hpcd->Instance);
   __HAL_UNLOCK(hpcd);

@@ -1,15 +1,8 @@
 #include "stm32f1xx_hal.h"
 
 HAL_StatusTypeDef USB_CoreInit(USB_TypeDef *USBx, USB_CfgTypeDef cfg){
-  /* Prevent unused argument(s) compilation warning */
   UNUSED(USBx);
   UNUSED(cfg);
-
-  /* NOTE : - This function is not required by USB Device FS peripheral, it is used
-              only by USB OTG FS peripheral.
-            - This function is added to ensure compatibility across platforms.
-   */
-
   return HAL_OK;
 }
 
@@ -556,12 +549,6 @@ HAL_StatusTypeDef USB_EP0_OutStart(USB_TypeDef *USBx, uint8_t *psetup)
               only by USB OTG FS peripheral.
             - This function is added to ensure compatibility across platforms.
    */
-  return HAL_OK;
-}
-
-HAL_StatusTypeDef USB_ActivateRemoteWakeup(USB_TypeDef *USBx){
-  USBx->CNTR |= (uint16_t)USB_CNTR_RESUME;
-
   return HAL_OK;
 }
 

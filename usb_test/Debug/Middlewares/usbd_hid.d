@@ -7,7 +7,6 @@ Middlewares/usbd_hid.o: ../Middlewares/usbd_hid.c \
  ../Middlewares/../Core/Src/../../Drivers/core_cm3.h \
  ../Middlewares/../Core/Src/../../Drivers/cmsis_compiler.h \
  ../Middlewares/../Core/Src/../../Drivers/cmsis_gcc.h \
- ../Middlewares/../Core/Src/../../Drivers/system_stm32f1xx.h \
  ../Middlewares/../Core/Src/../../Drivers/../Core/Src/Inc_Clock_Config.h \
  ../Middlewares/../Core/Src/../../Drivers/stm32f1xx_hal_pcd.h \
  ../Middlewares/../Core/Src/../../Drivers/stm32f1xx_ll_usb.h
@@ -29,8 +28,6 @@ Middlewares/usbd_hid.o: ../Middlewares/usbd_hid.c \
 ../Middlewares/../Core/Src/../../Drivers/cmsis_compiler.h:
 
 ../Middlewares/../Core/Src/../../Drivers/cmsis_gcc.h:
-
-../Middlewares/../Core/Src/../../Drivers/system_stm32f1xx.h:
 
 ../Middlewares/../Core/Src/../../Drivers/../Core/Src/Inc_Clock_Config.h:
 
