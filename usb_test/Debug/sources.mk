@@ -23,5 +23,4 @@ SUBDIRS := \
 Core/Src \
 Core/Startup \
 Drivers \
-Middlewares \
 

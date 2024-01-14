@@ -1,5 +1,8 @@
 #include "../../Drivers/stm32f1xx.h"
 
+#ifndef __USB_DEVICE__H__
+#define __USB_DEVICE__H__
+
 typedef  struct  usb_setup_req{
   uint8_t   bmRequest;
   uint8_t   bRequest;
@@ -87,3 +90,4 @@ typedef struct _USBD_HandleTypeDef{
   void                    *pData;
 } USBD_HandleTypeDef;
 
+#endif

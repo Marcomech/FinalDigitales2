@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include "cmsis_gcc.h"
+
 #if   defined ( __ICCARM__ )
   #pragma system_include         /* treat file as system include file for MISRA check */
 #elif defined (__clang__)
@@ -8,8 +11,6 @@
 #define __CORE_CM3_H_GENERIC
 
 #include <stdint.h>
-
-
 
 #define __CM3_CMSIS_VERSION_MAIN  (__CM_CMSIS_VERSION_MAIN)              /*!< \deprecated [31:16] CMSIS HAL main version */
 #define __CM3_CMSIS_VERSION_SUB   (__CM_CMSIS_VERSION_SUB)               /*!< \deprecated [15:0]  CMSIS HAL sub version */
@@ -58,10 +59,6 @@
 
 #endif
 
-#include "cmsis_compiler.h"               /* CMSIS compiler specific defines */
-
-
-
 
 #endif /* __CORE_CM3_H_GENERIC */
 
@@ -106,12 +103,6 @@
 #define     __IOM    volatile            /*! Defines 'read / write' structure member permissions */
 
 /*@} end of group Cortex_M3 */
-
-
-
-
-
-
 
 
 
