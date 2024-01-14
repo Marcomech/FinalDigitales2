@@ -1,22 +1,3 @@
-
-/*
- * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Licensed under the Apache License, Version 2.0 (the License); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an AS IS BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #ifndef __CMSIS_GCC_H
 #define __CMSIS_GCC_H
 
@@ -46,9 +27,9 @@
 #ifndef   __STATIC_INLINE
   #define __STATIC_INLINE                        static inline
 #endif
-#ifndef   __STATIC_FORCEINLINE                 
+#ifndef   __STATIC_FORCEINLINE
   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
-#endif                                           
+#endif
 #ifndef   __NO_RETURN
   #define __NO_RETURN                            __attribute__((__noreturn__))
 #endif
@@ -563,7 +544,7 @@ __STATIC_FORCEINLINE uint32_t __get_FPSCR(void)
 {
 #if ((defined (__FPU_PRESENT) && (__FPU_PRESENT == 1U)) && \
      (defined (__FPU_USED   ) && (__FPU_USED    == 1U))     )
-#if __has_builtin(__builtin_arm_get_fpscr) 
+#if __has_builtin(__builtin_arm_get_fpscr)
 // Re-enable using built-in when GCC has been fixed
 // || (__GNUC__ > 7) || (__GNUC__ == 7 && __GNUC_MINOR__ >= 2)
   /* see https://gcc.gnu.org/ml/gcc-patches/2017-04/msg00443.html */

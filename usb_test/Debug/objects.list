@@ -2,7 +2,4 @@
 "Core/Src/sysmem.o"
 "Core/Startup/startup_stm32f103c8tx.o"
 "Drivers/stm32f1xx_hal.o"
-"Drivers/stm32f1xx_hal_pcd.o"
-"Drivers/stm32f1xx_hal_rcc.o"
-"Drivers/stm32f1xx_ll_usb.o"
 "Drivers/usbd_core.o"
