@@ -14,3 +14,77 @@ Core-Src    |(La idea es centrar todo aca)
             |-Inc (mis include donde fui juntando cosas)
             |-main (main del codigo)
             |-...
+
+
+
+Reference Guide (cosas importantes) --> USB (cap. 23)
+
+USB --> usa el APB1.
+    explicacion USB Blocks --> p.624
+    explicacion  APB1--> p.625
+
+Programando el puerto USB (p.626)
+
+    1. Prendiendo e incializando el USB.
+
+    1.1 PASOS para prenderlo
+    1.1.1 Activar 'register macrocell clock' y deshabilitar 'macrocell specific reset signal' usando los bits de control provistos 
+    por el 'device clock management logic' (esto ultimo deberia ser lo que configuramos para el DMA)
+    
+    1.1.2 Prender la parte analogica del dispositivo relacionada al USB utilizando el PDWN bit en el CNTR register (requiere 
+    'special handling')
+        --> este bit se usa para prender las referencias de voltage interno que alimentan el 'port transceiver'. Este circuito 
+        tiene un tiempo de startup definido en el datasheet. Durante este tiempo el comportamiento del dispositivo no esta defi-
+        nido.
+    1.1.3. Esperar el t_startup (similar a lo que hacia miguel para asegurarse que el clock se configure)
+    1.1.4. Remover la condicion de reset del USB (limpiando el FRES bit en el CNTR register).
+    1.1.5. Limpiar el ISTR register para remover cualquier interrupcion que haya quedado pendiente. 
+
+    1.2. Inicializión (para poder generar interrupciones y data-transfers)
+    1.2.1. Setear los registros requeridos (depende de la apliacion)
+    1.2.2. Setear el 'buffer description table'
+
+    obs. Todos los registros que no son especificos para ningun end-point se inicializan de acuerdo a la necesidad de la aplicacion
+
+    2. USB reset (RESET interrupt)
+        Cuando este evento ocurre el USB periferico (en nuestro caso la BluePill) vuelve al estado en el que se encontraba al final
+        de la inicialización descripta hasta el punto 3. En este momento la comunicación se deshabilita en todos los endpoint registers.
+    2.1. Setear el bit de la Enable Function (EF) del USB_DADDR e inicializar el EP0R register y su packet buffers relacionados.
+    2.2. El host le asignara una 'unique address' a nuestro dispositivo que tiene que ser escrita en el ADD[6:0] del USB_DADDR
+    y configura cualquier otro end-point necesario.
+    
+    obs. Cuando se recibe un RESET, el software de aplicacion, osea la BluePill, es responsable de rehabilitar el default endpoint
+    de la USB function a 0. Esto debe ocurrir dentro de los 10ms siguientes al final de la secuencia de reseteo que triggereo la
+    interrupcion. Es decir, tenemosque programar que pasa en caso de una secuencia de reseteo para que el puerto USB vuelva a ser
+    habilitado y la comuniacion continue. 
+    
+    3. Estructura del sistema 
+
+    3.1. Reloj. 
+    La logica del periferico USB usa un clock dedicado. La frecuencia del mismo esta fijada por los estandares de USB en 48MHz. 
+    Este reloj puede ser distinto del usado para la interface del bus APB1. Disitntas configuraciones de clock pueden ser utilizadas.
+    obs. La frecuencai del clock del APB1 debe ser, si o si, mayor a 8Mhz.
+
+
+    3.2. Buffers.
+        Hay dos buffers por cada endpoint. Uno guarda la data recibida mientras que el otro guarda data a transmitir. El acceso
+        a esta memoria se realiza a travez del 'packet buffer interface block' que envia un pedido de acceso a la memoria y espera
+        el 'ok'. El microcontrolador resuelve posibles conflictos usando medio ciclo del APB1 para darle acceso al micro y el otro
+        medio ciclo para el acceso del periferico USB.
+    
+    3.2.1. Ubicacion y caracteristicas
+        Los buffers pueden ser ubicados en cualquier lugar del paquete de memoria ya que su tamaño y ubicacion estan detallados
+        en el buffer description table, que tambien esta ubicada en el paquete de memoria indicado en el registro USB_BTABLE.
+        Cada entrada de la tabla esta asociada con un endpoint register y esta compuesta por 4 palabras de 16-bits de manera que 
+        la 'table start address' debe estar alineada con un 8-byte boundary (los tres bits mas bajos de la USB_BTABLE son siempre
+        '000')
+
+    obs1. Si el endpoint es unidireccional y no es ni asincronico ni double-buffered solo se necesita un packet-buffer.
+    obs2. Cada buffer se usa para transmision o recepcion, empezando desde abajo. Si la informacion recibida o a enviar es mas 
+    grande que el tamaño alocado al buffer la misma sera copiada solamente hasta el ultimo caracter que entre.
+
+
+    4. Endpoint initialization.
+
+
+    

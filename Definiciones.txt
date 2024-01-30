@@ -44,6 +44,11 @@ para implementar una aserción condicional. Si la expresión proporcionada (expr
 se proporciona información sobre el archivo y la línea donde falló la aserción. Si la expresión es verdadera, no se realiza ninguna acción.
 La expresión (void)0U sirve como un "no-op" (operación nula) cuando la aserción es verdadera.
 
+Buffer --> temporary storage usado cuando un componente le envia data a otro, pero sus velocidades no son las mismas.
+
+Endpoint --> remote computing device que se comuunica con la red a la que esta conectada. En nuestro caso es la blue-pill que,
+por lo que tengo entendido, cuenta con mas de un endpoint que puede ser utilizado simultaneamente (aun que nosotros solo vamos a
+usar 1).
 
 
 

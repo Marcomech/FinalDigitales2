@@ -70,7 +70,7 @@ const interrupt_t vector_table[256] __attribute__ ((section(".vtab"))) = {
 enum IRQs {
 	IRQ_DMA1CHN2	= 12,
 	IRQ_ADC1_2		= 18,
-	IRQ_TIM2			= 28,
+	IRQ_TIM2		= 28,
 	IRQ_USART1		= 37,
 };
 
@@ -184,4 +184,11 @@ struct SysTick{
 };
 
 struct SysTick volatile *const SYST = (struct SysTick *)(0xE000E010);
+
+struct USB_Regsisters{
+
+
+};
+
+struct USB_Registers volatile *const USB_reg = (struct USB_Registers *)(0x40005C00);
 
