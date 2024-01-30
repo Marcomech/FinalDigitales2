@@ -50,6 +50,11 @@ Endpoint --> remote computing device que se comuunica con la red a la que esta c
 por lo que tengo entendido, cuenta con mas de un endpoint que puede ser utilizado simultaneamente (aun que nosotros solo vamos a
 usar 1).
 
+PID (Proportional Integral Derivative) --> Un numero asignado temporal de identificacion por el sistema operativo a un proceso o 
+servicio
+
+CRC (Cyclic Rendundancy Check) --> un codigo para detectar errores usado para determinar si un bloque de data fue corrompidos
+
 
 
         
