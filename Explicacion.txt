@@ -202,6 +202,87 @@ Programando el puerto USB (p.626)
     de SETUP addreseada al mismo endpoint inmediatamente luego de una transaccion que triggereo un CTR_RX.
 
 
+    7. Suspend / Resume events
+
+    7.1. Suspend: es un estado especial del periferico en el que la corriente que el mimso consume no puede ser mayor a 2.5 mA.
+    Este requerimiento es de especial importancia para dispositivos que se alimentan con el mismo USB (lo cual seria nuestro caso)
+    En este modo, el host manda una notificacion de no mandar nada en el USB bus por mas de 3 mS ya que un SOF (Start of Frame)
+    packet debe ser mandado cada mili-segundo durante operaciones normales. El perferico detecta la falta de 3 SOF packets
+    consecutivos como un pedido de SUSPEND de parte del host y levanta el bit SUSP del USB_ISTR, causando una interrupcion (si la 
+    misma esta habilitada).
+
+    7.1.1. Como activar una SUSPEND sequence desde el periferico (puede variar segun el dispositivo) PASOS
+    7.1.1.a. Setear el FSUSP bit del USB_CNTR en '1'. (cuando esto ocurre se el periferico deja de checkear si recibe SOF packets)
+    7.1.1.b. Remover o reducir cualquier consumo de poder en bloques diferentes al del USB 
+    7.1.1.c. Setear el bit LP_MODE del USB_CNTR en '1' para reducir consumo estatico en los transceiver del USB, sin perder la capa-
+    cidad de detectar una secuencia RESUME
+    7.1.1.d. Opcionalmente, se puede apagar el oscilador externo y el PLL para frenar cualquier tipo de actividad dentro del 
+    dispositivo. 
+
+
+    7.2. Resume: una vez que el periferico esta suspendido es necesario realizar una secuencia RESUME para continuar con las ope-
+    raciones. Esta secuencia puede comenzar tanto desde el lado del periferico como del host, pero siempre es finalizada por el 
+    host. El periferico suspendido debe tambien ser capaz de responder ante una secuencia RESET, reaccionando a la misma como lo 
+    haria normalmente. 
+
+    7.2.1. Como empezar una secuencia RESUME (PASOS) obs. hay que asegurarse que la secuencia no tarde mas de 10 mS.
+
+    7.2.1.a. Limpiar el bit LP_MODE del USB_CNTR. 
+
+    obs. Si esta activada la interrupcion WKUP hay que tener consideraciones extras en el paso anterior (p. 636)
+
+    7.2.1.b. Si fueron apagados, es necesario prender el oscilador externo y/o el PLL
+    7.2.1.c. Limpiar FSUSP del USB_CNTR
+    7.2.1.d. Si es necesario identificar el evento que triggereo el RESUME se pueden usar los bits RXDP y RXDM del USB_FNR de 
+    acuerdo con la Tabla 172 (p. 636). De ser necesario se pueden verificar estos mismos bits para detectar el fin de esta secuen-
+    cia. 
+
+    obs. al final de una secuencia RESET el bit RESET del USB_ISTR se setea en '1', usando una interrupcion si es que esta activada.
+
+    7.2.1.e. Una secuencia RESUME puede comenzar como respuesta a un evento particular no directamente relacionado con el protocolo
+    USB (i.e. un mov del mouse despierta a todo el sistema). En estos casos, la secuencia RESUME puede ser inicializada seteando 
+    el bit RESUME del USB_CNTR en '1' y luego colocandolo en '0' despues de un intervalo de entre 1 y 15 mS (esto puede ser 
+    timeado usando las interrupciones ESOF, que ocurren cada 1 mS). Una vez que el bit RESUME se limpia, la secuencia es completada
+    por el host y puede ser monitoreada con los bits RXDM y RXDP.
+
+    obs. El RESUME bit SOLO puede ser usado luego de que el periferico fue puesto en modo SUSPEND seteando el FSUSP en 1
+
+    8. USB Registers.
+
+        Los perifericos USB se pueden dividir en 3 categorias:
+
+                Common Registers        --> Interrupt and Control Registers.
+                Endpoint Registers      --> Endpoint configuration and status.
+                Buffer Descriptor Table --> Ubicacion del packet memory usado para encontrar los data buffers.
+
+        Todos los registros estan expresados como offset de la base address '0x4000 5C00', excepto el Buffer Descriptor Table que
+        empieza en la direccion mencionada por el USB_BTABLE register ('0x4000 6000' checkear p. 648). Debido a la limitacion del
+        APB1 todos los registros estan alineados con palabras de 32-bits, aunque tengan un ancho de 16-bits. Los registros 
+        perifericos pueden ser accedidos a travez de medias-palabras (16 bits) o palabras enteras (32-bits).
+
+    9. Buffer Descriptor Table
+   
+    9.1. Memory Addressess (con ChatGPT)
+
+        Hay dos tipos de memoria que se usan en una comunicacion un los STM32F10xxx.
+            > Packet Memory Address (a ser usada por el software de aplicacion) y donde la data de los paquetes USB esta guardada.
+            La direccion de esta memoria es la que se usa para leer y escribir en los USB endpoints
+
+            > Local Memory Address (relativa al USB Peripheral Access) es la memoria dentro del periferico USB del microcontrolador
+            usada para acceder al paquete de memoria mencionado antes. Es una memoria interna usada por el hardware USB para leer 
+            y escribir data en los USB endpoints.
+
+        Para obtener la direccion de memoria a usar en el software es necesario multiplicar la Local Memory Acces x2. Esto se debe 
+        a que el periferico USB trata la Packet Memory como un 16-bit data bue, osea que lee y escribe de a 2 bytes (16-bits). 
+        Cuando uno accede al packet memory con el software, vamos a estar trabajando con bytes individuales (8-bits). Entonces, 
+        multiplicando la address x2 convertimos la address de 16-bits del periferico en la address de 8-bits que espera el software.
+
+        Entonces, al acceder desde el software siempre tenemos uqe multiplicar la direccion de memoria x2.
+
+        Por ejemplo --> si la addres es '0x4000 6000' y el offset es 0x10, solo multiplico el offset x2, resultando en la direccion
+        '0x4000 6020' 
+
+
 
 
 

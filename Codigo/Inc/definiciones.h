@@ -185,10 +185,17 @@ struct SysTick{
 
 struct SysTick volatile *const SYST = (struct SysTick *)(0xE000E010);
 
-struct USB_Regsisters{
-
-
+struct USB{
+		int EPxR[8];
+		int RESERVED[16]; //reserves from 0x20 to 0x3F
+		int CNTR;
+		int ISTR;
+		int FNR;
+		int DADDR;
+		int BTABLE
 };
+struct USB volatile *const USB = (struct USB_Registers *)(0x40005C00);
 
-struct USB_Registers volatile *const USB_reg = (struct USB_Registers *)(0x40005C00);
+//FALTA HACER UNA LOGICA ESTILO INTERRUPCIONES DE MIGUEL PARA AGREGAR LA BUFFER DESCRIPTOR TABLE 
+//Como seria la logica esta explicado en 'Explicaciones' igual mañana trato de hacerlo.
 
