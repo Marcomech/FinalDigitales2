@@ -61,8 +61,8 @@ all: main-build
 main-build: usb_test.elf secondary-outputs
 
 # Tool invocations
-usb_test.elf: $(OBJS) $(USER_OBJS) C:\Users\PC\Documentos\Unsam\2023\ 2do\ Cuartimestre\Digital\ 2\Final\usb_test\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "usb_test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\PC\Documentos\Unsam\2023 2do Cuartimestre\Digital 2\Final\usb_test\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="usb_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+usb_test.elf: $(OBJS) $(USER_OBJS) C:\Users\Usuario\Desktop\Proyectos\Final\usb_test\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "usb_test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Usuario\Desktop\Proyectos\Final\usb_test\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="usb_test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

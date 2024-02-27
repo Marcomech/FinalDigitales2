@@ -1,41 +1,18 @@
-Extras      -Datos para el uso del GPIO (Podemos no usarlo asi y usar los que vimos en clase, pero tal vez algo sirve)
-
-MiddleWares |(configuracion del usb)
-            |-ioreq (comandos del usb)
-            |-desc (descriptores)
-            |-...
-
-Drivers     |(Configuracion del resto de las cosas)
-            |-core (algunas definiciones de las funciones)
-            |-rcc (reloj)
-            |-...
-
-Core-Src    |(La idea es centrar todo aca)
-            |-Inc (mis include donde fui juntando cosas)
-            |-main (main del codigo)
-            |-...
-
-
-
-Reference Guide (cosas importantes) --> USB (cap. 23)
+Reference Guide (cap. 23) --> USB 
 
 USB --> usa el APB1.
-    explicacion USB Blocks --> p.624
-    explicacion  APB1--> p.625
 
 Programando el puerto USB (p.626)
 
-    1. Prendiendo e incializando el USB.
-
     1.1 PASOS para prenderlo
-    1.1.1 Activar 'register macrocell clock' y deshabilitar 'macrocell specific reset signal' usando los bits de control provistos 
-    por el 'device clock management logic' (esto ultimo deberia ser lo que configuramos para el DMA)
+    1.1.1   Activar 'register macrocell clock' 
+            deshabilitar 'macrocell specific reset signal' 
+            usando los bits de control provistos por el 'device clock management logic' 
     
-    1.1.2 Prender la parte analogica del dispositivo relacionada al USB utilizando el PDWN bit en el CNTR register (requiere 
-    'special handling')
-        --> este bit se usa para prender las referencias de voltage interno que alimentan el 'port transceiver'. Este circuito 
-        tiene un tiempo de startup definido en el datasheet. Durante este tiempo el comportamiento del dispositivo no esta defi-
-        nido.
+    1.1.2 Prender la parte analogica del dispositivo relacionada al USB 
+    utilizando el PDWN bit en el CNTR register (requiere 'special handling')
+        --> este bit se usa para prender las referencias de voltage interno que alimentan el 'port transceiver'. 
+        Este circuito tiene un tiempo de startup definido en el datasheet. 
     1.1.3. Esperar el t_startup (similar a lo que hacia miguel para asegurarse que el clock se configure)
     1.1.4. Remover la condicion de reset del USB (limpiando el FRES bit en el CNTR register).
     1.1.5. Limpiar el ISTR register para remover cualquier interrupcion que haya quedado pendiente. 
@@ -281,12 +258,3 @@ Programando el puerto USB (p.626)
 
         Por ejemplo --> si la addres es '0x4000 6000' y el offset es 0x10, solo multiplico el offset x2, resultando en la direccion
         '0x4000 6020' 
-
-
-
-
-
-
-
-
-    

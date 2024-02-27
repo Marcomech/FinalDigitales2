@@ -20,8 +20,8 @@ void handler_tim2(void);
 
 typedef void(*interrupt_t)(void);
 const interrupt_t vector_table[256] __attribute__ ((section(".vtab"))) = {
-	STACKINIT,									// 0x0000_0000 Stack Pointer
-	(interrupt_t) main,					// 0x0000_0004 Reset									
+	STACKINIT,											// 0x0000_0000 Stack Pointer
+	(interrupt_t) main,									// 0x0000_0004 Reset									
 	0,													// 0x0000_0008
 	0,													// 0x0000_000C
 	0,													// 0x0000_0010
@@ -48,7 +48,7 @@ const interrupt_t vector_table[256] __attribute__ ((section(".vtab"))) = {
 	0,													// 0x0000_0064
 	0,													// 0x0000_0068
 	0,													// 0x0000_006C
-	handler_dma1chn2,						// 0x0000_0070 DMA1_CHN2
+	handler_dma1chn2,									// 0x0000_0070 DMA1_CHN2
 	0,													// 0x0000_0074
 	0,													// 0x0000_0078
 	0,													// 0x0000_007C
@@ -64,7 +64,7 @@ const interrupt_t vector_table[256] __attribute__ ((section(".vtab"))) = {
 	0,													// 0x0000_00A4
 	0,													// 0x0000_00A8
 	0,													// 0x0000_00AC
-	handler_tim2,								// 0x0000_00B0 TIM2
+	handler_tim2,										// 0x0000_00B0 TIM2
 };
 
 enum IRQs {
@@ -197,5 +197,4 @@ struct USB{
 struct USB volatile *const USB = (struct USB_Registers *)(0x40005C00);
 
 //FALTA HACER UNA LOGICA ESTILO INTERRUPCIONES DE MIGUEL PARA AGREGAR LA BUFFER DESCRIPTOR TABLE 
-//Como seria la logica esta explicado en 'Explicaciones' igual mañana trato de hacerlo.
 

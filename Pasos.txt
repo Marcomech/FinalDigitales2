@@ -1,0 +1,103 @@
+Referencia: https://github.com/CShark/stm32usb.wiki.git
+
+
+01. Project and Clocktree
+    The first thing to configure is the clock tree AHB-Bus to 72MHz. 
+    The 48MHz USB-Clock will be driven by the PLL-Clock
+
+    Example:
+        static void InitClock() {
+        RCC->CR |= RCC_CR_HSEON;
+
+        // Configure PLL (R=143.75, Q=47.92)
+        RCC->CR &= ~RCC_CR_PLLON;
+        while (RCC->CR & RCC_CR_PLLRDY) {
+        }
+        RCC->PLLCFGR |= RCC_PLLCFGR_PLLSRC_HSE | RCC_PLLCFGR_PLLM_0 | (23 << RCC_PLLCFGR_PLLN_Pos) | RCC_PLLCFGR_PLLQ_1;
+        RCC->PLLCFGR |= RCC_PLLCFGR_PLLREN | RCC_PLLCFGR_PLLQEN;
+        RCC->CR |= RCC_CR_PLLON;
+
+        // Select PLL as main clock, AHB/2
+        RCC->CFGR |= RCC_CFGR_HPRE_3 | RCC_CFGR_SW_PLL;
+
+        // Select USB Clock as PLLQ
+        RCC->CCIPR = RCC_CCIPR_CLK48SEL_1;
+
+        // Enable IO Clock for USB & Port
+        RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+        RCC->APB1ENR1 |= RCC_APB1ENR1_USBEN;
+        }
+
+
+02. USB Macrocell
+    Initializing the periphery is well laid-out in the reference manual. 
+    -enable the NVIC-Interrupts, 
+    -enable the USB-subcircuit, 
+    -set the interruptmask,
+    -optionally the internal pull-up on D+ before clearing the reset state.
+    -Clearing the reset state will signal the USB-Host to start the enumeration process.
+
+    Example 
+        void USB_Init() {
+            // Initialize the NVIC
+            NVIC_SetPriority(USB_LP_IRQn, 8);
+            NVIC_EnableIRQ(USB_LP_IRQn);
+
+            // Enable USB macrocell
+            USB->CNTR &= ~USB_CNTR_PDWN;
+
+            // Wait 1μs until clock is stable
+            SysTick->LOAD = 100;
+            SysTick->VAL = 0;
+            SysTick->CTRL = 1;
+            while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0) {
+            }
+            SysTick->CTRL = 0;
+
+            // Enable all interrupts & the internal pullup to put 1.5K on D+ for FullSpeed USB
+            USB->CNTR |= USB_CNTR_RESETM | USB_CNTR_CTRM; //=== Commit contains more interrupts that are not necessary
+            USB->BCDR |= USB_BCDR_DPPU;
+
+            // Clear the USB Reset (D+ & D- low) to start enumeration
+            USB->CNTR &= ~USB_CNTR_FRES;
+        }
+
+    We activate the NVIC-Interrupts necessary for the USB-Peripheral and then enable 
+    the peripheral. The USB-Peripheral needs to be activated in three steps:
+
+    1. First the macrocell needs to be enabled. We need to wait 1μs until 
+    the clock is stable before we can clear the reset state. 
+    The SysTick delay waits for 100 clock cycles of the AHB clock (72MHz), 
+    which is a bit over 1μs.
+    2. We Enable all the interrupts for the USB peripheral and enable the internal 
+    pull-up on the D+ line. If the chip does not have an internal pull-up, 
+    an external one with 1.5K on D+ is required for FullSpeed USB.
+    3. Lastly, we clear the reset state of the peripheral so it can start to work.
+
+
+    NVIC-Handlers
+        We define the NVIC-Handler we enabled during initialization as well.
+        Example 
+            void USB_LP_IRQHandler() {        }
+        There are two more Handlers available (USB_HP_IRQHandler & USBWakeUp_IRQHandler),
+        but we don't need them. 
+
+    Verification & Debugging
+        Now the device should jump into the LP-Handler as soon as you plug it in, 
+        meaning that the peripheral had a successful reset.
+        To verify the source of the Interrupt, inspect the USB_ISTR-register. 
+        It should denote a reset-event. 
+        Windows should show a message that it failed to enumerate the USB-device. 
+        The device manager should contain an Unknown USB Device 
+        (Device Descriptor Request Failed).
+
+
+////Para mi vale la pena hacer un primer checkpoint aca. 
+
+03. USB Reset
+04. Control Packets
+05. USB Address
+06. Enumeration
+07. More Control Packets
+08. String Table and Last Steps
+

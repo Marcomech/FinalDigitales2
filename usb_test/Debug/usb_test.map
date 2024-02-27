@@ -131,7 +131,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x6a Core/Src/sysmem.o
  .debug_macro   0x0000000000000000      0x1df Core/Src/sysmem.o
  .debug_line    0x0000000000000000      0x4f6 Core/Src/sysmem.o
- .debug_str     0x0000000000000000     0x6274 Core/Src/sysmem.o
+ .debug_str     0x0000000000000000     0x625a Core/Src/sysmem.o
  .comment       0x0000000000000000       0x54 Core/Src/sysmem.o
  .debug_frame   0x0000000000000000       0x34 Core/Src/sysmem.o
  .ARM.attributes
@@ -1030,15 +1030,15 @@ LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_line    0x00000000000007a2     0x15c6 Drivers/stm32f1xx_hal.o
  .debug_line    0x0000000000001d68     0x1d9e Drivers/usbd_core.o
 
-.debug_str      0x0000000000000000    0x5ddc5
- .debug_str     0x0000000000000000    0x5ccd4 Core/Src/main.o
-                                      0x5d0be (size before relaxing)
- .debug_str     0x000000000005ccd4       0x36 Core/Startup/startup_stm32f103c8tx.o
-                                         0x88 (size before relaxing)
- .debug_str     0x000000000005cd0a      0x8aa Drivers/stm32f1xx_hal.o
-                                      0x58e4a (size before relaxing)
- .debug_str     0x000000000005d5b4      0x811 Drivers/usbd_core.o
-                                      0x5a971 (size before relaxing)
+.debug_str      0x0000000000000000    0x5ddab
+ .debug_str     0x0000000000000000    0x5ccba Core/Src/main.o
+                                      0x5d0a4 (size before relaxing)
+ .debug_str     0x000000000005ccba       0x36 Core/Startup/startup_stm32f103c8tx.o
+                                         0x6e (size before relaxing)
+ .debug_str     0x000000000005ccf0      0x8aa Drivers/stm32f1xx_hal.o
+                                      0x58e30 (size before relaxing)
+ .debug_str     0x000000000005d59a      0x811 Drivers/usbd_core.o
+                                      0x5a957 (size before relaxing)
 
 .comment        0x0000000000000000       0x53
  .comment       0x0000000000000000       0x53 Core/Src/main.o
