@@ -1,4 +1,4 @@
-Referencia: https://github.com/CShark/stm32usb.wiki.git
+Referencia: https://github.com/CShark/stm32usb/wiki
 
 
 01. Project and Clocktree

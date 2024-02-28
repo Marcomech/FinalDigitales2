@@ -1,5 +1,4 @@
 "Core/Src/main.o"
-"Core/Src/sysmem.o"
 "Core/Startup/startup_stm32f103c8tx.o"
 "Drivers/stm32f1xx_hal.o"
 "Drivers/usbd_core.o"

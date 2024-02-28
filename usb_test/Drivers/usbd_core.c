@@ -1,9 +1,6 @@
 #include "../Core/Src/Inc_USB_Device2.h"
 #include "../Core/Src/Inc_USB_Device.h"
 
-#include "stm32f1xx.h"
-#include "stm32f1xx_hal.h"
-
 HAL_StatusTypeDef USB_CoreInit(USB_TypeDef *USBx, USB_CfgTypeDef cfg){
   UNUSED(USBx);
   UNUSED(cfg);

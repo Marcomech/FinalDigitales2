@@ -1,66 +1,57 @@
-#include "./Inc/definiciones.h"
-#include "../../Middlewares/usbd_hid.h"
+uint32_t SystemCoreClock = 16000000;
+const uint8_t AHBPrescTable[16U] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+const uint8_t APBPrescTable[8U]  = {0, 0, 0, 0, 1, 2, 3, 4};
 
-void MX_USB_DEVICE_Init(void);
+void SystemInit (void){}
 void SystemClock_Config(void);
-static void GPIO_Init(void);
+void USB_DEVICE_Init(void);
+void Error_Handler();
 
-extern USBD_HandleTypeDef hUsbDeviceFS;
+extern PCD_HandleTypeDef hpcd_USB_FS;
 
-typedef struct {
-	uint8_t ModifierKey;
-	uint8_t Reserved;
-	uint8_t KeyCode1;
-	uint8_t KeyCode2;
-	uint8_t KeyCode3;
-	uint8_t KeyCode4;
-	uint8_t KeyCode5;
-	uint8_t KeyCode6;
-} keyboardHID;
+void SysTick_Handler(void){
+   HAL_IncTick();
+}
+
+void USB_LP_CAN1_RX0_IRQHandler(void){
+  HAL_PCD_IRQHandler(&hpcd_USB_FS);
+}
 
 keyboardHID keyboardhid = {0,0,0,0,0,0,0,0};
 
-int main(void){	 
-	HAL_Init();
-
+int main(void){
+  HAL_Init();
   SystemClock_Config();
-  GPIO_Init();
-  MX_USB_DEVICE_Init();
+  USB_DEVICE_Init();
 
   uint8_t report[sizeof(keyboardHID)];
 
-  for (volatile int i=0; i<6; i++){
-	  keyboardhid.KeyCode1 = 0x0B;
-	  keyboardhid.KeyCode2 = 0x12;
-	  keyboardhid.KeyCode3 = 0x0F;
-	  keyboardhid.KeyCode4 = 0x04;
-
-	  memcpy(report, &keyboardhid, sizeof(keyboardHID));
-	  USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
-
-	  HAL_Delay(50);
+  for (volatile int i=0; i<=5; i++){
+	  HAL_Delay(200);
+	  keyboardhid.KeyCode1 = 0x2C;
+	  keyboardhid.KeyCode2 = 0x0B;
+	  keyboardhid.KeyCode3 = 0x12;
+	  keyboardhid.KeyCode4 = 0x0F;
+	  keyboardhid.KeyCode5 = 0x04;
+	  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
+	  HAL_Delay(30);
 
 	  keyboardhid.KeyCode1 = 0x00;
 	  keyboardhid.KeyCode2 = 0x00;
 	  keyboardhid.KeyCode3 = 0x00;
 	  keyboardhid.KeyCode4 = 0x00;
-
-	  memcpy(report, &keyboardhid, sizeof(keyboardHID));
-	  USBD_HID_SendReport(&hUsbDeviceFS, report, sizeof(report));
-
-	  HAL_Delay(400);
+	  keyboardhid.KeyCode5 = 0x00;
+	  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
+	  HAL_Delay(200);
   }
-  
-	for (;;){}
-	return 0; 
-};
+  while (1)  {  }
+}
 
 void SystemClock_Config(void){
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
@@ -72,9 +63,8 @@ void SystemClock_Config(void){
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)  {
     Error_Handler();
   }
-  
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -90,47 +80,22 @@ void SystemClock_Config(void){
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)  {
     Error_Handler();
   }
-	
-	/*  Original
- 	void SetClock(){
- 	RCC->CR	 |= (1 << 16);				// Habilita la fuente de reloj externo de alta velocidad (HSE)
- 	while (!(RCC->CR & (1 << 17)));		// Espera al lock (bit 17 en el registro de ctrl.)
-
- 	RCC->CR	 &= ~(1 << 24);				// Desactiva el PLL 
- 	RCC->CFGR |= (0b0100 << 18);		// Set PLLMULL to 6. multipica el clock 8MHz * 6 = 48Mhz.
- 	RCC->CFGR |= (1 << 16);				// Select HSE as the PLL source clock.
- 	RCC->CR	  |= (1 << 24);				// Enable PLL
-
- 	while (!(RCC->CR & (1 << 25)));		// Wait for PLL to lock.
-
- 	FLASH->ACR |= (0b010 << 0);			// Set FLASH WAIT STATE to 2. 
-
- 	RCC->APB1ENR |= (1 << 23);			// Enable USB clock.
-
- 	RCC->CFGR |= (1 << 22);				// Set USB prescaler to 0.
- 	RCC->CFGR |= (0b0000 << 4);			// Set AHB HPRE division to 1.
- 	//RCC->CFGR |= (0b0000 << 8);			// Set APB1 PPRE1 division to 1. 
- 	RCC->CFGR |= (0b10	<< 0);			// Select PLL clock as the system clock
-
- 	while (!(RCC->CFGR & (0b10 << 2)));	// Wait for PLL clock to be selected
-
- };
- */
 }
 
-static void GPIO_Init(void){
-	RCC->APB2ENR	= (1<<2);				// Enable clock for GPIOA
-	RCC->APB2ENR |= (1<<3);				// Enable clock for GPIOB
-	RCC->APB2ENR |= (1<<4);				// Enable clock for GPIOC
-
-	GPIOC->CRH	= (3 << (13-8)*4); 	 //C13 output
-	GPIOB->CRH	= (8 << (12-8)*4);	 //B12 input
-	GPIOB->CRH |= (8 << (13-8)*4);	 //B13 input
-	GPIOB->CRH |= (8 << (14-8)*4);	 //B14 input
-	GPIOB->CRH |= (8 << (15-8)*4);	 //B15 input
+void USB_DEVICE_Init(void){
+  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)  {
+    Error_Handler();
+  }
+  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_HID) != USBD_OK)  {
+    Error_Handler();
+  }
+  if (USBD_Start(&hUsbDeviceFS) != USBD_OK)  {
+    Error_Handler();
+  }
 }
 
-void Error_Handler(void){
-  __disable_irq();
+
+void Error_Handler(){
+  //__disable_irq();
   while (1)  {  }
 }
