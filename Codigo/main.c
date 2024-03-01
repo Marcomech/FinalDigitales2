@@ -1,53 +1,17 @@
+#include "./Inc/definiciones.h"
+#include "./Inc/Inc_Clock_Config.h"
+
 uint32_t SystemCoreClock = 16000000;
-const uint8_t AHBPrescTable[16U] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
-const uint8_t APBPrescTable[8U]  = {0, 0, 0, 0, 1, 2, 3, 4};
 
-void SystemInit (void){}
-void SystemClock_Config(void);
-void USB_DEVICE_Init(void);
-void Error_Handler();
-
-extern PCD_HandleTypeDef hpcd_USB_FS;
-
-void SysTick_Handler(void){
-   HAL_IncTick();
-}
-
-void USB_LP_CAN1_RX0_IRQHandler(void){
-  HAL_PCD_IRQHandler(&hpcd_USB_FS);
-}
-
-keyboardHID keyboardhid = {0,0,0,0,0,0,0,0};
+void InitClock();
+void USB_Init();
 
 int main(void){
-  HAL_Init();
-  SystemClock_Config();
-  USB_DEVICE_Init();
-
-  uint8_t report[sizeof(keyboardHID)];
-
-  for (volatile int i=0; i<=5; i++){
-	  HAL_Delay(200);
-	  keyboardhid.KeyCode1 = 0x2C;
-	  keyboardhid.KeyCode2 = 0x0B;
-	  keyboardhid.KeyCode3 = 0x12;
-	  keyboardhid.KeyCode4 = 0x0F;
-	  keyboardhid.KeyCode5 = 0x04;
-	  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
-	  HAL_Delay(30);
-
-	  keyboardhid.KeyCode1 = 0x00;
-	  keyboardhid.KeyCode2 = 0x00;
-	  keyboardhid.KeyCode3 = 0x00;
-	  keyboardhid.KeyCode4 = 0x00;
-	  keyboardhid.KeyCode5 = 0x00;
-	  USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
-	  HAL_Delay(200);
-  }
-  while (1)  {  }
+  InitClock();
+  //USB_Init();
 }
 
-void SystemClock_Config(void){
+void InitClock(void){
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
@@ -81,8 +45,8 @@ void SystemClock_Config(void){
     Error_Handler();
   }
 }
-
-void USB_DEVICE_Init(void){
+/*
+void USB_Init(void){
   if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)  {
     Error_Handler();
   }
@@ -93,9 +57,6 @@ void USB_DEVICE_Init(void){
     Error_Handler();
   }
 }
+*/
 
-
-void Error_Handler(){
-  //__disable_irq();
-  while (1)  {  }
-}
+void USB_LP_IRQHandler() {        }

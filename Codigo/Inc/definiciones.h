@@ -1,8 +1,8 @@
-typedef int						int32_t;
-typedef short					int16_t;
-typedef char					 int8_t;
-typedef unsigned int	 uint32_t;
-typedef unsigned short uint16_t;
+typedef int				int32_t;
+typedef short			int16_t;
+typedef char			int8_t;
+typedef unsigned int	uint32_t;
+typedef unsigned short	uint16_t;
 typedef unsigned char	uint8_t;
 
 #define SRAM_SIZE ((uint32_t) 0x00005000)
@@ -175,9 +175,7 @@ struct GPIOx volatile *const GPIOB = (struct GPIOx *)(0x40010C00);
 struct GPIOx volatile *const GPIOC = (struct GPIOx *)(0x40011000);
 
 struct SysTick{
-		int CSR;	 //Para habilitar y leer
-		// 0 Enable | 1 Interrupciones | 2 Clock (0= 1Megas o 1=8Megas) | 16 Flag
-
+		int CSR;	 //Para habilitar y leer 		// 0 Enable | 1 Interrupciones | 2 Clock (0= 1Megas o 1=8Megas) | 16 Flag
 		int ReloadValue;	 //Reload, valor en el que empieza el contador
 		int CurrentValue;	//Current Value
 		int Calibracion;	 //Calibracion, da 1 cada 0.01seg
@@ -192,8 +190,9 @@ struct USB{
 		int ISTR;
 		int FNR;
 		int DADDR;
-		int BTABLE
+		int BTABLE;
 };
+
 struct USB volatile *const USB = (struct USB_Registers *)(0x40005C00);
 
 //FALTA HACER UNA LOGICA ESTILO INTERRUPCIONES DE MIGUEL PARA AGREGAR LA BUFFER DESCRIPTOR TABLE 

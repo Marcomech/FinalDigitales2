@@ -34,7 +34,7 @@ typedef struct{
   uint32_t UsbClockSelection;
 } RCC_PeriphCLKInitTypeDef;
 
-#define RCC_HSI_ON                       RCC_CR_HSION           /*!< HSI clock activation */
+#define RCC_HSI_ON                       0x1UL <<0U           /*!< HSI clock activation */
 #define RCC_OSCILLATORTYPE_HSE           0x00000001U
 #define RCC_HSE_ON                       RCC_CR_HSEON                /*!< HSE clock activation */
 #define RCC_PLL_ON                       0x00000002U /*!< PLL activation */
@@ -56,8 +56,5 @@ typedef struct{
   uint32_t APB2CLKDivider;
 } RCC_ClkInitTypeDef;
 
-
-
 #endif //Clock_Config
-
 

@@ -1,5 +1,8 @@
-#include "../Core/Src/Inc_USB_Device2.h"
-#include "../Core/Src/Inc_USB_Device.h"
+#include "./stm32f1xx.h"
+#include "../Inc_USB_Device.h"
+
+#ifndef __USBD_CORE
+#define __USBD_CORE
 
 HAL_StatusTypeDef USB_CoreInit(USB_TypeDef *USBx, USB_CfgTypeDef cfg){
   UNUSED(USBx);
@@ -2158,3 +2161,6 @@ USBD_StatusTypeDef USBD_CtlReceiveStatus(USBD_HandleTypeDef *pdev){
   return USBD_OK;
 }
 
+
+
+#endif  __USBD_CORE
