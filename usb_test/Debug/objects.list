@@ -1,4 +1,3 @@
-"Core/Src/IncludesForDrivers/stm32f1xx_hal.o"
 "Core/Src/IncludesForDrivers/usbd_core.o"
 "Core/Src/main.o"
 "Core/Startup/startup_stm32f103c8tx.o"

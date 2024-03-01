@@ -1,13 +1,10 @@
 #define NULL 0
 #include "./IncludesForDrivers/stm32f1xx.h"
 
-const uint8_t AHBPrescTable[16U] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
-const uint8_t APBPrescTable[8U] = {0, 0, 0, 0, 1, 2, 3, 4};
 
 #include "Inc_USB_Device.h"
 #include "Inc_Clock_Config.h"
 
-//#include "./IncludesForDrivers/stm32f1xx_hal.c"
 //#include "./IncludesForDrivers/usbd_core.c"
 
 void SystemInit(void) {}
