@@ -1,8 +1,6 @@
 #ifndef __STM32F1xx_HAL_H
 #define __STM32F1xx_HAL_H
 
-#include <stdint.h>
-
 #define __I volatile const  /*!< Defines 'read only' permissions */
 #define __O volatile        /*!< Defines 'write only' permissions */
 #define __IO volatile       /*!< Defines 'read / write' permissions */
@@ -15,6 +13,70 @@
 #define HAL_CORTEX_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
+
+#ifndef Clock_Config
+#define Clock_Config
+
+#define RCC_HSE_PREDIV_DIV1 0x00000000U
+#define RCC_PLL_MUL9 (0x7UL << 18U)
+#define RCC_PERIPHCLK_USB 0x00000010U
+#define RCC_USBCLKSOURCE_PLL_DIV1_5 0x00000000U
+
+#define FLASH_LATENCY_0 0x00000000U /*!< FLASH Zero Latency cycle */
+#define FLASH_LATENCY_1 0x00000001  /*!< FLASH One Latency cycle */
+#define FLASH_LATENCY_2 0x00000002  /*!< FLASH Two Latency cycles */
+
+typedef struct
+{
+  uint32_t PLLState;
+  uint32_t PLLSource;
+  uint32_t PLLMUL;
+} RCC_PLLInitTypeDef;
+
+typedef struct
+{
+  uint32_t OscillatorType;
+  uint32_t HSEState;
+  uint32_t HSEPredivValue;
+  uint32_t LSEState;
+  uint32_t HSIState;
+  uint32_t HSICalibrationValue;
+  uint32_t LSIState;
+  RCC_PLLInitTypeDef PLL;
+} RCC_OscInitTypeDef;
+
+typedef struct
+{
+  uint32_t PeriphClockSelection;
+  uint32_t RTCClockSelection;
+  uint32_t AdcClockSelection;
+  uint32_t UsbClockSelection;
+} RCC_PeriphCLKInitTypeDef;
+
+typedef struct
+{
+  uint32_t ClockType;
+  uint32_t SYSCLKSource;
+  uint32_t AHBCLKDivider;
+  uint32_t APB1CLKDivider;
+  uint32_t APB2CLKDivider;
+} RCC_ClkInitTypeDef;
+
+#define RCC_HSI_ON RCC_CR_HSION /*!< HSI clock activation */
+#define RCC_OSCILLATORTYPE_HSE 0x00000001U
+#define RCC_HSE_ON RCC_CR_HSEON             /*!< HSE clock activation */
+#define RCC_PLL_ON 0x00000002U              /*!< PLL activation */
+#define RCC_PLLSOURCE_HSE RCC_CFGR_PLLSRC   /*!< HSE clock selected as PLL entry clock source */
+#define RCC_CLOCKTYPE_SYSCLK 0x00000001U    /*!< SYSCLK to configure */
+#define RCC_CLOCKTYPE_HCLK 0x00000002U      /*!< HCLK to configure */
+#define RCC_CLOCKTYPE_PCLK1 0x00000004U     /*!< PCLK1 to configure */
+#define RCC_CLOCKTYPE_PCLK2 0x00000008U     /*!< PCLK2 to configure */
+#define RCC_SYSCLKSOURCE_PLLCLK 0x00000002U /*!< PLL selected as system clock */
+#define RCC_HCLK_DIV1 0x00000000U           /*!< HCLK not divided */
+#define RCC_HCLK_DIV2 0x00000400U           /*!< HCLK divided by 2 */
+#define RCC_SYSCLK_DIV1 0x00000000U         /*!< SYSCLK not divided */
+
+#endif // Clock_Config
 
 #define HSE_VALUE 8000000U        /*!< Value of the External oscillator in Hz */
 #define HSE_STARTUP_TIMEOUT 100U  /*!< Time out for HSE start up, in ms */
@@ -107,7 +169,7 @@
 
 #define USE_SPI_CRC 0U
 
-#include "../Inc_Clock_Config.h"
+// #include "../Inc_Clock_Config.h"
 
 typedef enum
 {
@@ -320,22 +382,17 @@ void HAL_RCC_GetOscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct);
 #define CSR_REG_INDEX ((uint8_t)3)
 #define RCC_FLAG_MASK ((uint8_t)0x1F)
 
-
-
 #define NVIC_PRIORITYGROUP_0 0x00000007U
 #define NVIC_PRIORITYGROUP_1 0x00000006U
 #define NVIC_PRIORITYGROUP_2 0x00000005U
 #define NVIC_PRIORITYGROUP_3 0x00000004U
 #define NVIC_PRIORITYGROUP_4 0x00000003U
 
-
 #define __HAL_FLASH_SET_LATENCY(__LATENCY__) (FLASH->ACR = (FLASH->ACR & (~FLASH_ACR_LATENCY)) | (__LATENCY__))
 #define __HAL_FLASH_GET_LATENCY() (READ_BIT((FLASH->ACR), FLASH_ACR_LATENCY))
 #define __HAL_FLASH_PREFETCH_BUFFER_ENABLE() (FLASH->ACR |= FLASH_ACR_PRFTBE)
 
 #ifdef HAL_PCD_MODULE_ENABLED
-#ifndef STM32F1xx_HAL_PCD_H
-#define STM32F1xx_HAL_PCD_H
 
 typedef enum
 {
@@ -871,8 +928,6 @@ HAL_StatusTypeDef HAL_PCD_SetAddress(PCD_HandleTypeDef *hpcd, uint8_t address);
 
 #define PCD_GET_EP_DBUF0_CNT(USBx, bEpNum) (PCD_GET_EP_TX_CNT((USBx), (bEpNum)))
 #define PCD_GET_EP_DBUF1_CNT(USBx, bEpNum) (PCD_GET_EP_RX_CNT((USBx), (bEpNum)))
-
-#endif /* STM32F1xx_HAL_PCD_H */
 
 #endif /* HAL_PCD_MODULE_ENABLED */
 
@@ -2807,7 +2862,6 @@ typedef struct
 
 #define RCC_CFGR_SW_HSI 0x00000000U /*!< HSI selected as system clock */
 #define RCC_CFGR_SW_HSE 0x00000001U /*!< HSE selected as system clock */
-#define RCC_CFGR_SW_PLL 0x00000002U /*!< PLL selected as system clock */
 
 /*!< SWS configuration */
 #define RCC_CFGR_SWS_Pos (2U)
@@ -2829,7 +2883,6 @@ typedef struct
 #define RCC_CFGR_HPRE_2 (0x4UL << RCC_CFGR_HPRE_Pos)   /*!< 0x00000040 */
 #define RCC_CFGR_HPRE_3 (0x8UL << RCC_CFGR_HPRE_Pos)   /*!< 0x00000080 */
 
-#define RCC_CFGR_HPRE_DIV1 0x00000000U   /*!< SYSCLK not divided */
 #define RCC_CFGR_HPRE_DIV2 0x00000080U   /*!< SYSCLK divided by 2 */
 #define RCC_CFGR_HPRE_DIV4 0x00000090U   /*!< SYSCLK divided by 4 */
 #define RCC_CFGR_HPRE_DIV8 0x000000A0U   /*!< SYSCLK divided by 8 */
@@ -2847,8 +2900,6 @@ typedef struct
 #define RCC_CFGR_PPRE1_1 (0x2UL << RCC_CFGR_PPRE1_Pos)   /*!< 0x00000200 */
 #define RCC_CFGR_PPRE1_2 (0x4UL << RCC_CFGR_PPRE1_Pos)   /*!< 0x00000400 */
 
-#define RCC_CFGR_PPRE1_DIV1 0x00000000U  /*!< HCLK not divided */
-#define RCC_CFGR_PPRE1_DIV2 0x00000400U  /*!< HCLK divided by 2 */
 #define RCC_CFGR_PPRE1_DIV4 0x00000500U  /*!< HCLK divided by 4 */
 #define RCC_CFGR_PPRE1_DIV8 0x00000600U  /*!< HCLK divided by 8 */
 #define RCC_CFGR_PPRE1_DIV16 0x00000700U /*!< HCLK divided by 16 */
@@ -4706,3 +4757,365 @@ typedef enum
 
 #endif /* __STM32F1xx_HAL_H */
 
+#ifndef Inc_USB_Device__
+#define Inc_USB_Device__
+
+#define USBD_VID 1155
+#define USBD_LANGID_STRING 1033
+#define USBD_MANUFACTURER_STRING "STMicroelectronics"
+#define USBD_PID_FS 22315
+#define USBD_PRODUCT_STRING_FS "STM32 Human interface"
+#define USBD_CONFIGURATION_STRING_FS "HID Config"
+#define USBD_INTERFACE_STRING_FS "HID Interface"
+
+#define USBD_MAX_NUM_INTERFACES 1
+#define USBD_MAX_NUM_CONFIGURATION 1
+#define USBD_MAX_STR_DESC_SIZ 512
+#define USBD_DEBUG_LEVEL 0
+#define USBD_SELF_POWERED 1
+#define HID_FS_BINTERVAL 0xA
+
+#define DEVICE_FS 0
+
+#define USBD_malloc (uint32_t *)USBD_static_malloc
+#define USBD_free USBD_static_free
+#define USBD_Delay HAL_Delay
+
+void *USBD_static_malloc(uint32_t size);
+void USBD_static_free(void *p);
+
+#define USBD_UsrLog(...)
+#define USBD_ErrLog(...)
+#define USBD_DbgLog(...)
+
+#ifndef NULL
+#define NULL 0U
+#endif /* NULL */
+
+#define USBD_MAX_NUM_INTERFACES 1U
+#define USBD_MAX_NUM_CONFIGURATION 1U
+
+#define USBD_LPM_ENABLED 0U
+
+#ifndef USBD_SUPPORT_USER_STRING_DESC
+#define USBD_SUPPORT_USER_STRING_DESC 0U
+#endif /* USBD_SUPPORT_USER_STRING_DESC */
+
+#define USB_LEN_DEV_QUALIFIER_DESC 0x0AU
+#define USB_LEN_DEV_DESC 0x12U
+#define USB_LEN_CFG_DESC 0x09U
+#define USB_LEN_IF_DESC 0x09U
+#define USB_LEN_EP_DESC 0x07U
+#define USB_LEN_OTG_DESC 0x03U
+#define USB_LEN_LANGID_STR_DESC 0x04U
+#define USB_LEN_OTHER_SPEED_DESC_SIZ 0x09U
+
+#define USBD_IDX_LANGID_STR 0x00U
+#define USBD_IDX_MFC_STR 0x01U
+#define USBD_IDX_PRODUCT_STR 0x02U
+#define USBD_IDX_SERIAL_STR 0x03U
+#define USBD_IDX_CONFIG_STR 0x04U
+#define USBD_IDX_INTERFACE_STR 0x05U
+
+#define USB_REQ_TYPE_STANDARD 0x00U
+#define USB_REQ_TYPE_CLASS 0x20U
+#define USB_REQ_TYPE_VENDOR 0x40U
+#define USB_REQ_TYPE_MASK 0x60U
+
+#define USB_REQ_RECIPIENT_DEVICE 0x00U
+#define USB_REQ_RECIPIENT_INTERFACE 0x01U
+#define USB_REQ_RECIPIENT_ENDPOINT 0x02U
+#define USB_REQ_RECIPIENT_MASK 0x03U
+
+#define USB_REQ_GET_STATUS 0x00U
+#define USB_REQ_CLEAR_FEATURE 0x01U
+#define USB_REQ_SET_FEATURE 0x03U
+#define USB_REQ_SET_ADDRESS 0x05U
+#define USB_REQ_GET_DESCRIPTOR 0x06U
+#define USB_REQ_SET_DESCRIPTOR 0x07U
+#define USB_REQ_GET_CONFIGURATION 0x08U
+#define USB_REQ_SET_CONFIGURATION 0x09U
+#define USB_REQ_GET_INTERFACE 0x0AU
+#define USB_REQ_SET_INTERFACE 0x0BU
+#define USB_REQ_SYNCH_FRAME 0x0CU
+
+#define USB_DESC_TYPE_DEVICE 0x01U
+#define USB_DESC_TYPE_CONFIGURATION 0x02U
+#define USB_DESC_TYPE_STRING 0x03U
+#define USB_DESC_TYPE_INTERFACE 0x04U
+#define USB_DESC_TYPE_ENDPOINT 0x05U
+#define USB_DESC_TYPE_DEVICE_QUALIFIER 0x06U
+#define USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION 0x07U
+#define USB_DESC_TYPE_BOS 0x0FU
+
+#define USB_CONFIG_REMOTE_WAKEUP 0x02U
+#define USB_CONFIG_SELF_POWERED 0x01U
+
+#define USB_FEATURE_EP_HALT 0x00U
+#define USB_FEATURE_REMOTE_WAKEUP 0x01U
+#define USB_FEATURE_TEST_MODE 0x02U
+
+#define USB_DEVICE_CAPABITY_TYPE 0x10U
+
+#define USB_HS_MAX_PACKET_SIZE 512U
+#define USB_FS_MAX_PACKET_SIZE 64U
+#define USB_MAX_EP0_SIZE 64U
+
+/*  Device Status */
+#define USBD_STATE_DEFAULT 0x01U
+#define USBD_STATE_ADDRESSED 0x02U
+#define USBD_STATE_CONFIGURED 0x03U
+#define USBD_STATE_SUSPENDED 0x04U
+
+/*  EP0 State */
+#define USBD_EP0_IDLE 0x00U
+#define USBD_EP0_SETUP 0x01U
+#define USBD_EP0_DATA_IN 0x02U
+#define USBD_EP0_DATA_OUT 0x03U
+#define USBD_EP0_STATUS_IN 0x04U
+#define USBD_EP0_STATUS_OUT 0x05U
+#define USBD_EP0_STALL 0x06U
+
+#define USBD_EP_TYPE_CTRL 0x00U
+#define USBD_EP_TYPE_ISOC 0x01U
+#define USBD_EP_TYPE_BULK 0x02U
+#define USBD_EP_TYPE_INTR 0x03U
+
+#define SWAPBYTE(addr) (((uint16_t)(*((uint8_t *)(addr)))) + \
+                        (((uint16_t)(*(((uint8_t *)(addr)) + 1U))) << 8U))
+
+#define LOBYTE(x) ((uint8_t)((x) & 0x00FFU))
+#define HIBYTE(x) ((uint8_t)(((x) & 0xFF00U) >> 8U))
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+
+#define HID_EPIN_ADDR 0x81U
+#define HID_EPIN_SIZE 0x04U
+
+#define USB_HID_CONFIG_DESC_SIZ 34U
+#define USB_HID_DESC_SIZ 9U
+#define HID_MOUSE_REPORT_DESC_SIZE 63U
+
+#define HID_DESCRIPTOR_TYPE 0x21U
+#define HID_REPORT_DESC 0x22U
+
+#define HID_HS_BINTERVAL 0x07U
+
+#define HID_REQ_SET_PROTOCOL 0x0BU
+#define HID_REQ_GET_PROTOCOL 0x03U
+
+#define HID_REQ_SET_IDLE 0x0AU
+#define HID_REQ_GET_IDLE 0x02U
+
+#define HID_REQ_SET_REPORT 0x09U
+#define HID_REQ_GET_REPORT 0x01U
+
+typedef struct usb_setup_req
+{
+  uint8_t bmRequest;
+  uint8_t bRequest;
+  uint16_t wValue;
+  uint16_t wIndex;
+  uint16_t wLength;
+} USBD_SetupReqTypedef;
+
+struct _USBD_HandleTypeDef;
+
+typedef struct _Device_cb
+{
+  uint8_t (*Init)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+  uint8_t (*DeInit)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+  uint8_t (*Setup)(struct _USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+  uint8_t (*EP0_TxSent)(struct _USBD_HandleTypeDef *pdev);
+  uint8_t (*EP0_RxReady)(struct _USBD_HandleTypeDef *pdev);
+  uint8_t (*DataIn)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+  uint8_t (*DataOut)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+  uint8_t (*SOF)(struct _USBD_HandleTypeDef *pdev);
+  uint8_t (*IsoINIncomplete)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+  uint8_t (*IsoOUTIncomplete)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+  uint8_t *(*GetHSConfigDescriptor)(uint16_t *length);
+  uint8_t *(*GetFSConfigDescriptor)(uint16_t *length);
+  uint8_t *(*GetOtherSpeedConfigDescriptor)(uint16_t *length);
+  uint8_t *(*GetDeviceQualifierDescriptor)(uint16_t *length);
+} USBD_ClassTypeDef;
+
+/* Following USB Device Speed */
+typedef enum
+{
+  USBD_SPEED_HIGH = 0U,
+  USBD_SPEED_FULL = 1U,
+  USBD_SPEED_LOW = 2U,
+} USBD_SpeedTypeDef;
+
+/* Following USB Device status */
+typedef enum
+{
+  USBD_OK = 0U,
+  USBD_BUSY,
+  USBD_FAIL,
+} USBD_StatusTypeDef;
+
+/* USB Device descriptors structure */
+typedef struct
+{
+  uint8_t *(*GetDeviceDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+  uint8_t *(*GetLangIDStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+  uint8_t *(*GetManufacturerStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+  uint8_t *(*GetProductStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+  uint8_t *(*GetSerialStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+  uint8_t *(*GetConfigurationStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+  uint8_t *(*GetInterfaceStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+} USBD_DescriptorsTypeDef;
+
+/* USB Device handle structure */
+typedef struct
+{
+  uint32_t status;
+  uint32_t is_used;
+  uint32_t total_length;
+  uint32_t rem_length;
+  uint32_t maxpacket;
+} USBD_EndpointTypeDef;
+
+/* USB Device handle structure */
+typedef struct _USBD_HandleTypeDef
+{
+  uint8_t id;
+  uint32_t dev_config;
+  uint32_t dev_default_config;
+  uint32_t dev_config_status;
+  USBD_SpeedTypeDef dev_speed;
+  USBD_EndpointTypeDef ep_in[16];
+  USBD_EndpointTypeDef ep_out[16];
+  uint32_t ep0_state;
+  uint32_t ep0_data_len;
+  uint8_t dev_state;
+  uint8_t dev_old_state;
+  uint8_t dev_address;
+  uint8_t dev_connection_status;
+  uint8_t dev_test_mode;
+  uint32_t dev_remote_wakeup;
+
+  USBD_SetupReqTypedef request;
+  USBD_DescriptorsTypeDef *pDesc;
+  USBD_ClassTypeDef *pClass;
+  void *pClassData;
+  void *pUserData;
+  void *pData;
+} USBD_HandleTypeDef;
+
+USBD_StatusTypeDef USBD_StdDevReq(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+USBD_StatusTypeDef USBD_StdItfReq(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+USBD_StatusTypeDef USBD_StdEPReq(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+
+void USBD_CtlError(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+
+void USBD_ParseSetupRequest(USBD_SetupReqTypedef *req, uint8_t *pdata);
+
+void USBD_GetString(uint8_t *desc, uint8_t *unicode, uint16_t *len);
+
+#define USBD_SOF USBD_LL_SOF
+
+USBD_StatusTypeDef USBD_Init(USBD_HandleTypeDef *pdev, USBD_DescriptorsTypeDef *pdesc, uint8_t id);
+USBD_StatusTypeDef USBD_DeInit(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_Start(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_Stop(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_RegisterClass(USBD_HandleTypeDef *pdev, USBD_ClassTypeDef *pclass);
+
+USBD_StatusTypeDef USBD_RunTestMode(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_SetClassConfig(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+USBD_StatusTypeDef USBD_ClrClassConfig(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+
+USBD_StatusTypeDef USBD_LL_SetupStage(USBD_HandleTypeDef *pdev, uint8_t *psetup);
+USBD_StatusTypeDef USBD_LL_DataOutStage(USBD_HandleTypeDef *pdev, uint8_t epnum, uint8_t *pdata);
+USBD_StatusTypeDef USBD_LL_DataInStage(USBD_HandleTypeDef *pdev, uint8_t epnum, uint8_t *pdata);
+
+USBD_StatusTypeDef USBD_LL_Reset(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_SetSpeed(USBD_HandleTypeDef *pdev, USBD_SpeedTypeDef speed);
+USBD_StatusTypeDef USBD_LL_Suspend(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_Resume(USBD_HandleTypeDef *pdev);
+
+USBD_StatusTypeDef USBD_LL_SOF(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_IsoINIncomplete(USBD_HandleTypeDef *pdev, uint8_t epnum);
+USBD_StatusTypeDef USBD_LL_IsoOUTIncomplete(USBD_HandleTypeDef *pdev, uint8_t epnum);
+
+USBD_StatusTypeDef USBD_LL_DevConnected(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_DevDisconnected(USBD_HandleTypeDef *pdev);
+
+/* USBD Low Level Driver */
+USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_DeInit(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_Start(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_Stop(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uint8_t ep_type, uint16_t ep_mps);
+
+USBD_StatusTypeDef USBD_LL_CloseEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+USBD_StatusTypeDef USBD_LL_FlushEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+USBD_StatusTypeDef USBD_LL_StallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+USBD_StatusTypeDef USBD_LL_ClearStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+uint8_t USBD_LL_IsStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+USBD_StatusTypeDef USBD_LL_SetUSBAddress(USBD_HandleTypeDef *pdev, uint8_t dev_addr);
+USBD_StatusTypeDef USBD_LL_Transmit(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uint8_t *pbuf, uint16_t size);
+
+USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uint8_t *pbuf, uint16_t size);
+
+uint32_t USBD_LL_GetRxDataSize(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+void USBD_LL_Delay(uint32_t Delay);
+
+USBD_StatusTypeDef USBD_CtlSendData(USBD_HandleTypeDef *pdev, uint8_t *pbuf, uint16_t len);
+USBD_StatusTypeDef USBD_CtlContinueSendData(USBD_HandleTypeDef *pdev, uint8_t *pbuf, uint16_t len);
+USBD_StatusTypeDef USBD_CtlPrepareRx(USBD_HandleTypeDef *pdev, uint8_t *pbuf, uint16_t len);
+USBD_StatusTypeDef USBD_CtlContinueRx(USBD_HandleTypeDef *pdev, uint8_t *pbuf, uint16_t len);
+USBD_StatusTypeDef USBD_CtlSendStatus(USBD_HandleTypeDef *pdev);
+USBD_StatusTypeDef USBD_CtlReceiveStatus(USBD_HandleTypeDef *pdev);
+
+uint32_t USBD_GetRxCount(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
+
+typedef enum
+{
+  HID_IDLE = 0,
+  HID_BUSY,
+} HID_StateTypeDef;
+
+typedef struct
+{
+  uint32_t Protocol;
+  uint32_t IdleState;
+  uint32_t AltSetting;
+  HID_StateTypeDef state;
+} USBD_HID_HandleTypeDef;
+
+extern USBD_ClassTypeDef USBD_HID;
+#define USBD_HID_CLASS &USBD_HID
+
+uint8_t USBD_HID_SendReport(USBD_HandleTypeDef *pdev, uint8_t *report, uint16_t len);
+uint32_t USBD_HID_GetPollingInterval(USBD_HandleTypeDef *pdev);
+
+#define UID_BASE 0x1FFFF7E8UL /*!< Unique device ID register base address */
+
+#define DEVICE_ID1 (UID_BASE)
+#define DEVICE_ID2 (UID_BASE + 0x4)
+#define DEVICE_ID3 (UID_BASE + 0x8)
+#define USB_SIZ_STRING_SERIAL 0x1A
+
+#define USBD_SUPPORT_USER_STRING_DESC 0U
+extern USBD_DescriptorsTypeDef FS_Desc;
+
+USBD_HandleTypeDef hUsbDeviceFS;
+
+typedef struct
+{
+  uint8_t ModifierKey;
+  uint8_t Reserved;
+  uint8_t KeyCode1;
+  uint8_t KeyCode2;
+  uint8_t KeyCode3;
+  uint8_t KeyCode4;
+  uint8_t KeyCode5;
+  uint8_t KeyCode6;
+} keyboardHID;
+
+void *USBD_static_malloc(uint32_t size);
+void USBD_static_free(void *p);
+
+#endif // Inc_USB_Device__

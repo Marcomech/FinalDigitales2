@@ -14,10 +14,10 @@ c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externalt
 Allocating common symbols
 Common symbol       size              file
 
-hUsbDeviceFS        0x2c4             Core/Src/IncludesForDrivers/usbd_core.o
-uwTick              0x4               Core/Src/IncludesForDrivers/usbd_core.o
-hpcd_USB_FS         0x2f0             Core/Src/IncludesForDrivers/usbd_core.o
-USBD_StrDesc        0x200             Core/Src/IncludesForDrivers/usbd_core.o
+hUsbDeviceFS        0x2c4             Core/Src/main.o
+uwTick              0x4               Core/Src/main.o
+hpcd_USB_FS         0x2f0             Core/Src/main.o
+USBD_StrDesc        0x200             Core/Src/main.o
 
 Discarded input sections
 
@@ -32,54 +32,21 @@ Discarded input sections
  .ARM.exidx     0x0000000000000000       0x10 c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
  .ARM.attributes
                 0x0000000000000000       0x1b c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .text          0x0000000000000000        0x0 Core/Src/IncludesForDrivers/usbd_core.o
- .data          0x0000000000000000        0x0 Core/Src/IncludesForDrivers/usbd_core.o
- .bss           0x0000000000000000        0x0 Core/Src/IncludesForDrivers/usbd_core.o
- .text.__NVIC_SetPriorityGrouping
-                0x0000000000000000       0x48 Core/Src/IncludesForDrivers/usbd_core.o
- .rodata.APBPrescTable
-                0x0000000000000000        0x8 Core/Src/IncludesForDrivers/usbd_core.o
- .text.HAL_NVIC_SetPriorityGrouping
-                0x0000000000000000       0x16 Core/Src/IncludesForDrivers/usbd_core.o
- .text.HAL_RCC_CSSCallback
-                0x0000000000000000        0xc Core/Src/IncludesForDrivers/usbd_core.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
- .group         0x0000000000000000        0xc Core/Src/main.o
  .group         0x0000000000000000        0xc Core/Src/main.o
  .group         0x0000000000000000        0xc Core/Src/main.o
  .text          0x0000000000000000        0x0 Core/Src/main.o
  .data          0x0000000000000000        0x0 Core/Src/main.o
  .bss           0x0000000000000000        0x0 Core/Src/main.o
+ .text.__NVIC_SetPriorityGrouping
+                0x0000000000000000       0x48 Core/Src/main.o
+ .rodata.APBPrescTable
+                0x0000000000000000        0x8 Core/Src/main.o
+ .text.HAL_NVIC_SetPriorityGrouping
+                0x0000000000000000       0x16 Core/Src/main.o
+ .text.HAL_RCC_CSSCallback
+                0x0000000000000000        0xc Core/Src/main.o
  .text.SystemInit
                 0x0000000000000000        0xc Core/Src/main.o
- .debug_macro   0x0000000000000000      0xa9c Core/Src/main.o
- .debug_macro   0x0000000000000000       0x22 Core/Src/main.o
- .debug_macro   0x0000000000000000       0x8e Core/Src/main.o
- .debug_macro   0x0000000000000000       0x51 Core/Src/main.o
- .debug_macro   0x0000000000000000      0x103 Core/Src/main.o
- .debug_macro   0x0000000000000000       0x6a Core/Src/main.o
- .debug_macro   0x0000000000000000      0x1df Core/Src/main.o
- .debug_macro   0x0000000000000000      0x1d8 Core/Src/main.o
- .debug_macro   0x0000000000000000       0x82 Core/Src/main.o
- .debug_macro   0x0000000000000000     0x4243 Core/Src/main.o
  .text          0x0000000000000000       0x14 Core/Startup/startup_stm32f103c8tx.o
  .data          0x0000000000000000        0x0 Core/Startup/startup_stm32f103c8tx.o
  .bss           0x0000000000000000        0x0 Core/Startup/startup_stm32f103c8tx.o
@@ -136,7 +103,6 @@ Linker script and memory map
 LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crti.o
 LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crtbegin.o
 LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
-LOAD Core/Src/IncludesForDrivers/usbd_core.o
 LOAD Core/Src/main.o
 LOAD Core/Startup/startup_stm32f103c8tx.o
 START GROUP
@@ -176,340 +142,340 @@ LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .text          0x000000000800010c       0x40 c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crtbegin.o
  *(.text*)
  .text.__NVIC_GetPriorityGrouping
-                0x000000000800014c       0x1c Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800014c       0x1c Core/Src/main.o
  .text.__NVIC_EnableIRQ
-                0x0000000008000168       0x38 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000168       0x38 Core/Src/main.o
  .text.__NVIC_SetPriority
-                0x00000000080001a0       0x54 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080001a0       0x54 Core/Src/main.o
  .text.NVIC_EncodePriority
-                0x00000000080001f4       0x64 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080001f4       0x64 Core/Src/main.o
  .text.SysTick_Config
-                0x0000000008000258       0x44 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000258       0x44 Core/Src/main.o
  .text.HAL_GetTick
-                0x000000000800029c       0x14 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800029c       0x14 Core/Src/main.o
                 0x000000000800029c                HAL_GetTick
  .text.HAL_NVIC_SetPriority
-                0x00000000080002b0       0x38 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080002b0       0x38 Core/Src/main.o
                 0x00000000080002b0                HAL_NVIC_SetPriority
  .text.HAL_NVIC_EnableIRQ
-                0x00000000080002e8       0x1c Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080002e8       0x1c Core/Src/main.o
                 0x00000000080002e8                HAL_NVIC_EnableIRQ
  .text.HAL_SYSTICK_Config
-                0x0000000008000304       0x18 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000304       0x18 Core/Src/main.o
                 0x0000000008000304                HAL_SYSTICK_Config
  .text.HAL_RCC_OscConfig
-                0x000000000800031c      0x500 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800031c      0x500 Core/Src/main.o
                 0x000000000800031c                HAL_RCC_OscConfig
  .text.HAL_RCC_ClockConfig
-                0x000000000800081c      0x1d4 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800081c      0x1d4 Core/Src/main.o
                 0x000000000800081c                HAL_RCC_ClockConfig
  .text.HAL_RCCEx_PeriphCLKConfig
-                0x00000000080009f0      0x16c Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080009f0      0x16c Core/Src/main.o
                 0x00000000080009f0                HAL_RCCEx_PeriphCLKConfig
  .text.HAL_RCC_GetSysClockFreq
-                0x0000000008000b5c       0xa8 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000b5c       0xa8 Core/Src/main.o
                 0x0000000008000b5c                HAL_RCC_GetSysClockFreq
  .text.RCC_Delay
-                0x0000000008000c04       0x3c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000c04       0x3c Core/Src/main.o
  .text.HAL_PCD_Init
-                0x0000000008000c40      0x1fe Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000c40      0x1fe Core/Src/main.o
                 0x0000000008000c40                HAL_PCD_Init
  .text.HAL_PCD_Start
-                0x0000000008000e3e       0x44 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000e3e       0x44 Core/Src/main.o
                 0x0000000008000e3e                HAL_PCD_Start
  .text.HAL_PCD_IRQHandler
-                0x0000000008000e82      0x264 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008000e82      0x264 Core/Src/main.o
                 0x0000000008000e82                HAL_PCD_IRQHandler
  .text.HAL_PCD_SetAddress
-                0x00000000080010e6       0x4a Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080010e6       0x4a Core/Src/main.o
                 0x00000000080010e6                HAL_PCD_SetAddress
  .text.HAL_PCD_EP_Open
-                0x0000000008001130       0xba Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008001130       0xba Core/Src/main.o
                 0x0000000008001130                HAL_PCD_EP_Open
  .text.HAL_PCD_EP_Close
-                0x00000000080011ea       0x90 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080011ea       0x90 Core/Src/main.o
                 0x00000000080011ea                HAL_PCD_EP_Close
  .text.HAL_PCD_EP_Receive
-                0x000000000800127a       0x62 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800127a       0x62 Core/Src/main.o
                 0x000000000800127a                HAL_PCD_EP_Receive
  .text.HAL_PCD_EP_Transmit
-                0x00000000080012dc       0x6e Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080012dc       0x6e Core/Src/main.o
                 0x00000000080012dc                HAL_PCD_EP_Transmit
  .text.HAL_PCD_EP_SetStall
-                0x000000000800134a       0xc0 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800134a       0xc0 Core/Src/main.o
                 0x000000000800134a                HAL_PCD_EP_SetStall
  .text.HAL_PCD_EP_ClrStall
-                0x000000000800140a       0xa8 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800140a       0xa8 Core/Src/main.o
                 0x000000000800140a                HAL_PCD_EP_ClrStall
  .text.PCD_EP_ISR_Handler
-                0x00000000080014b2      0x7a6 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080014b2      0x7a6 Core/Src/main.o
  .text.HAL_PCD_EP_DB_Receive
-                0x0000000008001c58      0x21a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008001c58      0x21a Core/Src/main.o
  .text.HAL_PCD_EP_DB_Transmit
-                0x0000000008001e72      0x7f4 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008001e72      0x7f4 Core/Src/main.o
  *fill*         0x0000000008002666        0x2 
  .text.HAL_InitTick
-                0x0000000008002668       0x60 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008002668       0x60 Core/Src/main.o
                 0x0000000008002668                HAL_InitTick
  .text.HAL_IncTick
-                0x00000000080026c8       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080026c8       0x24 Core/Src/main.o
                 0x00000000080026c8                HAL_IncTick
  .text.HAL_Delay
-                0x00000000080026ec       0x48 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080026ec       0x48 Core/Src/main.o
                 0x00000000080026ec                HAL_Delay
  .text.USB_CoreInit
-                0x0000000008002734       0x20 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008002734       0x20 Core/Src/main.o
                 0x0000000008002734                USB_CoreInit
  .text.USB_EnableGlobalInt
-                0x0000000008002754       0x2c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008002754       0x2c Core/Src/main.o
                 0x0000000008002754                USB_EnableGlobalInt
  .text.USB_DisableGlobalInt
-                0x0000000008002780       0x34 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008002780       0x34 Core/Src/main.o
                 0x0000000008002780                USB_DisableGlobalInt
  .text.USB_SetCurrentMode
-                0x00000000080027b4       0x18 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080027b4       0x18 Core/Src/main.o
                 0x00000000080027b4                USB_SetCurrentMode
  .text.USB_DevInit
-                0x00000000080027cc       0x40 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080027cc       0x40 Core/Src/main.o
                 0x00000000080027cc                USB_DevInit
  .text.USB_ActivateEndpoint
-                0x000000000800280c      0x780 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800280c      0x780 Core/Src/main.o
                 0x000000000800280c                USB_ActivateEndpoint
  .text.USB_DeactivateEndpoint
-                0x0000000008002f8c      0x3d8 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008002f8c      0x3d8 Core/Src/main.o
                 0x0000000008002f8c                USB_DeactivateEndpoint
  .text.USB_EPStartXfer
-                0x0000000008003364     0x1298 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008003364     0x1298 Core/Src/main.o
                 0x0000000008003364                USB_EPStartXfer
  .text.USB_EPSetStall
-                0x00000000080045fc       0xa0 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080045fc       0xa0 Core/Src/main.o
                 0x00000000080045fc                USB_EPSetStall
  .text.USB_EPClearStall
-                0x000000000800469c      0x15a Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800469c      0x15a Core/Src/main.o
                 0x000000000800469c                USB_EPClearStall
  .text.USB_SetDevAddress
-                0x00000000080047f6       0x26 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080047f6       0x26 Core/Src/main.o
                 0x00000000080047f6                USB_SetDevAddress
  .text.USB_DevConnect
-                0x000000000800481c       0x14 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800481c       0x14 Core/Src/main.o
                 0x000000000800481c                USB_DevConnect
  .text.USB_DevDisconnect
-                0x0000000008004830       0x14 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004830       0x14 Core/Src/main.o
                 0x0000000008004830                USB_DevDisconnect
  .text.USB_ReadInterrupts
-                0x0000000008004844       0x1e Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004844       0x1e Core/Src/main.o
                 0x0000000008004844                USB_ReadInterrupts
  .text.USB_EP0_OutStart
-                0x0000000008004862       0x16 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004862       0x16 Core/Src/main.o
                 0x0000000008004862                USB_EP0_OutStart
  .text.USB_WritePMA
-                0x0000000008004878       0x8a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004878       0x8a Core/Src/main.o
                 0x0000000008004878                USB_WritePMA
  .text.USB_ReadPMA
-                0x0000000008004902       0x9e Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004902       0x9e Core/Src/main.o
                 0x0000000008004902                USB_ReadPMA
  .text.USBD_Init
-                0x00000000080049a0       0x56 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080049a0       0x56 Core/Src/main.o
                 0x00000000080049a0                USBD_Init
  .text.USBD_RegisterClass
-                0x00000000080049f6       0x32 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080049f6       0x32 Core/Src/main.o
                 0x00000000080049f6                USBD_RegisterClass
  .text.USBD_Start
-                0x0000000008004a28       0x18 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004a28       0x18 Core/Src/main.o
                 0x0000000008004a28                USBD_Start
  .text.USBD_RunTestMode
-                0x0000000008004a40       0x14 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004a40       0x14 Core/Src/main.o
                 0x0000000008004a40                USBD_RunTestMode
  .text.USBD_SetClassConfig
-                0x0000000008004a54       0x3e Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004a54       0x3e Core/Src/main.o
                 0x0000000008004a54                USBD_SetClassConfig
  .text.USBD_ClrClassConfig
-                0x0000000008004a92       0x26 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004a92       0x26 Core/Src/main.o
                 0x0000000008004a92                USBD_ClrClassConfig
  .text.USBD_LL_SetupStage
-                0x0000000008004ab8       0x9a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004ab8       0x9a Core/Src/main.o
                 0x0000000008004ab8                USBD_LL_SetupStage
  .text.USBD_LL_DataOutStage
-                0x0000000008004b52       0xe2 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004b52       0xe2 Core/Src/main.o
                 0x0000000008004b52                USBD_LL_DataOutStage
  .text.USBD_LL_DataInStage
-                0x0000000008004c34      0x14a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004c34      0x14a Core/Src/main.o
                 0x0000000008004c34                USBD_LL_DataInStage
  .text.USBD_LL_Reset
-                0x0000000008004d7e       0x82 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004d7e       0x82 Core/Src/main.o
                 0x0000000008004d7e                USBD_LL_Reset
  .text.USBD_LL_SetSpeed
-                0x0000000008004e00       0x1e Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004e00       0x1e Core/Src/main.o
                 0x0000000008004e00                USBD_LL_SetSpeed
  .text.USBD_LL_Suspend
-                0x0000000008004e1e       0x28 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004e1e       0x28 Core/Src/main.o
                 0x0000000008004e1e                USBD_LL_Suspend
  .text.USBD_LL_Resume
-                0x0000000008004e46       0x2a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004e46       0x2a Core/Src/main.o
                 0x0000000008004e46                USBD_LL_Resume
  .text.USBD_LL_SOF
-                0x0000000008004e70       0x34 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004e70       0x34 Core/Src/main.o
                 0x0000000008004e70                USBD_LL_SOF
  .text.HAL_PCD_MspInit
-                0x0000000008004ea4       0x4c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004ea4       0x4c Core/Src/main.o
                 0x0000000008004ea4                HAL_PCD_MspInit
  .text.HAL_PCD_SetupStageCallback
-                0x0000000008004ef0       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004ef0       0x24 Core/Src/main.o
                 0x0000000008004ef0                HAL_PCD_SetupStageCallback
  .text.HAL_PCD_DataOutStageCallback
-                0x0000000008004f14       0x36 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004f14       0x36 Core/Src/main.o
                 0x0000000008004f14                HAL_PCD_DataOutStageCallback
  .text.HAL_PCD_DataInStageCallback
-                0x0000000008004f4a       0x34 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004f4a       0x34 Core/Src/main.o
                 0x0000000008004f4a                HAL_PCD_DataInStageCallback
  .text.HAL_PCD_SOFCallback
-                0x0000000008004f7e       0x1c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004f7e       0x1c Core/Src/main.o
                 0x0000000008004f7e                HAL_PCD_SOFCallback
  .text.HAL_PCD_ResetCallback
-                0x0000000008004f9a       0x3c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004f9a       0x3c Core/Src/main.o
                 0x0000000008004f9a                HAL_PCD_ResetCallback
  *fill*         0x0000000008004fd6        0x2 
  .text.HAL_PCD_SuspendCallback
-                0x0000000008004fd8       0x34 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008004fd8       0x34 Core/Src/main.o
                 0x0000000008004fd8                HAL_PCD_SuspendCallback
  .text.HAL_PCD_ResumeCallback
-                0x000000000800500c       0x1c Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800500c       0x1c Core/Src/main.o
                 0x000000000800500c                HAL_PCD_ResumeCallback
  .text.HAL_PCDEx_PMAConfig
-                0x0000000008005028       0x84 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005028       0x84 Core/Src/main.o
                 0x0000000008005028                HAL_PCDEx_PMAConfig
  .text.USBD_LL_Init
-                0x00000000080050ac       0x90 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080050ac       0x90 Core/Src/main.o
                 0x00000000080050ac                USBD_LL_Init
  .text.USBD_LL_Start
-                0x000000000800513c       0x36 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800513c       0x36 Core/Src/main.o
                 0x000000000800513c                USBD_LL_Start
  .text.USBD_LL_OpenEP
-                0x0000000008005172       0x4c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005172       0x4c Core/Src/main.o
                 0x0000000008005172                USBD_LL_OpenEP
  .text.USBD_LL_CloseEP
-                0x00000000080051be       0x3e Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080051be       0x3e Core/Src/main.o
                 0x00000000080051be                USBD_LL_CloseEP
  .text.USBD_LL_StallEP
-                0x00000000080051fc       0x3e Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080051fc       0x3e Core/Src/main.o
                 0x00000000080051fc                USBD_LL_StallEP
  .text.USBD_LL_ClearStallEP
-                0x000000000800523a       0x3e Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800523a       0x3e Core/Src/main.o
                 0x000000000800523a                USBD_LL_ClearStallEP
  .text.USBD_LL_IsStallEP
-                0x0000000008005278       0x58 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005278       0x58 Core/Src/main.o
                 0x0000000008005278                USBD_LL_IsStallEP
  .text.USBD_LL_SetUSBAddress
-                0x00000000080052d0       0x3e Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080052d0       0x3e Core/Src/main.o
                 0x00000000080052d0                USBD_LL_SetUSBAddress
  .text.USBD_LL_Transmit
-                0x000000000800530e       0x46 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800530e       0x46 Core/Src/main.o
                 0x000000000800530e                USBD_LL_Transmit
  .text.USBD_LL_PrepareReceive
-                0x0000000008005354       0x46 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005354       0x46 Core/Src/main.o
                 0x0000000008005354                USBD_LL_PrepareReceive
  *fill*         0x000000000800539a        0x2 
  .text.USBD_static_malloc
-                0x000000000800539c       0x18 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800539c       0x18 Core/Src/main.o
                 0x000000000800539c                USBD_static_malloc
  .text.USBD_Get_USB_Status
-                0x00000000080053b4       0x58 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080053b4       0x58 Core/Src/main.o
  .text.USBD_StdDevReq
-                0x000000000800540c       0xd4 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800540c       0xd4 Core/Src/main.o
                 0x000000000800540c                USBD_StdDevReq
  .text.USBD_StdItfReq
-                0x00000000080054e0       0x90 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080054e0       0x90 Core/Src/main.o
                 0x00000000080054e0                USBD_StdItfReq
  .text.USBD_StdEPReq
-                0x0000000008005570      0x2c6 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005570      0x2c6 Core/Src/main.o
                 0x0000000008005570                USBD_StdEPReq
  *fill*         0x0000000008005836        0x2 
  .text.USBD_GetDescriptor
-                0x0000000008005838      0x2d0 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005838      0x2d0 Core/Src/main.o
  .text.USBD_SetAddress
-                0x0000000008005b08       0x86 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005b08       0x86 Core/Src/main.o
  *fill*         0x0000000008005b8e        0x2 
  .text.USBD_SetConfig
-                0x0000000008005b90      0x11c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005b90      0x11c Core/Src/main.o
  .text.USBD_GetConfig
-                0x0000000008005cac       0x6a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005cac       0x6a Core/Src/main.o
  .text.USBD_GetStatus
-                0x0000000008005d16       0x66 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005d16       0x66 Core/Src/main.o
  .text.USBD_SetFeature
-                0x0000000008005d7c       0x28 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005d7c       0x28 Core/Src/main.o
  .text.USBD_ClrFeature
-                0x0000000008005da4       0x42 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005da4       0x42 Core/Src/main.o
  .text.USBD_CtlError
-                0x0000000008005de6       0x22 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005de6       0x22 Core/Src/main.o
                 0x0000000008005de6                USBD_CtlError
  .text.USBD_ParseSetupRequest
-                0x0000000008005e08       0x78 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005e08       0x78 Core/Src/main.o
                 0x0000000008005e08                USBD_ParseSetupRequest
  .text.USBD_GetString
-                0x0000000008005e80       0x84 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005e80       0x84 Core/Src/main.o
                 0x0000000008005e80                USBD_GetString
  .text.USBD_GetLen
-                0x0000000008005f04       0x2e Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005f04       0x2e Core/Src/main.o
  *fill*         0x0000000008005f32        0x2 
  .text.USBD_FS_DeviceDescriptor
-                0x0000000008005f34       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005f34       0x24 Core/Src/main.o
                 0x0000000008005f34                USBD_FS_DeviceDescriptor
  .text.USBD_FS_LangIDStrDescriptor
-                0x0000000008005f58       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005f58       0x24 Core/Src/main.o
                 0x0000000008005f58                USBD_FS_LangIDStrDescriptor
  .text.USBD_FS_ProductStrDescriptor
-                0x0000000008005f7c       0x28 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005f7c       0x28 Core/Src/main.o
                 0x0000000008005f7c                USBD_FS_ProductStrDescriptor
  .text.USBD_FS_ManufacturerStrDescriptor
-                0x0000000008005fa4       0x28 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005fa4       0x28 Core/Src/main.o
                 0x0000000008005fa4                USBD_FS_ManufacturerStrDescriptor
  .text.USBD_FS_SerialStrDescriptor
-                0x0000000008005fcc       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005fcc       0x24 Core/Src/main.o
                 0x0000000008005fcc                USBD_FS_SerialStrDescriptor
  .text.USBD_FS_ConfigStrDescriptor
-                0x0000000008005ff0       0x28 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008005ff0       0x28 Core/Src/main.o
                 0x0000000008005ff0                USBD_FS_ConfigStrDescriptor
  .text.USBD_FS_InterfaceStrDescriptor
-                0x0000000008006018       0x28 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006018       0x28 Core/Src/main.o
                 0x0000000008006018                USBD_FS_InterfaceStrDescriptor
  .text.Get_SerialNum
-                0x0000000008006040       0x58 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006040       0x58 Core/Src/main.o
  .text.IntToUnicode
-                0x0000000008006098       0x7c Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006098       0x7c Core/Src/main.o
  .text.USBD_HID_Init
-                0x0000000008006114       0x4e Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006114       0x4e Core/Src/main.o
  .text.USBD_HID_DeInit
-                0x0000000008006162       0x36 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006162       0x36 Core/Src/main.o
  .text.USBD_HID_Setup
-                0x0000000008006198      0x1fc Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006198      0x1fc Core/Src/main.o
  .text.USBD_HID_SendReport
-                0x0000000008006394       0x44 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006394       0x44 Core/Src/main.o
                 0x0000000008006394                USBD_HID_SendReport
  .text.USBD_HID_GetFSCfgDesc
-                0x00000000080063d8       0x20 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080063d8       0x20 Core/Src/main.o
  .text.USBD_HID_GetHSCfgDesc
-                0x00000000080063f8       0x20 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080063f8       0x20 Core/Src/main.o
  .text.USBD_HID_GetOtherSpeedCfgDesc
-                0x0000000008006418       0x20 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006418       0x20 Core/Src/main.o
  .text.USBD_HID_DataIn
-                0x0000000008006438       0x22 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006438       0x22 Core/Src/main.o
  *fill*         0x000000000800645a        0x2 
  .text.USBD_HID_GetDeviceQualifierDesc
-                0x000000000800645c       0x20 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800645c       0x20 Core/Src/main.o
  .text.USBD_CtlSendData
-                0x000000000800647c       0x38 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000800647c       0x38 Core/Src/main.o
                 0x000000000800647c                USBD_CtlSendData
  .text.USBD_CtlContinueSendData
-                0x00000000080064b4       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080064b4       0x24 Core/Src/main.o
                 0x00000000080064b4                USBD_CtlContinueSendData
  .text.USBD_CtlContinueRx
-                0x00000000080064d8       0x24 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080064d8       0x24 Core/Src/main.o
                 0x00000000080064d8                USBD_CtlContinueRx
  .text.USBD_CtlSendStatus
-                0x00000000080064fc       0x26 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080064fc       0x26 Core/Src/main.o
                 0x00000000080064fc                USBD_CtlSendStatus
  .text.USBD_CtlReceiveStatus
-                0x0000000008006522       0x26 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000008006522       0x26 Core/Src/main.o
                 0x0000000008006522                USBD_CtlReceiveStatus
  .text.SysTick_Handler
                 0x0000000008006548        0xc Core/Src/main.o
@@ -620,16 +586,16 @@ LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
 .rodata         0x00000000080067b4       0x6c
                 0x00000000080067b4                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x00000000080067b4       0x46 Core/Src/IncludesForDrivers/usbd_core.o
+ .rodata        0x00000000080067b4       0x46 Core/Src/main.o
  *(.rodata*)
  *fill*         0x00000000080067fa        0x2 
  .rodata.AHBPrescTable
-                0x00000000080067fc       0x10 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000080067fc       0x10 Core/Src/main.o
                 0x00000000080067fc                AHBPrescTable
- .rodata.aPLLMULFactorTable.5481
-                0x000000000800680c       0x10 Core/Src/IncludesForDrivers/usbd_core.o
- .rodata.aPredivFactorTable.5482
-                0x000000000800681c        0x2 Core/Src/IncludesForDrivers/usbd_core.o
+ .rodata.aPLLMULFactorTable.5441
+                0x000000000800680c       0x10 Core/Src/main.o
+ .rodata.aPredivFactorTable.5442
+                0x000000000800681c        0x2 Core/Src/main.o
                 0x0000000008006820                . = ALIGN (0x4)
  *fill*         0x000000000800681e        0x2 
 
@@ -680,48 +646,48 @@ LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  *(.data)
  *(.data*)
  .data.SystemCoreClock
-                0x0000000020000000        0x4 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000000        0x4 Core/Src/main.o
                 0x0000000020000000                SystemCoreClock
  .data.uwTickPrio
-                0x0000000020000004        0x4 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000004        0x4 Core/Src/main.o
                 0x0000000020000004                uwTickPrio
  .data.uwTickFreq
-                0x0000000020000008        0x1 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000008        0x1 Core/Src/main.o
                 0x0000000020000008                uwTickFreq
  *fill*         0x0000000020000009        0x3 
- .data.FS_Desc  0x000000002000000c       0x1c Core/Src/IncludesForDrivers/usbd_core.o
+ .data.FS_Desc  0x000000002000000c       0x1c Core/Src/main.o
                 0x000000002000000c                FS_Desc
  .data.USBD_FS_DeviceDesc
-                0x0000000020000028       0x12 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000028       0x12 Core/Src/main.o
                 0x0000000020000028                USBD_FS_DeviceDesc
  *fill*         0x000000002000003a        0x2 
  .data.USBD_LangIDDesc
-                0x000000002000003c        0x4 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000002000003c        0x4 Core/Src/main.o
                 0x000000002000003c                USBD_LangIDDesc
  .data.USBD_StringSerial
-                0x0000000020000040       0x1a Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000040       0x1a Core/Src/main.o
                 0x0000000020000040                USBD_StringSerial
  *fill*         0x000000002000005a        0x2 
  .data.USBD_HID
-                0x000000002000005c       0x38 Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000002000005c       0x38 Core/Src/main.o
                 0x000000002000005c                USBD_HID
  .data.USBD_HID_CfgFSDesc
-                0x0000000020000094       0x22 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000094       0x22 Core/Src/main.o
  *fill*         0x00000000200000b6        0x2 
  .data.USBD_HID_CfgHSDesc
-                0x00000000200000b8       0x22 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000200000b8       0x22 Core/Src/main.o
  *fill*         0x00000000200000da        0x2 
  .data.USBD_HID_OtherSpeedCfgDesc
-                0x00000000200000dc       0x22 Core/Src/IncludesForDrivers/usbd_core.o
+                0x00000000200000dc       0x22 Core/Src/main.o
  *fill*         0x00000000200000fe        0x2 
  .data.USBD_HID_Desc
-                0x0000000020000100        0x9 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000100        0x9 Core/Src/main.o
  *fill*         0x0000000020000109        0x3 
  .data.USBD_HID_DeviceQualifierDesc
-                0x000000002000010c        0xa Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000002000010c        0xa Core/Src/main.o
  *fill*         0x0000000020000116        0x2 
  .data.HID_MOUSE_ReportDesc
-                0x0000000020000118       0x3f Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000020000118       0x3f Core/Src/main.o
  *(.RamFunc)
  *(.RamFunc*)
                 0x0000000020000158                . = ALIGN (0x4)
@@ -738,15 +704,15 @@ LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  *(.bss)
  .bss           0x0000000020000158       0x1c c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crtbegin.o
  *(.bss*)
- .bss.mem.6102  0x0000000020000174       0x14 Core/Src/IncludesForDrivers/usbd_core.o
- .bss.cfgidx.6230
-                0x0000000020000188        0x1 Core/Src/IncludesForDrivers/usbd_core.o
- *fill*         0x0000000020000189        0x3 
  .bss.keyboardhid
-                0x000000002000018c        0x8 Core/Src/main.o
-                0x000000002000018c                keyboardhid
+                0x0000000020000174        0x8 Core/Src/main.o
+                0x0000000020000174                keyboardhid
+ .bss.mem.6062  0x000000002000017c       0x14 Core/Src/main.o
+ .bss.cfgidx.6190
+                0x0000000020000190        0x1 Core/Src/main.o
  *(COMMON)
- COMMON         0x0000000020000194      0x7b8 Core/Src/IncludesForDrivers/usbd_core.o
+ *fill*         0x0000000020000191        0x3 
+ COMMON         0x0000000020000194      0x7b8 Core/Src/main.o
                 0x0000000020000194                hUsbDeviceFS
                 0x0000000020000458                uwTick
                 0x000000002000045c                hpcd_USB_FS
@@ -780,82 +746,59 @@ LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .ARM.attributes
                 0x000000000000001d       0x2d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crtbegin.o
  .ARM.attributes
-                0x000000000000004a       0x2d Core/Src/IncludesForDrivers/usbd_core.o
+                0x000000000000004a       0x2d Core/Src/main.o
  .ARM.attributes
-                0x0000000000000077       0x2d Core/Src/main.o
+                0x0000000000000077       0x21 Core/Startup/startup_stm32f103c8tx.o
  .ARM.attributes
-                0x00000000000000a4       0x21 Core/Startup/startup_stm32f103c8tx.o
+                0x0000000000000098       0x2d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-init.o)
  .ARM.attributes
-                0x00000000000000c5       0x2d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-init.o)
+                0x00000000000000c5       0x2d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-memset.o)
  .ARM.attributes
-                0x00000000000000f2       0x2d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-memset.o)
- .ARM.attributes
-                0x000000000000011f       0x1d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crtn.o
+                0x00000000000000f2       0x1d c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp/crtn.o
 OUTPUT(usb_test.elf elf32-littlearm)
 LOAD linker stubs
 LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc.a
 LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libm.a
 LOAD c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7-m/nofp\libgcc.a
 
-.debug_info     0x0000000000000000     0x59b0
- .debug_info    0x0000000000000000     0x4be3 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_info    0x0000000000004be3      0xdab Core/Src/main.o
- .debug_info    0x000000000000598e       0x22 Core/Startup/startup_stm32f103c8tx.o
+.debug_info     0x0000000000000000     0x4da1
+ .debug_info    0x0000000000000000     0x4d7f Core/Src/main.o
+ .debug_info    0x0000000000004d7f       0x22 Core/Startup/startup_stm32f103c8tx.o
 
-.debug_abbrev   0x0000000000000000      0x680
- .debug_abbrev  0x0000000000000000      0x3e4 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_abbrev  0x00000000000003e4      0x28a Core/Src/main.o
- .debug_abbrev  0x000000000000066e       0x12 Core/Startup/startup_stm32f103c8tx.o
+.debug_abbrev   0x0000000000000000      0x486
+ .debug_abbrev  0x0000000000000000      0x474 Core/Src/main.o
+ .debug_abbrev  0x0000000000000474       0x12 Core/Startup/startup_stm32f103c8tx.o
 
-.debug_aranges  0x0000000000000000      0x460
+.debug_aranges  0x0000000000000000      0x448
  .debug_aranges
-                0x0000000000000000      0x3e8 Core/Src/IncludesForDrivers/usbd_core.o
+                0x0000000000000000      0x420 Core/Src/main.o
  .debug_aranges
-                0x00000000000003e8       0x50 Core/Src/main.o
- .debug_aranges
-                0x0000000000000438       0x28 Core/Startup/startup_stm32f103c8tx.o
+                0x0000000000000420       0x28 Core/Startup/startup_stm32f103c8tx.o
 
-.debug_ranges   0x0000000000000000      0x438
- .debug_ranges  0x0000000000000000      0x3d8 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_ranges  0x00000000000003d8       0x40 Core/Src/main.o
- .debug_ranges  0x0000000000000418       0x20 Core/Startup/startup_stm32f103c8tx.o
+.debug_ranges   0x0000000000000000      0x430
+ .debug_ranges  0x0000000000000000      0x410 Core/Src/main.o
+ .debug_ranges  0x0000000000000410       0x20 Core/Startup/startup_stm32f103c8tx.o
 
-.debug_macro    0x0000000000000000     0x5a8a
- .debug_macro   0x0000000000000000       0xb3 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x00000000000000b3      0xa9c Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000b4f       0x22 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000b71       0x8e Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000bff       0x51 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000c50      0x103 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000d53       0x6a Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000dbd      0x1df Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000000f9c      0x1d8 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000001174       0x82 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x00000000000011f6     0x4243 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x0000000000005439      0x2e2 Core/Src/IncludesForDrivers/usbd_core.o
- .debug_macro   0x000000000000571b       0x93 Core/Src/main.o
- .debug_macro   0x00000000000057ae      0x2dc Core/Src/main.o
+.debug_macro    0x0000000000000000     0x52ca
+ .debug_macro   0x0000000000000000       0x48 Core/Src/main.o
+ .debug_macro   0x0000000000000048      0xa9c Core/Src/main.o
+ .debug_macro   0x0000000000000ae4     0x47e6 Core/Src/main.o
 
-.debug_line     0x0000000000000000     0x3573
- .debug_line    0x0000000000000000     0x2f6f Core/Src/IncludesForDrivers/usbd_core.o
- .debug_line    0x0000000000002f6f      0x57f Core/Src/main.o
- .debug_line    0x00000000000034ee       0x85 Core/Startup/startup_stm32f103c8tx.o
+.debug_line     0x0000000000000000     0x2deb
+ .debug_line    0x0000000000000000     0x2d66 Core/Src/main.o
+ .debug_line    0x0000000000002d66       0x85 Core/Startup/startup_stm32f103c8tx.o
 
-.debug_str      0x0000000000000000    0x20bf0
- .debug_str     0x0000000000000000    0x20b01 Core/Src/IncludesForDrivers/usbd_core.o
-                                      0x20f0b (size before relaxing)
- .debug_str     0x0000000000020b01       0xb9 Core/Src/main.o
-                                      0x1fdb5 (size before relaxing)
- .debug_str     0x0000000000020bba       0x36 Core/Startup/startup_stm32f103c8tx.o
-                                         0x88 (size before relaxing)
+.debug_str      0x0000000000000000    0x1fd28
+ .debug_str     0x0000000000000000    0x1fcf2 Core/Src/main.o
+                                      0x20026 (size before relaxing)
+ .debug_str     0x000000000001fcf2       0x36 Core/Startup/startup_stm32f103c8tx.o
+                                         0x6e (size before relaxing)
 
 .comment        0x0000000000000000       0x53
- .comment       0x0000000000000000       0x53 Core/Src/IncludesForDrivers/usbd_core.o
+ .comment       0x0000000000000000       0x53 Core/Src/main.o
                                          0x54 (size before relaxing)
- .comment       0x0000000000000053       0x54 Core/Src/main.o
 
-.debug_frame    0x0000000000000000     0x1328
- .debug_frame   0x0000000000000000     0x11fc Core/Src/IncludesForDrivers/usbd_core.o
- .debug_frame   0x00000000000011fc       0xe0 Core/Src/main.o
- .debug_frame   0x00000000000012dc       0x2c c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-init.o)
- .debug_frame   0x0000000000001308       0x20 c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-memset.o)
+.debug_frame    0x0000000000000000     0x1318
+ .debug_frame   0x0000000000000000     0x12cc Core/Src/main.o
+ .debug_frame   0x00000000000012cc       0x2c c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-init.o)
+ .debug_frame   0x00000000000012f8       0x20 c:/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(lib_a-memset.o)
