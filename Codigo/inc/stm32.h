@@ -234,9 +234,9 @@ typedef enum
 
 #define RCC_SYSCLKSOURCE_HSE RCC_CFGR_SW_HSE /*!< HSE selected as system clock */
 
-#define RCC_SYSCLKSOURCE_STATUS_HSI RCC_CFGR_SWS_HSI                          /*!< HSI used as system clock */
-#define RCC_SYSCLKSOURCE_STATUS_HSE RCC_CFGR_SWS_HSE                          /*!< HSE used as system clock */
-#define RCC_SYSCLKSOURCE_STATUS_PLLCLK RCC_CFGR_SWS_PLL                       /*!< PLL used as system clock */
+#define RCC_SYSCLKSOURCE_STATUS_HSI 0x00000000U                          /*!< HSI used as system clock */
+#define RCC_SYSCLKSOURCE_STATUS_HSE 0x00000004U                          /*!< HSE used as system clock */
+#define RCC_SYSCLKSOURCE_STATUS_PLLCLK 0x00000008U                       /*!< PLL used as system clock */
 #define RCC_HCLK_DIV16 RCC_CFGR_PPRE1_DIV16                                   /*!< HCLK divided by 16 */
 #define RCC_FLAG_HSIRDY ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_HSIRDY_Pos)) /*!< Internal High Speed clock ready flag */
 #define RCC_FLAG_HSERDY ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_HSERDY_Pos)) /*!< External High Speed clock ready flag */

@@ -9,27 +9,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #define assert_param(expr) ((void)0U)
 
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
@@ -321,97 +300,6 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct)
       __HAL_RCC_PWR_CLK_DISABLE();
     }
   }
-
-#if defined(RCC_CR_PLL2ON)
-  /*-------------------------------- PLL2 Configuration -----------------------*/
-  /* Check the parameters */
-  assert_param(IS_RCC_PLL2(RCC_OscInitStruct->PLL2.PLL2State));
-  if ((RCC_OscInitStruct->PLL2.PLL2State) != RCC_PLL2_NONE)
-  {
-    /* This bit can not be cleared if the PLL2 clock is used indirectly as system
-      clock (i.e. it is used as PLL clock entry that is used as system clock). */
-    if ((__HAL_RCC_GET_PLL_OSCSOURCE() == RCC_PLLSOURCE_HSE) &&
-        (__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_SYSCLKSOURCE_STATUS_PLLCLK) &&
-        ((READ_BIT(RCC->CFGR2, RCC_CFGR2_PREDIV1SRC)) == RCC_CFGR2_PREDIV1SRC_PLL2))
-    {
-      return HAL_ERROR;
-    }
-    else
-    {
-      if ((RCC_OscInitStruct->PLL2.PLL2State) == RCC_PLL2_ON)
-      {
-        /* Check the parameters */
-        assert_param(IS_RCC_PLL2_MUL(RCC_OscInitStruct->PLL2.PLL2MUL));
-        assert_param(IS_RCC_HSE_PREDIV2(RCC_OscInitStruct->PLL2.HSEPrediv2Value));
-
-        /* Prediv2 can be written only when the PLLI2S is disabled. */
-        /* Return an error only if new value is different from the programmed value */
-        if (HAL_IS_BIT_SET(RCC->CR, RCC_CR_PLL3ON) &&
-            (__HAL_RCC_HSE_GET_PREDIV2() != RCC_OscInitStruct->PLL2.HSEPrediv2Value))
-        {
-          return HAL_ERROR;
-        }
-
-        /* Disable the main PLL2. */
-        __HAL_RCC_PLL2_DISABLE();
-
-        /* Get Start Tick */
-        tickstart = HAL_GetTick();
-
-        /* Wait till PLL2 is disabled */
-        while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLL2RDY) != RESET)
-        {
-          if ((HAL_GetTick() - tickstart) > PLL2_TIMEOUT_VALUE)
-          {
-            return HAL_TIMEOUT;
-          }
-        }
-
-        /* Configure the HSE prediv2 factor --------------------------------*/
-        __HAL_RCC_HSE_PREDIV2_CONFIG(RCC_OscInitStruct->PLL2.HSEPrediv2Value);
-
-        /* Configure the main PLL2 multiplication factors. */
-        __HAL_RCC_PLL2_CONFIG(RCC_OscInitStruct->PLL2.PLL2MUL);
-
-        /* Enable the main PLL2. */
-        __HAL_RCC_PLL2_ENABLE();
-
-        /* Get Start Tick */
-        tickstart = HAL_GetTick();
-
-        /* Wait till PLL2 is ready */
-        while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLL2RDY) == RESET)
-        {
-          if ((HAL_GetTick() - tickstart) > PLL2_TIMEOUT_VALUE)
-          {
-            return HAL_TIMEOUT;
-          }
-        }
-      }
-      else
-      {
-        /* Set PREDIV1 source to HSE */
-        CLEAR_BIT(RCC->CFGR2, RCC_CFGR2_PREDIV1SRC);
-
-        /* Disable the main PLL2. */
-        __HAL_RCC_PLL2_DISABLE();
-
-        /* Get Start Tick */
-        tickstart = HAL_GetTick();
-
-        /* Wait till PLL2 is disabled */
-        while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLL2RDY) != RESET)
-        {
-          if ((HAL_GetTick() - tickstart) > PLL2_TIMEOUT_VALUE)
-          {
-            return HAL_TIMEOUT;
-          }
-        }
-      }
-    }
-  }
-
-#endif /* RCC_CR_PLL2ON */
   /*-------------------------------- PLL Configuration -----------------------*/
   /* Check the parameters */
   assert_param(IS_RCC_PLL(RCC_OscInitStruct->PLL.PLLState));
@@ -447,14 +335,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct)
         {
           /* Check the parameter */
           assert_param(IS_RCC_HSE_PREDIV(RCC_OscInitStruct->HSEPredivValue));
-#if defined(RCC_CFGR2_PREDIV1SRC)
-          assert_param(IS_RCC_PREDIV1_SOURCE(RCC_OscInitStruct->Prediv1Source));
-
-          /* Set PREDIV1 source */
-          SET_BIT(RCC->CFGR2, RCC_OscInitStruct->Prediv1Source);
-#endif /* RCC_CFGR2_PREDIV1SRC */
-
-          /* Set PREDIV1 Value */
+           /* Set PREDIV1 Value */
           __HAL_RCC_HSE_PREDIV_CONFIG(RCC_OscInitStruct->HSEPredivValue);
         }
 
@@ -4063,7 +3944,7 @@ int main(void)
     HAL_Delay(200);
     keyboardhid.KeyCode1 = 0x2C;
     keyboardhid.KeyCode2 = 0x0B;
-    keyboardhid.KeyCode3 = 0x12;
+    //keyboardhid.KeyCode3 = 0x12; hla hla
     keyboardhid.KeyCode4 = 0x0F;
     keyboardhid.KeyCode5 = 0x04;
     USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
