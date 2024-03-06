@@ -2,13 +2,13 @@
 //#include "inc/stm32.h"
 
 void SystemClock_Config(void);
-// void USB_DEVICE_Init(void);
+void USB_DEVICE_Init(void);
 void Error_Handler();
 
 int main(void)
 {    
   SystemClock_Config();
-  // USB_DEVICE_Init();
+  USB_DEVICE_Init();
   RCC->APB2ENR |= (1<<4);               //Enable clock for GPIOC
   GPIOC->CRH = (3 << 4*(13-8));         //C13  output
 
@@ -23,7 +23,6 @@ int main(void)
   }
   return 0;
 }
-
 
 void SystemClock_Config(void)
 {
@@ -60,15 +59,15 @@ void SystemClock_Config(void)
 
 void USB_DEVICE_Init(void)
 {
-  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK){
-    Error_Handler();
-    }
-  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_HID) != USBD_OK){
-    Error_Handler();
-    }
-  if (USBD_Start(&hUsbDeviceFS) != USBD_OK){
-    Error_Handler();
-    }
+  // if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK){
+  //   Error_Handler();
+  //   }
+  // if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_HID) != USBD_OK){
+  //   Error_Handler();
+  //   }
+  // if (USBD_Start(&hUsbDeviceFS) != USBD_OK){
+  //   Error_Handler();
+  //   }
 }
 
 void Error_Handler(){

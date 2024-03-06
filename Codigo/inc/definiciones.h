@@ -75,15 +75,13 @@ volatile int Time_1ms = 1000;
 
 
 
-typedef struct
-{
+typedef struct{
   uint32_t PLLState;
   uint32_t PLLSource;
   uint32_t PLLMUL;
 } RCC_PLLInitTypeDef;
 
-typedef struct
-{
+typedef struct{
   uint32_t OscillatorType;
   uint32_t HSEState;
   uint32_t HSEPredivValue;
@@ -94,16 +92,14 @@ typedef struct
   RCC_PLLInitTypeDef PLL;
 } RCC_OscInitTypeDef;
 
-typedef struct
-{
+typedef struct{
   uint32_t PeriphClockSelection;
   uint32_t RTCClockSelection;
   uint32_t AdcClockSelection;
   uint32_t UsbClockSelection;
 } RCC_PeriphCLKInitTypeDef;
 
-typedef struct
-{
+typedef struct{
   uint32_t ClockType;
   uint32_t SYSCLKSource;
   uint32_t AHBCLKDivider;
@@ -112,8 +108,7 @@ typedef struct
 } RCC_ClkInitTypeDef;
 
 
-typedef enum
-{
+typedef enum{
   HAL_OK      = 0x00U,
   HAL_ERROR   = 0x01U,
   HAL_BUSY    = 0x02U,
@@ -184,21 +179,18 @@ const uint8_t APBPrescTable[8U] = {0, 0, 0, 0, 1, 2, 3, 4};
 
 #define RCC_FLAG_HSERDY ((uint8_t)((CR_REG_INDEX << 5U) | RCC_CR_HSERDY_Pos)) /*!< External High Speed clock ready flag */
 
-typedef enum
-{
+typedef enum{
   RESET = 0,
   SET = !RESET
 } FlagStatus,
     ITStatus;
 
-typedef enum
-{
+typedef enum{
   DISABLE = 0,
   ENABLE = !DISABLE
 } FunctionalState;
 
-typedef struct
-{
+typedef struct{
   volatile uint32_t CR;
   volatile uint32_t CSR;
 } PWR_TypeDef;
@@ -319,24 +311,21 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct);
 //
 //
 
-typedef enum
-{
+typedef enum{
   USBD_SPEED_HIGH = 0U,
   USBD_SPEED_FULL = 1U,
   USBD_SPEED_LOW = 2U,
 } USBD_SpeedTypeDef;
 
 /* Following USB Device status */
-typedef enum
-{
+typedef enum{
   USBD_OK = 0U,
   USBD_BUSY,
   USBD_FAIL,
 } USBD_StatusTypeDef;
 
 /* USB Device descriptors structure */
-typedef struct
-{
+typedef struct{
   uint8_t *(*GetDeviceDescriptor)            (USBD_SpeedTypeDef speed, uint16_t *length);
   uint8_t *(*GetLangIDStrDescriptor)         (USBD_SpeedTypeDef speed, uint16_t *length);
   uint8_t *(*GetManufacturerStrDescriptor)   (USBD_SpeedTypeDef speed, uint16_t *length);
@@ -347,8 +336,7 @@ typedef struct
 } USBD_DescriptorsTypeDef;
 
 
-typedef struct usb_setup_req
-{
+typedef struct usb_setup_req{
   uint8_t bmRequest;
   uint8_t bRequest;
   uint16_t wValue;
@@ -356,8 +344,7 @@ typedef struct usb_setup_req
   uint16_t wLength;
 } USBD_SetupReqTypedef;
 
-typedef struct
-{
+typedef struct{
   uint32_t status;
   uint32_t is_used;
   uint32_t total_length;
@@ -366,8 +353,7 @@ typedef struct
 } USBD_EndpointTypeDef;
 
 
-typedef struct _Device_cb
-{
+typedef struct _Device_cb{
   uint8_t (*Init)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
   uint8_t (*DeInit)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
   uint8_t (*Setup)(struct _USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
@@ -385,8 +371,7 @@ typedef struct _Device_cb
 } USBD_ClassTypeDef;
 
 
-typedef struct _USBD_HandleTypeDef
-{
+typedef struct _USBD_HandleTypeDef{
   uint8_t id;
   uint32_t dev_config;
   uint32_t dev_default_config;
@@ -411,27 +396,48 @@ typedef struct _USBD_HandleTypeDef
 } USBD_HandleTypeDef;
 
 
-typedef enum
-{
+typedef enum{
   HID_IDLE = 0,
   HID_BUSY,
 } HID_StateTypeDef;
 
-typedef struct
-{
+typedef struct{
   uint32_t Protocol;
   uint32_t IdleState;
   uint32_t AltSetting;
   HID_StateTypeDef state;
 } USBD_HID_HandleTypeDef;
 
-extern USBD_ClassTypeDef USBD_HID;
-#define USBD_HID_CLASS &USBD_HID
-
-
 #define DEVICE_FS 0
 
-USBD_HandleTypeDef hUsbDeviceFS;
 
 extern USBD_DescriptorsTypeDef FS_Desc;
 
+
+USBD_HandleTypeDef hUsbDeviceFS;
+
+static uint8_t  USBD_HID_Init					(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+static uint8_t  USBD_HID_DeInit					(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+static uint8_t  USBD_HID_Setup					(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static uint8_t  USBD_HID_DataIn					(USBD_HandleTypeDef *pdev, uint8_t epnum);
+static uint8_t  *USBD_HID_GetFSCfgDesc			(uint16_t *length);
+static uint8_t  *USBD_HID_GetHSCfgDesc			(uint16_t *length);
+static uint8_t  *USBD_HID_GetOtherSpeedCfgDesc	(uint16_t *length);
+static uint8_t  *USBD_HID_GetDeviceQualifierDesc(uint16_t *length);
+
+USBD_ClassTypeDef  USBD_HID ={
+  USBD_HID_Init,
+  USBD_HID_DeInit,
+  USBD_HID_Setup,
+  NULL, /*EP0_TxSent*/
+  NULL, /*EP0_RxReady*/
+  USBD_HID_DataIn, /*DataIn*/
+  NULL, /*DataOut*/
+  NULL, /*SOF */
+  NULL,
+  NULL,
+  USBD_HID_GetHSCfgDesc,
+  USBD_HID_GetFSCfgDesc,
+  USBD_HID_GetOtherSpeedCfgDesc,
+  USBD_HID_GetDeviceQualifierDesc,
+};

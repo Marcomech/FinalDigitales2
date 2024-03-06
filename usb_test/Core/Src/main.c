@@ -1,11 +1,6 @@
-#define NULL 0
+//#define NULL 0
 
 #include "includes/stm32.h"
-
-//#include "Inc_USB_Device.h"
-//#include "Inc_Clock_Config.h"
-
-//#include "includes/USB_core.c"
 
 
 
@@ -57,7 +52,6 @@ uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb)
 
 static void RCC_Delay(uint32_t mdelay);
 
-#define NULL 0
 HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct)
 {
   uint32_t tickstart;
@@ -397,7 +391,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct)
 
   return HAL_OK;
 }
-
+//
 HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency)
 {
   uint32_t tickstart;
@@ -1001,7 +995,7 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd)
     return;
   }
 }
-
+//
 HAL_StatusTypeDef HAL_PCD_SetAddress(PCD_HandleTypeDef *hpcd, uint8_t address)
 {
   __HAL_LOCK(hpcd);
@@ -1792,7 +1786,7 @@ HAL_StatusTypeDef USB_DevInit(USB_TypeDef *USBx, USB_CfgTypeDef cfg){
 
   return HAL_OK;
 }
-
+//
 HAL_StatusTypeDef USB_ActivateEndpoint(USB_TypeDef *USBx, USB_EPTypeDef *ep){
   HAL_StatusTypeDef ret = HAL_OK;
   uint16_t wEpRegVal;
@@ -2254,7 +2248,7 @@ HAL_StatusTypeDef USB_DevDisconnect(USB_TypeDef *USBx){
 
   return HAL_OK;
 }
-
+//
 uint32_t USB_ReadInterrupts(USB_TypeDef const *USBx){
   uint32_t tmpreg;
 
@@ -2543,7 +2537,7 @@ USBD_StatusTypeDef USBD_LL_Reset(USBD_HandleTypeDef *pdev){
   }
   return USBD_OK;
 }
-
+//
 USBD_StatusTypeDef USBD_LL_SetSpeed(USBD_HandleTypeDef *pdev, USBD_SpeedTypeDef speed){
   pdev->dev_speed = speed;
   return USBD_OK;
@@ -2574,7 +2568,7 @@ USBD_StatusTypeDef USBD_LL_SOF(USBD_HandleTypeDef *pdev){
 
 PCD_HandleTypeDef hpcd_USB_FS;
 static USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status);
-
+//
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle){
   if(pcdHandle->Instance==USB)  {
     __HAL_RCC_USB_CLK_ENABLE();
@@ -2618,7 +2612,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd){
 void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd){
   USBD_LL_Resume((USBD_HandleTypeDef*)hpcd->pData);
 }
-
+//
 HAL_StatusTypeDef  HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd, uint16_t ep_addr, uint16_t ep_kind, uint32_t pmaadress){
   PCD_EPTypeDef *ep;
   if ((0x80U & ep_addr) == 0x80U)  {
@@ -2757,6 +2751,7 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status){
   }
   return usb_status;
 }
+
 static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
 static void USBD_SetAddress(USBD_HandleTypeDef *pdev,    USBD_SetupReqTypedef *req);
 static void USBD_SetConfig(USBD_HandleTypeDef *pdev,     USBD_SetupReqTypedef *req);
@@ -3939,12 +3934,12 @@ int main(void)
 
   uint8_t report[sizeof(keyboardHID)];
 
-  for (volatile int i = 0; i <= 2; i++)
+  for (volatile int i = 0; i <= 4; i++)
   {
     HAL_Delay(200);
     keyboardhid.KeyCode1 = 0x2C;
     keyboardhid.KeyCode2 = 0x0B;
-    //keyboardhid.KeyCode3 = 0x12; hla hla
+    keyboardhid.KeyCode3 = 0x12;
     keyboardhid.KeyCode4 = 0x0F;
     keyboardhid.KeyCode5 = 0x04;
     USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
