@@ -1,14 +1,131 @@
-//#define NULL 0
+#include "includes/defines.h"
+#include "includes/types.h"
+#include "includes/functions.h"
 
-#include "includes/stm32.h"
+void SystemInit(void) {}
+
+void SystemClock_Config(void);
+void USB_DEVICE_Init(void);
+void Error_Handler();
+
+PCD_HandleTypeDef hpcd_USB_FS;
+static USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status);
 
 
+void SysTick_Handler(void)
+{
+	HAL_IncTick();
+}
 
-#define assert_param(expr) ((void)0U)
+void USB_LP_CAN1_RX0_IRQHandler(void)
+{
+	HAL_PCD_IRQHandler(&hpcd_USB_FS);
+}
+
+keyboardHID keyboardhid = {0, 0, 0, 0, 0, 0, 0, 0};
+
+int main(void)
+{
+  SystemClock_Config();
+  USB_DEVICE_Init();
+
+  uint8_t report[sizeof(keyboardHID)];
+
+  for (volatile int i = 0; i <= 3; i++)
+  {
+    HAL_Delay(200);
+    keyboardhid.KeyCode1 = 0x2C;
+    keyboardhid.KeyCode2 = 0x0B;
+    keyboardhid.KeyCode3 = 0x12;
+    keyboardhid.KeyCode4 = 0x0F;
+    keyboardhid.KeyCode5 = 0x04;
+    USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
+    HAL_Delay(30);
+
+    keyboardhid.KeyCode1 = 0x00;
+    keyboardhid.KeyCode2 = 0x00;
+    keyboardhid.KeyCode3 = 0x00;
+    keyboardhid.KeyCode4 = 0x00;
+    keyboardhid.KeyCode5 = 0x00;
+    USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
+    HAL_Delay(200);
+  }
+  while (1)
+  {
+  }
+}
+
+HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct/*, uint32_t FLatency*/);
+HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
+
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct/*, FLASH_LATENCY_2*/) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
+  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
+
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+void USB_DEVICE_Init(void)
+{
+  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
+  {
+    Error_Handler();
+  }
+  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_HID) != USBD_OK)
+  {
+    Error_Handler();
+  }
+  if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
+  {
+    Error_Handler();
+  }
+}
+
+void Error_Handler()
+{
+  //__disable_irq();
+  while (1)
+  {
+  }
+}
+
+
 
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
 
-extern __IO uint32_t uwTick;
+extern volatile uint32_t uwTick;
 extern uint32_t uwTickPrio;
 extern HAL_TickFreqTypeDef uwTickFreq;
 
@@ -391,9 +508,11 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *RCC_OscInitStruct)
 
   return HAL_OK;
 }
-//
-HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency)
+
+HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct/*, uint32_t FLatency*/)
 {
+  uint32_t FLatency = FLASH_LATENCY_2;
+  
   uint32_t tickstart;
 
   if (RCC_ClkInitStruct == NULL)
@@ -408,7 +527,6 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
   must be correctly programmed according to the frequency of the CPU clock
     (HCLK) of the device. */
 
-#if defined(FLASH_ACR_LATENCY)
   /* Increasing the number of wait states because of higher CPU frequency */
   if (FLatency > __HAL_FLASH_GET_LATENCY())
   {
@@ -423,7 +541,6 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
     }
   }
 
-#endif /* FLASH_ACR_LATENCY */
   /*-------------------------- HCLK Configuration --------------------------*/
   if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_HCLK) == RCC_CLOCKTYPE_HCLK)
   {
@@ -490,7 +607,6 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
     }
   }
 
-#if defined(FLASH_ACR_LATENCY)
   /* Decreasing the number of wait states because of lower CPU frequency */
   if (FLatency < __HAL_FLASH_GET_LATENCY())
   {
@@ -504,7 +620,6 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
       return HAL_ERROR;
     }
   }
-#endif /* FLASH_ACR_LATENCY */
 
   /*-------------------------- PCLK1 Configuration ---------------------------*/
   if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1)
@@ -532,10 +647,6 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
 HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkInit)
 {
   uint32_t tickstart = 0U, temp_reg = 0U;
-#if defined(STM32F105xC) || defined(STM32F107xC)
-  uint32_t pllactive = 0U;
-#endif /* STM32F105xC || STM32F107xC */
-
   /* Check the parameters */
   assert_param(IS_RCC_PERIPHCLOCK(PeriphClkInit->PeriphClockSelection));
 
@@ -620,97 +731,6 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkI
     __HAL_RCC_ADC_CONFIG(PeriphClkInit->AdcClockSelection);
   }
 
-#if defined(STM32F105xC) || defined(STM32F107xC)
-  /*------------------------------ I2S2 Configuration ------------------------*/
-  if (((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_I2S2) == RCC_PERIPHCLK_I2S2)
-  {
-    /* Check the parameters */
-    assert_param(IS_RCC_I2S2CLKSOURCE(PeriphClkInit->I2s2ClockSelection));
-
-    /* Configure the I2S2 clock source */
-    __HAL_RCC_I2S2_CONFIG(PeriphClkInit->I2s2ClockSelection);
-  }
-
-  /*------------------------------ I2S3 Configuration ------------------------*/
-  if (((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_I2S3) == RCC_PERIPHCLK_I2S3)
-  {
-    /* Check the parameters */
-    assert_param(IS_RCC_I2S3CLKSOURCE(PeriphClkInit->I2s3ClockSelection));
-
-    /* Configure the I2S3 clock source */
-    __HAL_RCC_I2S3_CONFIG(PeriphClkInit->I2s3ClockSelection);
-  }
-
-  /*------------------------------ PLL I2S Configuration ----------------------*/
-  /* Check that PLLI2S need to be enabled */
-  if (HAL_IS_BIT_SET(RCC->CFGR2, RCC_CFGR2_I2S2SRC) || HAL_IS_BIT_SET(RCC->CFGR2, RCC_CFGR2_I2S3SRC))
-  {
-    /* Update flag to indicate that PLL I2S should be active */
-    pllactive = 1;
-  }
-
-  /* Check if PLL I2S need to be enabled */
-  if (pllactive == 1)
-  {
-    /* Enable PLL I2S only if not active */
-    if (HAL_IS_BIT_CLR(RCC->CR, RCC_CR_PLL3ON))
-    {
-      /* Check the parameters */
-      assert_param(IS_RCC_PLLI2S_MUL(PeriphClkInit->PLLI2S.PLLI2SMUL));
-      assert_param(IS_RCC_HSE_PREDIV2(PeriphClkInit->PLLI2S.HSEPrediv2Value));
-
-      /* Prediv2 can be written only when the PLL2 is disabled. */
-      /* Return an error only if new value is different from the programmed value */
-      if (HAL_IS_BIT_SET(RCC->CR, RCC_CR_PLL2ON) &&
-          (__HAL_RCC_HSE_GET_PREDIV2() != PeriphClkInit->PLLI2S.HSEPrediv2Value))
-      {
-        return HAL_ERROR;
-      }
-
-      /* Configure the HSE prediv2 factor --------------------------------*/
-      __HAL_RCC_HSE_PREDIV2_CONFIG(PeriphClkInit->PLLI2S.HSEPrediv2Value);
-
-      /* Configure the main PLLI2S multiplication factors. */
-      __HAL_RCC_PLLI2S_CONFIG(PeriphClkInit->PLLI2S.PLLI2SMUL);
-
-      /* Enable the main PLLI2S. */
-      __HAL_RCC_PLLI2S_ENABLE();
-
-      /* Get Start Tick*/
-      tickstart = HAL_GetTick();
-
-      /* Wait till PLLI2S is ready */
-      while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLLI2SRDY) == RESET)
-      {
-        if ((HAL_GetTick() - tickstart) > PLLI2S_TIMEOUT_VALUE)
-        {
-          return HAL_TIMEOUT;
-        }
-      }
-    }
-    else
-    {
-      /* Return an error only if user wants to change the PLLI2SMUL whereas PLLI2S is active */
-      if (READ_BIT(RCC->CFGR2, RCC_CFGR2_PLL3MUL) != PeriphClkInit->PLLI2S.PLLI2SMUL)
-      {
-        return HAL_ERROR;
-      }
-    }
-  }
-#endif /* STM32F105xC || STM32F107xC */
-
-#if defined(STM32F102x6) || defined(STM32F102xB) || defined(STM32F103x6) || defined(STM32F103xB) || defined(STM32F103xE) || defined(STM32F103xG) || defined(STM32F105xC) || defined(STM32F107xC)
-  /*------------------------------ USB clock Configuration ------------------*/
-  if (((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_USB) == RCC_PERIPHCLK_USB)
-  {
-    /* Check the parameters */
-    assert_param(IS_RCC_USBPLLCLK_DIV(PeriphClkInit->UsbClockSelection));
-
-    /* Configure the USB clock source */
-    __HAL_RCC_USB_CONFIG(PeriphClkInit->UsbClockSelection);
-  }
-#endif /* STM32F102x6 || STM32F102xB || STM32F103x6 || STM32F103xB || STM32F103xE || STM32F103xG || STM32F105xC || STM32F107xC */
-
   return HAL_OK;
 }
 
@@ -738,37 +758,9 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
     pllmul = aPLLMULFactorTable[(uint32_t)(tmpreg & RCC_CFGR_PLLMULL) >> RCC_CFGR_PLLMULL_Pos];
     if ((tmpreg & RCC_CFGR_PLLSRC) != RCC_PLLSOURCE_HSI_DIV2)
     {
-#if defined(RCC_CFGR2_PREDIV1)
-      prediv = aPredivFactorTable[(uint32_t)(RCC->CFGR2 & RCC_CFGR2_PREDIV1) >> RCC_CFGR2_PREDIV1_Pos];
-#else
       prediv = aPredivFactorTable[(uint32_t)(RCC->CFGR & RCC_CFGR_PLLXTPRE) >> RCC_CFGR_PLLXTPRE_Pos];
-#endif /*RCC_CFGR2_PREDIV1*/
-#if defined(RCC_CFGR2_PREDIV1SRC)
-
-      if (HAL_IS_BIT_SET(RCC->CFGR2, RCC_CFGR2_PREDIV1SRC))
-      {
-        /* PLL2 selected as Prediv1 source */
-        /* PLLCLK = PLL2CLK / PREDIV1 * PLLMUL with PLL2CLK = HSE/PREDIV2 * PLL2MUL */
-        prediv2 = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> RCC_CFGR2_PREDIV2_Pos) + 1;
-        pll2mul = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> RCC_CFGR2_PLL2MUL_Pos) + 2;
-        pllclk = (uint32_t)(((uint64_t)HSE_VALUE * (uint64_t)pll2mul * (uint64_t)pllmul) / ((uint64_t)prediv2 * (uint64_t)prediv));
-      }
-      else
-      {
-        /* HSE used as PLL clock source : PLLCLK = HSE/PREDIV1 * PLLMUL */
-        pllclk = (uint32_t)((HSE_VALUE * pllmul) / prediv);
-      }
-
-      /* If PLLMUL was set to 13 means that it was to cover the case PLLMUL 6.5 (avoid using float) */
-      /* In this case need to divide pllclk by 2 */
-      if (pllmul == aPLLMULFactorTable[(uint32_t)(RCC_CFGR_PLLMULL6_5) >> RCC_CFGR_PLLMULL_Pos])
-      {
-        pllclk = pllclk / 2;
-      }
-#else
       /* HSE used as PLL clock source : PLLCLK = HSE/PREDIV1 * PLLMUL */
       pllclk = (uint32_t)((HSE_VALUE * pllmul) / prediv);
-#endif /*RCC_CFGR2_PREDIV1SRC*/
     }
     else
     {
@@ -790,7 +782,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
 
 static void RCC_Delay(uint32_t mdelay)
 {
-  __IO uint32_t Delay = mdelay * (SystemCoreClock / 8U / 1000U);
+  volatile uint32_t Delay = mdelay * (SystemCoreClock / 8U / 1000U);
   do
   {
     __NOP();
@@ -799,10 +791,6 @@ static void RCC_Delay(uint32_t mdelay)
 
 __weak void HAL_RCC_CSSCallback(void) {}
 
-#ifdef HAL_PCD_MODULE_ENABLED
-
-#define PCD_MIN(a, b) (((a) < (b)) ? (a) : (b))
-#define PCD_MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd);
 static HAL_StatusTypeDef HAL_PCD_EP_DB_Transmit(PCD_HandleTypeDef *hpcd, PCD_EPTypeDef *ep, uint16_t wEPVal);
@@ -1089,10 +1077,8 @@ HAL_StatusTypeDef HAL_PCD_EP_Transmit(PCD_HandleTypeDef *hpcd, uint8_t ep_addr, 
   /*setup and start the Xfer */
   ep->xfer_buff = pBuf;
   ep->xfer_len = len;
-#if defined(USB)
   ep->xfer_fill_db = 1U;
   ep->xfer_len_db = len;
-#endif /* defined (USB) */
   ep->xfer_count = 0U;
   ep->is_in = 1U;
   ep->num = ep_addr & EP_ADDR_MSK;
@@ -1177,10 +1163,6 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
   uint16_t wEPVal;
   uint16_t TxPctSize;
   uint8_t epindex;
-
-#if (USE_USB_DOUBLE_BUFFER != 1U)
-  count = 0U;
-#endif /* USE_USB_DOUBLE_BUFFER */
 
   /* stay in loop while pending interrupts */
   while ((hpcd->Instance->ISTR & USB_ISTR_CTR) != 0U)
@@ -1286,7 +1268,6 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
             USB_ReadPMA(hpcd->Instance, ep->xfer_buff, ep->pmaadress, count);
           }
         }
-#if (USE_USB_DOUBLE_BUFFER == 1U)
         else
         {
           /* manage double buffer bulk out */
@@ -1321,7 +1302,6 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
             }
           }
         }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
         /* multi-packet on the NON control OUT endpoint */
         ep->xfer_count += count;
@@ -1330,11 +1310,7 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
         if ((ep->xfer_len == 0U) || (count < ep->maxpacket))
         {
           /* RX COMPLETE */
-#if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)
-          hpcd->DataOutStageCallback(hpcd, ep->num);
-#else
           HAL_PCD_DataOutStageCallback(hpcd, ep->num);
-#endif /* USE_HAL_PCD_REGISTER_CALLBACKS */
         }
         else
         {
@@ -1353,7 +1329,6 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
         {
           ep->xfer_len = 0U;
 
-#if (USE_USB_DOUBLE_BUFFER == 1U)
           if (ep->doublebuffer != 0U)
           {
             if ((wEPVal & USB_EP_DTOG_TX) != 0U)
@@ -1365,14 +1340,9 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
               PCD_SET_EP_DBUF1_CNT(hpcd->Instance, ep->num, ep->is_in, 0U);
             }
           }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
           /* TX COMPLETE */
-#if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)
-          hpcd->DataInStageCallback(hpcd, ep->num);
-#else
           HAL_PCD_DataInStageCallback(hpcd, ep->num);
-#endif /* USE_HAL_PCD_REGISTER_CALLBACKS */
         }
         else
         {
@@ -1395,11 +1365,7 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
             if (ep->xfer_len == 0U)
             {
               /* TX COMPLETE */
-#if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)
-              hpcd->DataInStageCallback(hpcd, ep->num);
-#else
               HAL_PCD_DataInStageCallback(hpcd, ep->num);
-#endif /* USE_HAL_PCD_REGISTER_CALLBACKS */
             }
             else
             {
@@ -1409,13 +1375,13 @@ static HAL_StatusTypeDef PCD_EP_ISR_Handler(PCD_HandleTypeDef *hpcd)
               (void)USB_EPStartXfer(hpcd->Instance, ep);
             }
           }
-#if (USE_USB_DOUBLE_BUFFER == 1U)
+          
           /* Double Buffer bulk IN (bulk transfer Len > Ep_Mps) */
           else
           {
             (void)HAL_PCD_EP_DB_Transmit(hpcd, ep, wEPVal);
           }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
+          
         }
       }
     }
@@ -1524,11 +1490,7 @@ static HAL_StatusTypeDef HAL_PCD_EP_DB_Transmit(PCD_HandleTypeDef *hpcd, PCD_EPT
       PCD_SET_EP_DBUF1_CNT(hpcd->Instance, ep->num, ep->is_in, 0U);
 
       /* TX COMPLETE */
-#if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)
-      hpcd->DataInStageCallback(hpcd, ep->num);
-#else
       HAL_PCD_DataInStageCallback(hpcd, ep->num);
-#endif /* USE_HAL_PCD_REGISTER_CALLBACKS */
 
       if ((wEPVal & USB_EP_DTOG_RX) != 0U)
       {
@@ -1597,11 +1559,7 @@ static HAL_StatusTypeDef HAL_PCD_EP_DB_Transmit(PCD_HandleTypeDef *hpcd, PCD_EPT
       PCD_SET_EP_DBUF1_CNT(hpcd->Instance, ep->num, ep->is_in, 0U);
 
       /* TX COMPLETE */
-#if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)
-      hpcd->DataInStageCallback(hpcd, ep->num);
-#else
       HAL_PCD_DataInStageCallback(hpcd, ep->num);
-#endif /* USE_HAL_PCD_REGISTER_CALLBACKS */
 
       /* need to Free USB Buff */
       if ((wEPVal & USB_EP_DTOG_RX) == 0U)
@@ -1656,12 +1614,8 @@ static HAL_StatusTypeDef HAL_PCD_EP_DB_Transmit(PCD_HandleTypeDef *hpcd, PCD_EPT
   return HAL_OK;
 }
 
-#endif /* HAL_PCD_MODULE_ENABLED */
 
-#ifdef HAL_MODULE_ENABLED
-
-#define IDCODE_DEVID_MASK 0x00000FFFU
-__IO uint32_t uwTick;
+volatile uint32_t uwTick;
 
 uint32_t uwTickPrio = (1UL << __NVIC_PRIO_BITS); /* Invalid PRIO */
 
@@ -1705,16 +1659,10 @@ __weak void HAL_Delay(uint32_t Delay)
   {
     wait += (uint32_t)(uwTickFreq);
   }
-
   while ((HAL_GetTick() - tickstart) < wait)
   {
   }
 }
-
-#endif /* HAL_MODULE_ENABLED */
-
-#ifndef __USBD_CORE
-#define __USBD_CORE
 
 HAL_StatusTypeDef USB_CoreInit(USB_TypeDef *USBx, USB_CfgTypeDef cfg){
   UNUSED(USBx);
@@ -1786,7 +1734,7 @@ HAL_StatusTypeDef USB_DevInit(USB_TypeDef *USBx, USB_CfgTypeDef cfg){
 
   return HAL_OK;
 }
-//
+
 HAL_StatusTypeDef USB_ActivateEndpoint(USB_TypeDef *USBx, USB_EPTypeDef *ep){
   HAL_StatusTypeDef ret = HAL_OK;
   uint16_t wEpRegVal;
@@ -1861,7 +1809,6 @@ HAL_StatusTypeDef USB_ActivateEndpoint(USB_TypeDef *USBx, USB_EPTypeDef *ep){
       }
     }
   }
-#if (USE_USB_DOUBLE_BUFFER == 1U)
   /* Double Buffer */
   else
   {
@@ -1908,7 +1855,6 @@ HAL_StatusTypeDef USB_ActivateEndpoint(USB_TypeDef *USBx, USB_EPTypeDef *ep){
       PCD_SET_EP_RX_STATUS(USBx, ep->num, USB_EP_RX_DIS);
     }
   }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
   return ret;
 }
@@ -1932,7 +1878,7 @@ HAL_StatusTypeDef USB_DeactivateEndpoint(USB_TypeDef *USBx, USB_EPTypeDef *ep){
       PCD_SET_EP_RX_STATUS(USBx, ep->num, USB_EP_RX_DIS);
     }
   }
-#if (USE_USB_DOUBLE_BUFFER == 1U)
+  
   /* Double Buffer */
   else
   {
@@ -1960,17 +1906,14 @@ HAL_StatusTypeDef USB_DeactivateEndpoint(USB_TypeDef *USBx, USB_EPTypeDef *ep){
       PCD_SET_EP_RX_STATUS(USBx, ep->num, USB_EP_RX_DIS);
     }
   }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
   return HAL_OK;
 }
 
 HAL_StatusTypeDef USB_EPStartXfer(USB_TypeDef *USBx, USB_EPTypeDef *ep){
   uint32_t len;
-#if (USE_USB_DOUBLE_BUFFER == 1U)
   uint16_t pmabuffer;
   uint16_t wEPVal;
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
   /* IN endpoint */
   if (ep->is_in == 1U)
@@ -1991,7 +1934,6 @@ HAL_StatusTypeDef USB_EPStartXfer(USB_TypeDef *USBx, USB_EPTypeDef *ep){
       USB_WritePMA(USBx, ep->xfer_buff, ep->pmaadress, (uint16_t)len);
       PCD_SET_EP_TX_CNT(USBx, ep->num, len);
     }
-#if (USE_USB_DOUBLE_BUFFER == 1U)
     else
     {
       /* double buffer bulk management */
@@ -2103,7 +2045,6 @@ HAL_StatusTypeDef USB_EPStartXfer(USB_TypeDef *USBx, USB_EPTypeDef *ep){
         }
       }
     }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
     PCD_SET_EP_TX_STATUS(USBx, ep->num, USB_EP_TX_VALID);
   }
@@ -2125,7 +2066,6 @@ HAL_StatusTypeDef USB_EPStartXfer(USB_TypeDef *USBx, USB_EPTypeDef *ep){
       /* configure and validate Rx endpoint */
       PCD_SET_EP_RX_CNT(USBx, ep->num, len);
     }
-#if (USE_USB_DOUBLE_BUFFER == 1U)
     else
     {
       /* First Transfer Coming From HAL_PCD_EP_Receive & From ISR */
@@ -2169,7 +2109,6 @@ HAL_StatusTypeDef USB_EPStartXfer(USB_TypeDef *USBx, USB_EPTypeDef *ep){
         return HAL_ERROR;
       }
     }
-#endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
 
     PCD_SET_EP_RX_STATUS(USBx, ep->num, USB_EP_RX_VALID);
   }
@@ -2273,10 +2212,10 @@ void USB_WritePMA(USB_TypeDef const *USBx, uint8_t *pbUsrBuf, uint16_t wPMABufAd
   uint32_t BaseAddr = (uint32_t)USBx;
   uint32_t count;
   uint16_t WrVal;
-  __IO uint16_t *pdwVal;
+  volatile uint16_t *pdwVal;
   uint8_t *pBuf = pbUsrBuf;
 
-  pdwVal = (__IO uint16_t *)(BaseAddr + 0x400U + ((uint32_t)wPMABufAddr * PMA_ACCESS));
+  pdwVal = (volatile uint16_t *)(BaseAddr + 0x400U + ((uint32_t)wPMABufAddr * PMA_ACCESS));
 
   for (count = n; count != 0U; count--)
   {
@@ -2284,11 +2223,7 @@ void USB_WritePMA(USB_TypeDef const *USBx, uint8_t *pbUsrBuf, uint16_t wPMABufAd
     WrVal |= (uint16_t)pBuf[1] << 8;
     *pdwVal = (WrVal & 0xFFFFU);
     pdwVal++;
-
-#if PMA_ACCESS > 1U
     pdwVal++;
-#endif /* PMA_ACCESS */
-
     pBuf++;
     pBuf++;
   }
@@ -2300,23 +2235,20 @@ void USB_ReadPMA(USB_TypeDef const *USBx, uint8_t *pbUsrBuf, uint16_t wPMABufAdd
   uint32_t BaseAddr = (uint32_t)USBx;
   uint32_t count;
   uint32_t RdVal;
-  __IO uint16_t *pdwVal;
+  volatile uint16_t *pdwVal;
   uint8_t *pBuf = pbUsrBuf;
 
-  pdwVal = (__IO uint16_t *)(BaseAddr + 0x400U + ((uint32_t)wPMABufAddr * PMA_ACCESS));
+  pdwVal = (volatile uint16_t *)(BaseAddr + 0x400U + ((uint32_t)wPMABufAddr * PMA_ACCESS));
 
   for (count = n; count != 0U; count--)
   {
-    RdVal = *(__IO uint16_t *)pdwVal;
+    RdVal = *(volatile uint16_t *)pdwVal;
     pdwVal++;
     *pBuf = (uint8_t)((RdVal >> 0) & 0xFFU);
     pBuf++;
     *pBuf = (uint8_t)((RdVal >> 8) & 0xFFU);
     pBuf++;
-
-#if PMA_ACCESS > 1U
     pdwVal++;
-#endif /* PMA_ACCESS */
   }
 
   if ((wNBytes % 2U) != 0U)
@@ -2512,7 +2444,6 @@ USBD_StatusTypeDef USBD_LL_DataInStage(USBD_HandleTypeDef *pdev, uint8_t epnum, 
     pdev->pClass->DataIn(pdev, epnum);
   }
   else{
-    /* should never be in this condition */
     return USBD_FAIL;
   }
   return USBD_OK;
@@ -2537,7 +2468,7 @@ USBD_StatusTypeDef USBD_LL_Reset(USBD_HandleTypeDef *pdev){
   }
   return USBD_OK;
 }
-//
+
 USBD_StatusTypeDef USBD_LL_SetSpeed(USBD_HandleTypeDef *pdev, USBD_SpeedTypeDef speed){
   pdev->dev_speed = speed;
   return USBD_OK;
@@ -2566,9 +2497,6 @@ USBD_StatusTypeDef USBD_LL_SOF(USBD_HandleTypeDef *pdev){
   return USBD_OK;
 }
 
-PCD_HandleTypeDef hpcd_USB_FS;
-static USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status);
-//
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle){
   if(pcdHandle->Instance==USB)  {
     __HAL_RCC_USB_CLK_ENABLE();
@@ -2612,7 +2540,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd){
 void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd){
   USBD_LL_Resume((USBD_HandleTypeDef*)hpcd->pData);
 }
-//
+
 HAL_StatusTypeDef  HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd, uint16_t ep_addr, uint16_t ep_kind, uint32_t pmaadress){
   PCD_EPTypeDef *ep;
   if ((0x80U & ep_addr) == 0x80U)  {
@@ -2760,6 +2688,7 @@ static void USBD_GetStatus(USBD_HandleTypeDef *pdev,     USBD_SetupReqTypedef *r
 static void USBD_SetFeature(USBD_HandleTypeDef *pdev,    USBD_SetupReqTypedef *req);
 static void USBD_ClrFeature(USBD_HandleTypeDef *pdev,    USBD_SetupReqTypedef *req);
 static uint8_t USBD_GetLen(uint8_t *buf);
+
 USBD_StatusTypeDef  USBD_StdDevReq(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req){
   USBD_StatusTypeDef ret = USBD_OK;
   switch (req->bmRequest & USB_REQ_TYPE_MASK)
@@ -3115,6 +3044,7 @@ static void USBD_GetDescriptor    (USBD_HandleTypeDef *pdev, USBD_SetupReqTypede
     }
   }
 }
+
 static void USBD_SetAddress		  (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req){
   uint8_t  dev_addr;
   if ((req->wIndex == 0U) && (req->wLength == 0U) && (req->wValue < 128U))
@@ -3146,7 +3076,7 @@ static void USBD_SetAddress		  (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *
 }
 
 static void USBD_SetConfig		  (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req){
-  static uint8_t cfgidx;
+ static uint8_t cfgidx;
   cfgidx = (uint8_t)(req->wValue);
   if (cfgidx > USBD_MAX_NUM_CONFIGURATION)
   {
@@ -3338,7 +3268,8 @@ USBD_DescriptorsTypeDef FS_Desc = {
   USBD_FS_ConfigStrDescriptor,
   USBD_FS_InterfaceStrDescriptor
 };
-__ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END = {
+
+uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC]  = {
   0x12,                       /*bLength */
   USB_DESC_TYPE_DEVICE,       /*bDescriptorType*/
   0x00,                       /*bcdUSB */
@@ -3358,18 +3289,21 @@ __ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END = {
   USBD_IDX_SERIAL_STR,        /*Index of serial number string*/
   USBD_MAX_NUM_CONFIGURATION  /*bNumConfigurations*/
 };
-__ALIGN_BEGIN uint8_t USBD_LangIDDesc[USB_LEN_LANGID_STR_DESC] __ALIGN_END ={
+
+uint8_t USBD_LangIDDesc[USB_LEN_LANGID_STR_DESC]  ={
      USB_LEN_LANGID_STR_DESC,
      USB_DESC_TYPE_STRING,
      LOBYTE(USBD_LANGID_STRING),
      HIBYTE(USBD_LANGID_STRING)
 };
-__ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
 
-__ALIGN_BEGIN uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL] __ALIGN_END = {
+uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ];
+
+uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL]  = {
   USB_SIZ_STRING_SERIAL,
   USB_DESC_TYPE_STRING,
 };
+
 uint8_t * USBD_FS_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length){
   UNUSED(speed);
   *length = sizeof(USBD_FS_DeviceDesc);
@@ -3463,8 +3397,8 @@ USBD_ClassTypeDef  USBD_HID ={
   USBD_HID_GetOtherSpeedCfgDesc,
   USBD_HID_GetDeviceQualifierDesc,
 };
-/* USB HID device FS Configuration Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIGN_END ={
+
+static uint8_t USBD_HID_CfgFSDesc[USB_HID_CONFIG_DESC_SIZ]   ={
   0x09, /* bLength: Configuration Descriptor size */
   USB_DESC_TYPE_CONFIGURATION, /* bDescriptorType: Configuration */
   USB_HID_CONFIG_DESC_SIZ,
@@ -3509,8 +3443,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIG
   /* 34 */
 };
 
-/* USB HID device HS Configuration Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_HID_CfgHSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIGN_END ={
+static uint8_t USBD_HID_CfgHSDesc[USB_HID_CONFIG_DESC_SIZ]   ={
   0x09, /* bLength: Configuration Descriptor size */
   USB_DESC_TYPE_CONFIGURATION, /* bDescriptorType: Configuration */
   USB_HID_CONFIG_DESC_SIZ,
@@ -3555,8 +3488,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgHSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIG
   /* 34 */
 };
 
-/* USB HID device Other Speed Configuration Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_HID_OtherSpeedCfgDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIGN_END ={
+static uint8_t USBD_HID_OtherSpeedCfgDesc[USB_HID_CONFIG_DESC_SIZ]   ={
   0x09, /* bLength: Configuration Descriptor size */
   USB_DESC_TYPE_CONFIGURATION, /* bDescriptorType: Configuration */
   USB_HID_CONFIG_DESC_SIZ,
@@ -3602,7 +3534,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_OtherSpeedCfgDesc[USB_HID_CONFIG_DESC_SIZ]
   /* 34 */
 };
 
-__ALIGN_BEGIN static uint8_t USBD_HID_Desc[USB_HID_DESC_SIZ]  __ALIGN_END  ={
+static uint8_t USBD_HID_Desc[USB_HID_DESC_SIZ]    ={
   /* 18 */
   0x09,         /*bLength: HID Descriptor size*/
   HID_DESCRIPTOR_TYPE, /*bDescriptorType: HID*/
@@ -3615,8 +3547,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_Desc[USB_HID_DESC_SIZ]  __ALIGN_END  ={
   0x00,
 };
 
-/* USB Standard Device Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_HID_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC]  __ALIGN_END ={
+static uint8_t USBD_HID_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC]   ={
   USB_LEN_DEV_QUALIFIER_DESC,
   USB_DESC_TYPE_DEVICE_QUALIFIER,
   0x00,
@@ -3628,7 +3559,8 @@ __ALIGN_BEGIN static uint8_t USBD_HID_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_
   0x01,
   0x00,
 };
-__ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  __ALIGN_END ={
+
+static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]   ={
 	0x05, 0x01,                    /* USAGE_PAGE (Generic Desktop)*/
 	0x09, 0x06,                    /* USAGE (Keyboard)*/
 	0xa1, 0x01,                    /* COLLECTION (Application)*/
@@ -3662,6 +3594,7 @@ __ALIGN_BEGIN static uint8_t HID_MOUSE_ReportDesc[HID_MOUSE_REPORT_DESC_SIZE]  _
 	0x81, 0x00,                    /*   INPUT (Data,Ary,Abs)*/
 	0xc0                           /* END_COLLECTION*/
 };
+
 static uint8_t  USBD_HID_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx){
   /* Open EP IN */
   USBD_LL_OpenEP(pdev, HID_EPIN_ADDR, USBD_EP_TYPE_INTR, HID_EPIN_SIZE);
@@ -3700,36 +3633,8 @@ static uint8_t  USBD_HID_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *r
   uint16_t status_info = 0U;
   USBD_StatusTypeDef ret = USBD_OK;
 
-  switch (req->bmRequest & USB_REQ_TYPE_MASK)
-  {
-    case USB_REQ_TYPE_CLASS :
-      switch (req->bRequest)
-      {
-        case HID_REQ_SET_PROTOCOL:
-          hhid->Protocol = (uint8_t)(req->wValue);
-          break;
-
-        case HID_REQ_GET_PROTOCOL:
-          USBD_CtlSendData(pdev, (uint8_t *)(void *)&hhid->Protocol, 1U);
-          break;
-
-        case HID_REQ_SET_IDLE:
-          hhid->IdleState = (uint8_t)(req->wValue >> 8);
-          break;
-
-        case HID_REQ_GET_IDLE:
-          USBD_CtlSendData(pdev, (uint8_t *)(void *)&hhid->IdleState, 1U);
-          break;
-
-        default:
-          USBD_CtlError(pdev, req);
-          ret = USBD_FAIL;
-          break;
-      }
-      break;
-    case USB_REQ_TYPE_STANDARD:
-      switch (req->bRequest)
-      {
+  if ( (req->bmRequest & USB_REQ_TYPE_MASK) == USB_REQ_TYPE_STANDARD ){
+      switch (req->bRequest)      {
         case USB_REQ_GET_STATUS:
           if (pdev->dev_state == USBD_STATE_CONFIGURED)
           {
@@ -3791,14 +3696,10 @@ static uint8_t  USBD_HID_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *r
           ret = USBD_FAIL;
           break;
       }
-      break;
-
-    default:
-      USBD_CtlError(pdev, req);
-      ret = USBD_FAIL;
-      break;
-  }
-
+  }else{
+    	  USBD_CtlError(pdev, req);
+    	  ret = USBD_FAIL;
+      }
   return ret;
 }
 
@@ -3874,149 +3775,3 @@ USBD_StatusTypeDef USBD_CtlReceiveStatus(USBD_HandleTypeDef *pdev){
   return USBD_OK;
 }
 
-
-
-#endif  __USBD_CORE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void SystemInit(void) {}
-void SystemClock_Config(void);
-void USB_DEVICE_Init(void);
-void Error_Handler();
-
-extern PCD_HandleTypeDef hpcd_USB_FS;
-
-void SysTick_Handler(void)
-{
-  HAL_IncTick();
-}
-
-void USB_LP_CAN1_RX0_IRQHandler(void)
-{
-  HAL_PCD_IRQHandler(&hpcd_USB_FS);
-}
-
-keyboardHID keyboardhid = {0, 0, 0, 0, 0, 0, 0, 0};
-
-int main(void)
-{
-  SystemClock_Config();
-  USB_DEVICE_Init();
-
-  uint8_t report[sizeof(keyboardHID)];
-
-  for (volatile int i = 0; i <= 4; i++)
-  {
-    HAL_Delay(200);
-    keyboardhid.KeyCode1 = 0x2C;
-    keyboardhid.KeyCode2 = 0x0B;
-    keyboardhid.KeyCode3 = 0x12;
-    keyboardhid.KeyCode4 = 0x0F;
-    keyboardhid.KeyCode5 = 0x04;
-    USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
-    HAL_Delay(30);
-
-    keyboardhid.KeyCode1 = 0x00;
-    keyboardhid.KeyCode2 = 0x00;
-    keyboardhid.KeyCode3 = 0x00;
-    keyboardhid.KeyCode4 = 0x00;
-    keyboardhid.KeyCode5 = 0x00;
-    USBD_HID_SendReport(&hUsbDeviceFS, &keyboardhid, sizeof(report));
-    HAL_Delay(200);
-  }
-  while (1)
-  {
-  }
-}
-
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
-
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
-  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
-
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-void USB_DEVICE_Init(void)
-{
-  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
-  {
-    Error_Handler();
-  }
-  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_HID) != USBD_OK)
-  {
-    Error_Handler();
-  }
-  if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
-  {
-    Error_Handler();
-  }
-}
-
-void Error_Handler()
-{
-  //__disable_irq();
-  while (1)
-  {
-  }
-}
