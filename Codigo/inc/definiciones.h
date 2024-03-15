@@ -58,6 +58,17 @@ struct SysTick{
 volatile struct SysTick *const SYST = (struct SysTick *)(0xE000E010);
 volatile int Time_1ms = 1000;
 
+struct USB{
+		int EPxR[8];
+		int RESERVED[16]; //reserves from 0x20 to 0x3F
+		int CNTR;
+		int ISTR;
+		int FNR;
+		int DADDR;
+		int BTABLE
+};
+struct USB volatile *const USB = (struct USB_Registers *)(0x40005C00);
+
 #define NULL 0
 
 //
